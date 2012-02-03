@@ -41,7 +41,7 @@ if(bus.is_connected()){
 				let bntext = Avroparser.parse(engine.buffertext);
 				bntext = utfconv.utf8Decode(bntext);
 				let text = IBus.Text.new_from_string(bntext);
-				engine.update_preedit_text(text,0,true);
+				engine.update_preedit_text(text,bntext.length,true);
         
 				return true;				
 			}

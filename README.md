@@ -1,0 +1,1 @@
+	Avro phonetic in ibus

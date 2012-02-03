@@ -24,24 +24,19 @@ if(bus.is_connected()){
   
    engine.connect('process-key-event',
       function(engine,keyval,keycode,state){
-		//engine.delete_surrounding_text(1,2);
-		//var text = IBus.Text.new_from_string("সারিম");
-		//engine.update_auxiliary_text(text,1,true);
-		//engine.show_preedit_text();
-		//var text = IBus.Text.new_from_string("test");
-		//engine.commit_text(text);
-		//print(state ); // IBus.keyval_to_unicode(keyval));
-		
-		
-		
+				
+		//print(keyval + " " +  state);
 		   // ignore release event
-		if (state != 0)
+		if (!(state == 0 || state == 1))
 			return false;
+		
+		if (keycode == 42) return true;
 		
            // process letter key events
 		if ((keyval >= IBus.a && keyval <= IBus.z) ||
             (keyval >= IBus.A && keyval <= IBus.Z) ||
             (keyval >= 47 && keyval <= 57)){
+			
 				engine.buffertext += IBus.keyval_to_unicode(keyval);
 				let bntext = Avroparser.parse(engine.buffertext);
 				bntext = utfconv.utf8Decode(bntext);
@@ -61,7 +56,19 @@ if(bus.is_connected()){
 				engine.hide_preedit_text();
 		
 		}
-
+		
+		else if (keyval == IBus.BackSpace){
+			if (engine.buffertext.length > 0) {
+				engine.buffertext = engine.buffertext.substr(0,engine.buffertext.length -1);
+				let bntext = Avroparser.parse(engine.buffertext);
+				bntext = utfconv.utf8Decode(bntext);
+				let text = IBus.Text.new_from_string(bntext);
+				engine.update_preedit_text(text,0,true);
+        
+				return true;				
+			}
+			
+			}
 		return false ;
    });
    

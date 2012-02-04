@@ -33,9 +33,7 @@ if(bus.is_connected()){
 		if (keycode == 42) return true;
 		
            // process letter key events
-		if ((keyval >= IBus.a && keyval <= IBus.z) ||
-            (keyval >= IBus.A && keyval <= IBus.Z) ||
-            (keyval >= 47 && keyval <= 57)){
+		if (keyval >= 33 && keyval <= 126){
 			
 				engine.buffertext += IBus.keyval_to_unicode(keyval);
 				let bntext = Avroparser.parse(engine.buffertext);
@@ -54,7 +52,19 @@ if(bus.is_connected()){
 				engine.commit_text(text);
 				engine.buffertext = "";
 				engine.hide_preedit_text();
-		
+			
+			if (keyval == IBus.space) {
+				
+				engine.commit_text( IBus.Text.new_from_string(" "));
+				return true;
+				
+			}
+			/*else 
+				
+				engine.commit_text( IBus.Text.new_from_string("\n"));
+				
+			return true;
+			*/
 		}
 		
 		else if (keyval == IBus.BackSpace){

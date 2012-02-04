@@ -29,7 +29,7 @@ if(bus.is_connected()){
 		   // ignore release event
 		if (!(state == 0 || state == 1))
 			return false;
-		
+			// capture the shift key
 		if (keycode == 42) return true;
 		
            // process letter key events
@@ -63,7 +63,7 @@ if(bus.is_connected()){
 				let bntext = Avroparser.parse(engine.buffertext);
 				bntext = utfconv.utf8Decode(bntext);
 				let text = IBus.Text.new_from_string(bntext);
-				engine.update_preedit_text(text,0,true);
+				engine.update_preedit_text(text,bntext.length,true);
         
 				return true;				
 			}
@@ -90,7 +90,7 @@ if(bus.is_connected()){
         license:"GPL",
         author:"Sarim Khan <sarim2005@gmail.com>",
         homepage:"http://omicronlab.com",
-        exec:"/home/sarim/avro/main.js",
+        exec:"/home/sarim/ibus-avro/main-gjs.js",
         textdomain:"avro-phonetic"
         });
         
@@ -101,7 +101,7 @@ if(bus.is_connected()){
         language:"bn",
         license:"GPL",
         author:"Sarim Khan <sarim2005@gmail.com>",
-        icon:"/home/sarim/avro-bangla.png",
+        icon:"/home/sarim/ibus-avro/avro-bangla.png",
         layout:"us"
         });
         

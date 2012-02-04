@@ -25,7 +25,7 @@ if(bus.is_connected()){
    engine.connect('process-key-event',
       function(engine,keyval,keycode,state){
 				
-		print(keyval + " " +  state);
+		//print(keyval + " " +  state);
 		   // ignore release event
 		if (!(state == 0 || state == 1))
 			return false;
@@ -79,7 +79,7 @@ if(bus.is_connected()){
 				}
 			
 			}
-		else if (keyval == 65361 || keyval == 65363){
+		else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Up || keyval == IBus.Down ){
 				let bntext = Avroparser.parse(engine.buffertext);
 				bntext = utfconv.utf8Decode(bntext);
 				let text = IBus.Text.new_from_string(bntext);

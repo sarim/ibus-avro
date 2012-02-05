@@ -53,13 +53,14 @@ if(bus.is_connected()){
 				engine.buffertext = "";
 				engine.hide_preedit_text();
 			
-		/*	
+			
 			if (keyval == IBus.space) {
 				
 				engine.commit_text( IBus.Text.new_from_string(" "));
 				return true;
 				
 			}
+		/*
 			else {
 				//engine.forward_key_event(engine,115,31,state);
 				engine.commit_text( IBus.Text.new_from_string("\n"));

@@ -21,11 +21,11 @@ if(bus.is_connected()){
    var engine =  new IBus.Engine({ engine_name: engine_name,
                                    object_path: '/org/freedesktop/IBus/Engine/' + id,
                                    connection: bus.get_connection()});
-  
+	    
    engine.connect('process-key-event',
       function(engine,keyval,keycode,state){
 				
-		//print(keyval + " " +  state);
+		//print(keyval + " " +  keycode);
 		   // ignore release event
 		if (!(state == 0 || state == 1))
 			return false;
@@ -59,12 +59,12 @@ if(bus.is_connected()){
 				return true;
 				
 			}
-			/*else 
-				
+			else {
+				//engine.forward_key_event(engine,115,31,state);
 				engine.commit_text( IBus.Text.new_from_string("\n"));
 				
-			return true;
-			*/
+				return true;
+			}
 		}
 		
 		else if (keyval == IBus.BackSpace){
@@ -79,7 +79,7 @@ if(bus.is_connected()){
 				}
 			
 			}
-		else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Up || keyval == IBus.Down ){
+		else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Up || keyval == IBus.Down || keyval == IBus.Control_L || keyval == IBus.Control_R || keyval == IBus.Insert   || keyval == IBus.Delete || keyval == IBus.Home || keyval == IBus.Page_Up || keyval == IBus.Page_Down || keyval == IBus.End || keyval == IBus.Alt_L || keyval == IBus.Alt_R ){
 				let bntext = Avroparser.parse(engine.buffertext);
 				bntext = utfconv.utf8Decode(bntext);
 				let text = IBus.Text.new_from_string(bntext);

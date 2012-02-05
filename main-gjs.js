@@ -53,6 +53,7 @@ if(bus.is_connected()){
 				engine.buffertext = "";
 				engine.hide_preedit_text();
 			
+		/*	
 			if (keyval == IBus.space) {
 				
 				engine.commit_text( IBus.Text.new_from_string(" "));
@@ -65,6 +66,8 @@ if(bus.is_connected()){
 				
 				return true;
 			}
+		*/
+		
 		}
 		
 		else if (keyval == IBus.BackSpace){

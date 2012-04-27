@@ -1,0 +1,18 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.68])
+AC_INIT([ibus-avro], [1.0], [sarim2005@gmail.com])
+AM_INIT_AUTOMAKE(ibus-avro, 1.0)
+AC_OUTPUT(Makefile)
+# Checks for programs.
+
+# Checks for libraries.
+
+# Checks for header files.
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for library functions.
+
+AC_OUTPUT

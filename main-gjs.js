@@ -25,7 +25,8 @@ if(bus.is_connected()){
    engine.connect('process-key-event',
       function(engine,keyval,keycode,state){
 				
-		//print(keyval + " " +  keycode);
+		print(keyval + " " +  keycode + " " + state);
+
 		   // ignore release event
 		if (!(state == 0 || state == 1))
 			return false;
@@ -40,7 +41,9 @@ if(bus.is_connected()){
 				bntext = utfconv.utf8Decode(bntext);
 				let text = IBus.Text.new_from_string(bntext);
 				engine.update_preedit_text(text,bntext.length,true);
-        
+        			
+				let entext = IBus.Text.new_from_string(engine.buffertext);
+				engine.update_auxiliary_text(entext,true);
 				return true;				
 			}
 			
@@ -52,7 +55,7 @@ if(bus.is_connected()){
 				engine.commit_text(text);
 				engine.buffertext = "";
 				engine.hide_preedit_text();
-			
+				engine.hide_auxiliary_text();
 			
 			if (keyval == IBus.space) {
 				

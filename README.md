@@ -4,8 +4,10 @@ Now in early stage of development, but its pretty usable.
 
 ==================================================================================
 
-Developed By: 
+Developed By:
+ 
 IBus Engine: Sarim Khan <sarim2005@gmail.com>
+
 Avro Phonetic Library: Rifat Nabi @torifat
 
 ==================================================================================
@@ -18,19 +20,19 @@ How to install :
 
  1. Open terminal/package manager and install following packages:
 
-	git
-	libibus-1.0-dev
+	`git`
+	`libibus-1.0-dev`
 	
     You'll need all related build tools like automake,autoconf etc...
     and Latest ibus from git compiled with gobject-introspection support enabled.
 
  2. Now give the following commands step-by-step:
 
-	git clone git://github.com/sarim/ibus-avro.git
-	cd ibus-avro
-	aclocal && autoconf && automake
-	./configure --prefix=/usr
-	sudo make install
+	`git clone git://github.com/sarim/ibus-avro.git`
+	`cd ibus-avro`
+	`aclocal && autoconf && automake`
+	`./configure --prefix=/usr`
+	`sudo make install`
 
 ===================================================================================
 

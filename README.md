@@ -28,11 +28,11 @@ How to install :
 
  2. Now give the following commands step-by-step:
 
-		`git clone git://github.com/sarim/ibus-avro.git`
-		`cd ibus-avro`
-		`aclocal && autoconf && automake`
-		`./configure --prefix=/usr`
-		`sudo make install`
+		git clone git://github.com/sarim/ibus-avro.git
+		cd ibus-avro
+		aclocal && autoconf && automake
+		./configure --prefix=/usr
+		sudo make install
 
 ===================================================================================
 

@@ -4,9 +4,10 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
 const utfconv = imports.utf8;
-//Seed.include('avro-lib.js');
 
+// Let's initialize ibus
 IBus.init();
+
 //get the ibus bus
 var bus = new IBus.Bus();
 
@@ -25,11 +26,13 @@ if(bus.is_connected()){
    engine.connect('process-key-event',
       function(engine,keyval,keycode,state){
 				
+		//print keypress infos, helpful for debugging
 		print(keyval + " " +  keycode + " " + state);
 
 		   // ignore release event
-		if (!(state == 0 || state == 1))
+		if (!(state == 0 || state == 1 || state == 16 || state == 17))
 			return false;
+			
 			// capture the shift key
 		if (keycode == 42) return true;
 		
@@ -63,7 +66,7 @@ if(bus.is_connected()){
 				return true;
 				
 			}
-		/*
+		/* i forgot what this commented block is here for !
 			else {
 				//engine.forward_key_event(engine,115,31,state);
 				engine.commit_text( IBus.Text.new_from_string("\n"));
@@ -81,6 +84,8 @@ if(bus.is_connected()){
 				bntext = utfconv.utf8Decode(bntext);
 				let text = IBus.Text.new_from_string(bntext);
 				engine.update_preedit_text(text,bntext.length,true);
+				let entext = IBus.Text.new_from_string(engine.buffertext);
+				engine.update_auxiliary_text(entext,true);
         
 				return true;				
 				}
@@ -93,7 +98,7 @@ if(bus.is_connected()){
 				engine.commit_text(text);
 				engine.buffertext = "";
 				engine.hide_preedit_text();
-			
+				engine.hide_auxiliary_text();
 			}
 		return false ;
    });

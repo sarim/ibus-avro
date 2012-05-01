@@ -3,11 +3,11 @@
 <component>
 	<name>org.freedesktop.IBus.EnchantPython</name>
 	<description>Avro phonetic</description>
-	<exec>${libexecdir}/ibus-engine-enchant --ibus</exec>
+	<exec>${libexecdir}/ibusavro</exec>
 	<version>1.0</version>
 	<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
 	<license>GPL</license>
-	<homepage>http://code.google.com/p/ibus</homepage>
+	<homepage>https://github.com/sarim/ibus-avro</homepage>
 	<textdomain>ibus-avro</textdomain>
 
 	<engines>
@@ -16,7 +16,7 @@
 			<language>en</language>
 			<license>GPL</license>
 			<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
-			<icon>${pkgdatadir}/icons/ibus-enchant.png</icon>
+			<icon>${pkgdatadir}/avro-bangla.png</icon>
 			<layout>us</layout>
 			<longname>Avro</longname>
 			<description>Avro Phonetic Input Method</description>

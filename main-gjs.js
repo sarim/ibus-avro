@@ -4,6 +4,9 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
 const utfconv = imports.utf8;
+const eevars = imports.evars;
+//check if running from ibus
+exec_by_ibus = (ARGV[0] == '--ibus')
 
 // Let's initialize ibus
 IBus.init();
@@ -116,12 +119,12 @@ if(bus.is_connected()){
    factory.connect('create-engine', _create_engine_cb);
     var	component = new IBus.Component({
         name:"org.freedesktop.IBus.Avro",
-        description:"Avro phonetic Component",
-        version:"0.1.0",
-        license:"GPL",
+        description:"Avro phonetic",
+        version:"0.9",
+        license:"MPL",
         author:"Sarim Khan <sarim2005@gmail.com>",
-        homepage:"http://omicronlab.com",
-        exec:"/home/sarim/ibus-avro/main-gjs.js",
+        homepage:"https://github.com/sarim/ibus-avro",
+        exec: eevars.get_libexecdir() + "/main-gjs.js",
         textdomain:"avro-phonetic"
         });
         
@@ -130,14 +133,16 @@ if(bus.is_connected()){
         longname:"avro phonetic",
         description:"Avro Phonetic Engine",
         language:"bn",
-        license:"GPL",
+        license:"MPL",
         author:"Sarim Khan <sarim2005@gmail.com>",
-        icon:"/home/sarim/ibus-avro/avro-bangla.png",
-        layout:"us"
+        icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
+        layout:"bn"
         });
         
     component.add_engine (avroenginedesc);
-    
+    if (exec_by_ibus)
+    bus.request_name ("org.freedesktop.IBus.Avro",0);
+    else
     bus.register_component (component);
     IBus.main();    
     

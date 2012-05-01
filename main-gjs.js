@@ -106,6 +106,18 @@ if(bus.is_connected()){
 		return false ;
    });
    
+   engine.connect('focus-out', function (){
+	   if (engine.buffertext.length > 0) {
+				let bntext = Avroparser.parse(engine.buffertext);
+				bntext = utfconv.utf8Decode(bntext);
+				let text = IBus.Text.new_from_string(bntext);
+				engine.commit_text(text);
+				engine.buffertext = "";
+				engine.hide_preedit_text();
+				engine.hide_auxiliary_text();	   
+	   }
+   });
+   
 	engine.buffertext = "";	
     return engine; 
 }

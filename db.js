@@ -1,7 +1,6 @@
 #!/usr/bin/env gjs
 
 const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
 const Gda = imports.gi.Gda;
 
 imports.searchPath.unshift('.');
@@ -156,6 +155,6 @@ DB.prototype = {
 /* --------- */
 /* Test code */
 /* --------- */
-//var db = new DB ();
-//db.loadDb();
+var db = new DB ();
+db.loadDb();
 //db._printArray(db.w_khandatta);

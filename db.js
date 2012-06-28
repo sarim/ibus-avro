@@ -1,4 +1,4 @@
-#!/usr/bin/env gjs
+//#!/usr/bin/env gjs
 
 const GLib = imports.gi.GLib;
 const Gda = imports.gi.Gda;
@@ -148,7 +148,7 @@ DB.prototype = {
         this.w_y = [];
         this.w_z = [];
         this.w_khandatta = [];
-  	},
+  	}
 }
 
 

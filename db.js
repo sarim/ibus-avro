@@ -155,6 +155,6 @@ DB.prototype = {
 /* --------- */
 /* Test code */
 /* --------- */
-var db = new DB ();
-db.loadDb();
-//db._printArray(db.w_khandatta);
+//var __db = new DB ();
+//__db.loadDb();
+//__db._printArray(db.w_khandatta);

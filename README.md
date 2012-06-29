@@ -10,6 +10,8 @@ IBus Engine: Sarim Khan <sarim2005@gmail.com>
 
 Avro Phonetic Library: Rifat Nabi @torifat
 
+Avro Dictionary Phonetic: Mehdi Hasan Khan @MehdiHK
+
 ==================================================================================
 
 Licensed under MPL
@@ -22,6 +24,7 @@ How to install :
 
 	`git`
 	`libibus-1.0-dev`
+	`gjs`
 	
     You'll need all related build tools like automake,autoconf etc...
     and Latest ibus from git compiled with gobject-introspection support enabled.

@@ -22,6 +22,9 @@ How to install :
 
 	`git`
 	`libibus-1.0-dev`
+	`gjs`
+	`gir1.2-gjsdbus-1.0`
+	`gir1.2-ibus-1.0`
 	
     You'll need all related build tools like automake,autoconf etc...
     and Latest ibus from git compiled with gobject-introspection support enabled.

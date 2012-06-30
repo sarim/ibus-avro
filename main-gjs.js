@@ -1,11 +1,14 @@
 #!/usr/bin/env gjs
 
+imports.searchPath.unshift('.');
 const IBus = imports.gi.IBus;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
 const utfconv = imports.utf8;
 const eevars = imports.evars;
+const dictdb = imports.dictclient;
+
 //check if running from ibus
 exec_by_ibus = (ARGV[0] == '--ibus')
 
@@ -18,6 +21,14 @@ var bus = new IBus.Bus();
 if (bus.is_connected()) {
 
     var id = 0;
+    
+    function filllookuptable(engine,suggestionlist) {
+        suggestionlist.forEach(function(word){
+            let uword = utfconv.utf8Decode(word)
+            let wtext = IBus.Text.new_from_string(uword);
+            engine.lookuptable.append_candidate(wtext);
+            });        
+    }
 
     function _create_engine_cb(factory, engine_name) {
 
@@ -53,16 +64,22 @@ if (bus.is_connected()) {
 
                 let entext = IBus.Text.new_from_string(engine.buffertext);
                 engine.update_auxiliary_text(entext, true);
+                engine.lookuptable.clear();
+                    let suggestionlist = dictdb.suggest(engine.buffertext);
+                    filllookuptable(engine,suggestionlist);
+                engine.update_lookup_table_fast(engine.lookuptable,true);
+                
                 return true;
             } else if (keyval == IBus.Return || keyval == IBus.space) {
 
-                let bntext = Avroparser.parse(engine.buffertext);
-                bntext = utfconv.utf8Decode(bntext);
-                let text = IBus.Text.new_from_string(bntext);
+                let selectedindex = engine.lookuptable.get_cursor_pos();
+                let text = engine.lookuptable.get_candidate(selectedindex);
                 engine.commit_text(text);
                 engine.buffertext = "";
+                engine.lookuptable.clear();
                 engine.hide_preedit_text();
                 engine.hide_auxiliary_text();
+                engine.hide_lookup_table();
 
                 if (keyval == IBus.space) {
                     engine.commit_text(IBus.Text.new_from_string(" "));
@@ -84,20 +101,51 @@ if (bus.is_connected()) {
                     engine.update_preedit_text(text, bntext.length, true);
                     let entext = IBus.Text.new_from_string(engine.buffertext);
                     engine.update_auxiliary_text(entext, true);
+                    engine.lookuptable.clear();
+                        let suggestionlist = dictdb.suggest(engine.buffertext);
+                        filllookuptable(engine,suggestionlist);
+                    engine.update_lookup_table_fast(engine.lookuptable,true);
                     return true;
                 }
-            } else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Up || keyval == IBus.Down || keyval == IBus.Control_L || keyval == IBus.Control_R || keyval == IBus.Insert || keyval == IBus.Delete || keyval == IBus.Home || keyval == IBus.Page_Up || keyval == IBus.Page_Down || keyval == IBus.End || keyval == IBus.Alt_L || keyval == IBus.Alt_R) {
-                let bntext = Avroparser.parse(engine.buffertext);
-                bntext = utfconv.utf8Decode(bntext);
-                let text = IBus.Text.new_from_string(bntext);
+                
+            } else if (keyval == IBus.Up || keyval == IBus.Down) {
+                if (engine.lookuptable.get_number_of_candidates() != 0){                    
+                    if (keyval == IBus.Up) {
+                    engine.lookuptable.cursor_up();
+                    }
+                    else if (keyval == IBus.Down) {
+                    engine.lookuptable.cursor_down();
+                    }
+                }
+           
+            } else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Control_L || keyval == IBus.Control_R || keyval == IBus.Insert || keyval == IBus.Delete || keyval == IBus.Home || keyval == IBus.Page_Up || keyval == IBus.Page_Down || keyval == IBus.End || keyval == IBus.Alt_L || keyval == IBus.Alt_R) {
+                let selectedindex = engine.lookuptable.get_cursor_pos();
+                let text = engine.lookuptable.get_candidate(selectedindex);
                 engine.commit_text(text);
                 engine.buffertext = "";
+                engine.lookuptable.clear();
                 engine.hide_preedit_text();
                 engine.hide_auxiliary_text();
+                engine.hide_lookup_table();
             }
             return false;
         });
 
+        engine.connect('candidate-clicked', function (engine,index,button,state) {
+            if (engine.buffertext.length > 0) {
+                
+                print("candidate clicked: " + index + " " + button + " " + state);
+                let text = engine.lookuptable.get_candidate(index);
+                engine.commit_text(text);
+                engine.buffertext = "";
+                engine.lookuptable.clear();
+                engine.hide_preedit_text();
+                engine.hide_auxiliary_text();
+                engine.hide_lookup_table();
+            }
+            
+        });
+        
         engine.connect('focus-out', function () {
             if (engine.buffertext.length > 0) {
                 let bntext = Avroparser.parse(engine.buffertext);
@@ -109,8 +157,10 @@ if (bus.is_connected()) {
                 engine.hide_auxiliary_text();
             }
         });
+        
 
         engine.buffertext = "";
+        engine.lookuptable = IBus.LookupTable.new(7,0,true,true);
         return engine;
     }
 

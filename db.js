@@ -39,7 +39,7 @@ DB.prototype = {
 	    this._init();
 	    //TODO: Change path
         this.connection = new Gda.Connection ({provider: Gda.Config.get_provider("SQLite"),
-                                               cnc_string:"DB_DIR=" + GLib.get_current_dir() + ";DB_NAME=Database.db3"});
+                                               cnc_string:"DB_DIR=" + eevars.get_pkgdatadir() + ";DB_NAME=Database.db3"});
         this.connection.open ();
         //Vowels
         this._loadOneTable('A', this.w_a);

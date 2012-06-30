@@ -10,7 +10,7 @@ IBus Engine: Sarim Khan <sarim2005@gmail.com>
 
 Avro Phonetic Library: Rifat Nabi @torifat
 
-Avro Dictionary Phonetic: Mehdi Hasan Khan @MehdiHK
+Avro Phonetic Dictionary Search Library: Mehdi Hasan Khan @MehdiHK
 
 ==================================================================================
 

@@ -22,11 +22,18 @@ How to install :
 
  1. Open terminal/package manager and install following packages:
 
+    For Ubuntu 12.04,
+    
 	`git`
 	`libibus-1.0-dev`
+	`automake`
+	`autoconf`
 	`gjs`
+	`gir1.2-gjsdbus-1.0`
+	`gir1.2-ibus-1.0`
 	
-    You'll need all related build tools like automake,autoconf etc...
+	
+    For other distros, You'll need all related build tools like automake,autoconf etc...
     and Latest ibus from git compiled with gobject-introspection support enabled.
 
  2. Now give the following commands step-by-step:

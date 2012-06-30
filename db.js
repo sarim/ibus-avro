@@ -39,7 +39,7 @@ DB.prototype = {
 	    this._init();
 	    //TODO: Change path
         this.connection = new Gda.Connection ({provider: Gda.Config.get_provider("SQLite"),
-                                               cnc_string:"DB_DIR=" + GLib.get_current_dir() + ";DB_NAME=Database.db3"});
+                                               cnc_string:"DB_DIR=" + eevars.get_pkgdatadir() + ";DB_NAME=Database.db3"});
         this.connection.open ();
         //Vowels
         this._loadOneTable('A', this.w_a);
@@ -103,9 +103,7 @@ DB.prototype = {
 	_loadOneTable: function (tableName, wArray) {
 	    if (this.connection){
 	        if (this.connection.is_opened){
-	            // TODO: Need to check. Gda.execute_select_command doesn't seem to work with gir1.2-gda-5* package in Ubuntu,
-	            // but gir1.2-gda-4.0 works fine
-	            var dm = Gda.execute_select_command (this.connection, "select * from " + tableName);
+	            var dm = this.connection.execute_select_command ("select * from " + tableName);
                 var iter = dm.create_iter();
 
                 while (iter.move_next ()) {

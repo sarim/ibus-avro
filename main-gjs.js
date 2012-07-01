@@ -92,8 +92,16 @@ if (bus.is_connected()) {
                     engine.lookuptable.append_candidate(text);
                     engine.update_lookup_table_fast(engine.lookuptable,true);
                     dictdb.suggest(engine.buffertext,engine);
+                    if (engine.buffertext.length <= 0) {
+                        engine.lookuptable.clear();
+                        engine.update_lookup_table_fast(engine.lookuptable,false);
+                        engine.hide_preedit_text();
+                        engine.hide_auxiliary_text();
+                        engine.hide_lookup_table();                   
+                        }
                     return true;
-                }
+                } 
+
                 
             } else if (keyval == IBus.Up || keyval == IBus.Down) {
                 if (engine.lookuptable.get_number_of_candidates() != 0){                    

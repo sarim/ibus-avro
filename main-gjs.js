@@ -21,14 +21,6 @@ var bus = new IBus.Bus();
 if (bus.is_connected()) {
 
     var id = 0;
-    
-    function filllookuptable(engine,suggestionlist) {
-        suggestionlist.forEach(function(word){
-            let uword = utfconv.utf8Decode(word)
-            let wtext = IBus.Text.new_from_string(uword);
-            engine.lookuptable.append_candidate(wtext);
-            });        
-    }
 
     function _create_engine_cb(factory, engine_name) {
 
@@ -65,9 +57,10 @@ if (bus.is_connected()) {
                 let entext = IBus.Text.new_from_string(engine.buffertext);
                 engine.update_auxiliary_text(entext, true);
                 engine.lookuptable.clear();
-                    let suggestionlist = dictdb.suggest(engine.buffertext);
-                    filllookuptable(engine,suggestionlist);
+                engine.lookuptable.append_candidate(text);
                 engine.update_lookup_table_fast(engine.lookuptable,true);
+                dictdb.suggest(engine.buffertext,engine);
+           
                 
                 return true;
             } else if (keyval == IBus.Return || keyval == IBus.space) {
@@ -85,13 +78,7 @@ if (bus.is_connected()) {
                     engine.commit_text(IBus.Text.new_from_string(" "));
                     return true;
                 }
-                /* i forgot what this commented block is here for !
-                else {
-                    // engine.forward_key_event(engine, 115, 31, state);
-                    engine.commit_text( IBus.Text.new_from_string("\n") );
-                    return true;
-                }
-                */
+
             } else if (keyval == IBus.BackSpace) {
                 if (engine.buffertext.length > 0) {
                     engine.buffertext = engine.buffertext.substr(0, engine.buffertext.length - 1);
@@ -102,9 +89,9 @@ if (bus.is_connected()) {
                     let entext = IBus.Text.new_from_string(engine.buffertext);
                     engine.update_auxiliary_text(entext, true);
                     engine.lookuptable.clear();
-                        let suggestionlist = dictdb.suggest(engine.buffertext);
-                        filllookuptable(engine,suggestionlist);
+                    engine.lookuptable.append_candidate(text);
                     engine.update_lookup_table_fast(engine.lookuptable,true);
+                    dictdb.suggest(engine.buffertext,engine);
                     return true;
                 }
                 

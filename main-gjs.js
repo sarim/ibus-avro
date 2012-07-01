@@ -8,7 +8,7 @@ const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
 const utfconv = imports.utf8;
 const eevars = imports.evars;
 const dictdb = imports.dictclient;
-
+const autocorrectdb = imports.autocorrect.db;
 //check if running from ibus
 exec_by_ibus = (ARGV[0] == '--ibus')
 
@@ -49,7 +49,13 @@ if (bus.is_connected()) {
             // process letter key events
             if (keyval >= 33 && keyval <= 126) {
                 engine.buffertext += IBus.keyval_to_unicode(keyval);
-                let bntext = Avroparser.parse(engine.buffertext);
+                
+                //checking if the word is in autocorrect db
+                let bntext;
+                if(autocorrectdb[engine.buffertext])
+                    bntext = Avroparser.parse(autocorrectdb[engine.buffertext]);              
+                else                 
+                    bntext = Avroparser.parse(engine.buffertext);
                 bntext = utfconv.utf8Decode(bntext);
                 let text = IBus.Text.new_from_string(bntext);
                 engine.update_preedit_text(text, bntext.length, true);
@@ -82,7 +88,12 @@ if (bus.is_connected()) {
             } else if (keyval == IBus.BackSpace) {
                 if (engine.buffertext.length > 0) {
                     engine.buffertext = engine.buffertext.substr(0, engine.buffertext.length - 1);
-                    let bntext = Avroparser.parse(engine.buffertext);
+                    //checking if the word is in autocorrect db
+                    let bntext;
+                    if(autocorrectdb[engine.buffertext])
+                        bntext = Avroparser.parse(autocorrectdb[engine.buffertext]);              
+                    else                 
+                        bntext = Avroparser.parse(engine.buffertext);
                     bntext = utfconv.utf8Decode(bntext);
                     let text = IBus.Text.new_from_string(bntext);
                     engine.update_preedit_text(text, bntext.length, true);

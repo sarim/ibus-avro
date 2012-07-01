@@ -26,9 +26,11 @@
 */
 
 
+// var start, end, time = new Date().getTime();
+// start = new Date().getTime();
+
 imports.searchPath.unshift('.');
-const eevars = imports.evars;
-const DbServer = imports.db;
+const db = imports.database;
 const RegexServer = imports.avroregexlib;
 const utfconv = imports.utf8;
 
@@ -132,7 +134,7 @@ DBSearch.prototype = {
         
         for(i in tableList) {
              var table = 'w_' + tableList[i];
-             retWords = retWords.concat(this._searchInArray(pattern, this._db[table]));
+             retWords = retWords.concat(this._searchInArray(pattern, db.tables[table]));
          }
         
         return retWords;
@@ -160,11 +162,9 @@ DBSearch.prototype = {
             print(words[w]);
         }
   	},
-
-
+  	
+  	
 	_init: function () {
-        this._db = new DbServer.DB();
-        this._db.loadDb ();
         this._regex = new RegexServer.AvroRegex();
   	}
 }
@@ -174,4 +174,14 @@ DBSearch.prototype = {
 /* Test code */
 /* --------- */
 // var __dbSearch = new DBSearch ();
-// __dbSearch._printWords('u');
+// end = new Date().getTime();
+// time = end - start;
+// print("Loading took: " + time);
+// 
+// start = new Date().getTime();
+// 
+// __dbSearch._printWords('onirban');
+// 
+// end = new Date().getTime();
+// time = end - start;
+// print("Searching took: " + time);

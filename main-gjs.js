@@ -81,8 +81,12 @@ if (bus.is_connected()) {
                 
                 //checking if the word is in autocorrect db
                 let bntext;
-                if(autocorrectdb[engine.buffertext])
-                    bntext = Avroparser.parse(autocorrectdb[engine.buffertext]);              
+                if(autocorrectdb[engine.buffertext]){
+                    if (autocorrectdb[engine.buffertext] == engine.buffertext)
+                        bntext = engine.buffertext;
+                    else
+                        bntext = Avroparser.parse(autocorrectdb[engine.buffertext]);  
+                }            
                 else                 
                     bntext = Avroparser.parse(engine.buffertext);
                 bntext = utfconv.utf8Decode(bntext);

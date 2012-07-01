@@ -39,7 +39,7 @@ install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-ban
 	${INSTALL} -m 644 database.js ${pkgdatadir}/database.js
 	${INSTALL} -m 644 dbsearch.js ${pkgdatadir}/dbsearch.js
 	${INSTALL} -m 644 avroregexlib.js ${pkgdatadir}/avroregexlib.js
-	${INSTALL} -m 644 Database.db3 ${pkgdatadir}/Database.db3
+	${INSTALL} -m 644 dictclient.js ${pkgdatadir}/dictclient.js
 	${INSTALL} -m 644 avro-bangla.png ${pkgdatadir}/avro-bangla.png
 	${INSTALL} -m 644 ibus-avro.xml ${pkgdatadir}/../ibus/component/ibus-avro.xml
 	

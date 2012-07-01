@@ -27,8 +27,7 @@
 
 
 imports.searchPath.unshift('.');
-const eevars = imports.evars;
-const DbServer = imports.db;
+const db = imports.database;
 const RegexServer = imports.avroregexlib;
 const utfconv = imports.utf8;
 
@@ -132,7 +131,7 @@ DBSearch.prototype = {
         
         for(i in tableList) {
              var table = 'w_' + tableList[i];
-             retWords = retWords.concat(this._searchInArray(pattern, this._db[table]));
+             retWords = retWords.concat(this._searchInArray(pattern, db.tables[table]));
          }
         
         return retWords;
@@ -160,11 +159,9 @@ DBSearch.prototype = {
             print(words[w]);
         }
   	},
-
-
+  	
+  	
 	_init: function () {
-        this._db = new DbServer.DB();
-        this._db.loadDb ();
         this._regex = new RegexServer.AvroRegex();
   	}
 }
@@ -174,4 +171,4 @@ DBSearch.prototype = {
 /* Test code */
 /* --------- */
 // var __dbSearch = new DBSearch ();
-// __dbSearch._printWords('u');
+// __dbSearch._printWords('onirban');

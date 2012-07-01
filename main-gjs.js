@@ -112,9 +112,11 @@ if (bus.is_connected()) {
                 if (engine.lookuptable.get_number_of_candidates() != 0){                    
                     if (keyval == IBus.Up) {
                     engine.lookuptable.cursor_up();
+                    engine.update_lookup_table_fast(engine.lookuptable,true);
                     }
                     else if (keyval == IBus.Down) {
                     engine.lookuptable.cursor_down();
+                    engine.update_lookup_table_fast(engine.lookuptable,true);
                     }
                 }
            

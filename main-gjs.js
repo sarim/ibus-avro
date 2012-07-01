@@ -1,5 +1,34 @@
 #!/usr/bin/env gjs
 
+/*
+    =============================================================================
+    *****************************************************************************
+    The contents of this file are subject to the Mozilla Public License
+    Version 1.1 (the "License"); you may not use this file except in
+    compliance with the License. You may obtain a copy of the License at
+    http://www.mozilla.org/MPL/
+
+    Software distributed under the License is distributed on an "AS IS"
+    basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+    License for the specific language governing rights and limitations
+    under the License.
+
+    The Original Code is ibus-avro
+
+    The Initial Developer of the Original Code is
+    Sarim Khan <sarim2005@gmail.com>
+
+    Copyright (C) Sarim Khan (http://www.sarimkhan.com). All Rights Reserved.
+
+
+    Contributor(s): ______________________________________.
+
+    *****************************************************************************
+    =============================================================================
+*/
+
+
+
 imports.searchPath.unshift('.');
 const IBus = imports.gi.IBus;
 const GLib = imports.gi.GLib;
@@ -8,7 +37,7 @@ const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
 const utfconv = imports.utf8;
 const eevars = imports.evars;
 const dictdb = imports.dictclient;
-
+const autocorrectdb = imports.autocorrect.db;
 //check if running from ibus
 exec_by_ibus = (ARGV[0] == '--ibus')
 
@@ -49,7 +78,17 @@ if (bus.is_connected()) {
             // process letter key events
             if (keyval >= 33 && keyval <= 126) {
                 engine.buffertext += IBus.keyval_to_unicode(keyval);
-                let bntext = Avroparser.parse(engine.buffertext);
+                
+                //checking if the word is in autocorrect db
+                let bntext;
+                if(autocorrectdb[engine.buffertext]){
+                    if (autocorrectdb[engine.buffertext] == engine.buffertext)
+                        bntext = engine.buffertext;
+                    else
+                        bntext = Avroparser.parse(autocorrectdb[engine.buffertext]);  
+                }            
+                else                 
+                    bntext = Avroparser.parse(engine.buffertext);
                 bntext = utfconv.utf8Decode(bntext);
                 let text = IBus.Text.new_from_string(bntext);
                 engine.update_preedit_text(text, bntext.length, true);
@@ -82,7 +121,12 @@ if (bus.is_connected()) {
             } else if (keyval == IBus.BackSpace) {
                 if (engine.buffertext.length > 0) {
                     engine.buffertext = engine.buffertext.substr(0, engine.buffertext.length - 1);
-                    let bntext = Avroparser.parse(engine.buffertext);
+                    //checking if the word is in autocorrect db
+                    let bntext;
+                    if(autocorrectdb[engine.buffertext])
+                        bntext = Avroparser.parse(autocorrectdb[engine.buffertext]);              
+                    else                 
+                        bntext = Avroparser.parse(engine.buffertext);
                     bntext = utfconv.utf8Decode(bntext);
                     let text = IBus.Text.new_from_string(bntext);
                     engine.update_preedit_text(text, bntext.length, true);
@@ -92,8 +136,16 @@ if (bus.is_connected()) {
                     engine.lookuptable.append_candidate(text);
                     engine.update_lookup_table_fast(engine.lookuptable,true);
                     dictdb.suggest(engine.buffertext,engine);
+                    if (engine.buffertext.length <= 0) {
+                        engine.lookuptable.clear();
+                        engine.update_lookup_table_fast(engine.lookuptable,false);
+                        engine.hide_preedit_text();
+                        engine.hide_auxiliary_text();
+                        engine.hide_lookup_table();                   
+                        }
                     return true;
-                }
+                } 
+
                 
             } else if (keyval == IBus.Up || keyval == IBus.Down) {
                 if (engine.lookuptable.get_number_of_candidates() != 0){                    

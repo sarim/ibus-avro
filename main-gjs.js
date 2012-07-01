@@ -199,3 +199,5 @@ if (bus.is_connected()) {
     }
     IBus.main();
 }
+else
+    print("Exiting because IBus Bus not found, maybe the daemon is not running ?");

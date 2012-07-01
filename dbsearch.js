@@ -26,9 +26,6 @@
 */
 
 
-// var start, end, time = new Date().getTime();
-// start = new Date().getTime();
-
 imports.searchPath.unshift('.');
 const db = imports.database;
 const RegexServer = imports.avroregexlib;
@@ -174,14 +171,4 @@ DBSearch.prototype = {
 /* Test code */
 /* --------- */
 // var __dbSearch = new DBSearch ();
-// end = new Date().getTime();
-// time = end - start;
-// print("Loading took: " + time);
-// 
-// start = new Date().getTime();
-// 
 // __dbSearch._printWords('onirban');
-// 
-// end = new Date().getTime();
-// time = end - start;
-// print("Searching took: " + time);

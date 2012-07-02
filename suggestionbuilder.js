@@ -25,6 +25,8 @@
     =============================================================================
 */
 
+const gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 
 imports.searchPath.unshift('.');
 const dictsearch = imports.dbsearch;
@@ -41,6 +43,8 @@ SuggestionBuilder.prototype = {
     
     _init: function(){
         this._dbSearch = new dictsearch.DBSearch ();
+        this._candidateSelections = {};
+        this._loadCandidateSelectionsFromFile();
     },
     
     
@@ -122,6 +126,21 @@ SuggestionBuilder.prototype = {
     },
     
     
+    _convertToUnicodeValue: function(input){
+        var output = '';
+
+        for (var i = 0; i < input.length; i++){
+            var charCode = input.charCodeAt(i);
+            if (charCode >= 255){
+                output += '\\u0' + charCode.toString(16);
+            } else {
+                output += input.charAt(i);
+            }
+        }
+        return output;
+    },
+    
+    
     _joinSuggestion: function(autoCorrect, dictSuggestion, phonetic, splitWord){
         var words = [];
         
@@ -148,14 +167,73 @@ SuggestionBuilder.prototype = {
     },
     
     
-    _getPreviousSelection: function (splitWord){
-        //TODO: Complete this dummy Function
+    _getPreviousSelection: function (splitWord, words){
+        if (this._candidateSelections[splitWord['middle']]){
+            var i = words.indexOf(this._candidateSelections[splitWord['middle']]);
+            if (i >= 0){
+                return i;
+            }
+        }
         return 0;
     },
     
     
-    saveCandidateSelection: function(word, candidate){
-        //TODO: Complete this dummy Function
+    _loadCandidateSelectionsFromFile: function(){
+        try {
+            var file = gio.File.new_for_path(GLib.get_home_dir() + "/.candidate-selections.json");
+        
+            if (file.query_exists (null)) {
+                var file_stream = file.read(null);
+                var data_stream = gio.DataInputStream.new(file_stream);
+                var json = '';
+                
+                json = data_stream.read_until("", null);
+                print(json);
+                this._candidateSelections = JSON.parse(json[0]);
+                
+            } else {
+                this._candidateSelections = {};
+            }
+        } catch (e){
+           this._candidateSelections = {};
+           this._logger(e, '_loadCandidateSelectionsFromFile Error');
+        }
+    },
+    
+    
+    _saveCandidateSelectionsToFile: function(){
+        try {
+            var file = gio.File.new_for_path ( GLib.get_home_dir() + "/.candidate-selections.json");
+                if (file.query_exists (null)) {
+                    file.delete (null);
+                }
+                // Create a new file with this name
+                var file_stream = file.create (gio.FileCreateFlags.NONE, null);
+
+                var json = JSON.stringify(this._candidateSelections);
+                json = this._convertToUnicodeValue(json);
+
+                // Write text data to file
+                var data_stream =  gio.DataOutputStream.new (file_stream);
+                data_stream.put_string (json, null);
+        } catch (e) {
+           this._logger(e, '_saveCandidateSelectionsToFile Error');
+       }
+    },
+    
+    
+    updateCandidateSelection: function(word, candidate){
+        //Seperate begining and trailing padding characters, punctuations etc. from whole word
+        var splitWord = this._separatePadding(word);
+        
+        this._candidateSelections[splitWord['middle']] = candidate;
+        
+        this._saveCandidateSelectionsToFile();
+    },
+    
+    
+    _logger: function (obj, msg){
+    	print ((msg || 'Log') + ': ' + JSON.stringify(obj, null, '\t'));
     },
     
     
@@ -175,21 +253,9 @@ SuggestionBuilder.prototype = {
         //Prepare suggestion object
         var suggestion = {};
         //Is there any previous custom selection of the user?
-        suggestion['prevSelection'] = this._getPreviousSelection(splitWord);
         suggestion['words'] = this._joinSuggestion(autoCorrect, dictSuggestion, phonetic, splitWord);
+        suggestion['prevSelection'] = this._getPreviousSelection(splitWord, suggestion['words']);
         
         return suggestion;
     }
 }
-
-var logger = function (obj, msg){
-	print ((msg || 'Log') + ': ' + JSON.stringify(obj, null, '\t'));
-}
-
-function test(word){
-    var suggestionBuilder = new SuggestionBuilder();
-    var suggestion = suggestionBuilder.suggest(word);
-    logger(suggestion);
-}
-
-//test('ki');

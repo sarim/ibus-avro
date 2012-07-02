@@ -208,8 +208,6 @@ if (bus.is_connected()) {
     }
     
     function commitCandidate(engine){
-        engine.hide_preedit_text();
-                
         if (engine.buffertext.length > 0){
             var commitText = IBus.Text.new_from_string(engine.currentSuggestions[engine.currentSelection]);
             engine.commit_text(commitText);
@@ -227,7 +225,7 @@ if (bus.is_connected()) {
         ++engine.currentSelection;
         preeditCandidate(engine);
         
-        suggestionBuilder.saveCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
+        suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
     }
     
     function decSelection(engine){
@@ -237,7 +235,7 @@ if (bus.is_connected()) {
         --engine.currentSelection;
         preeditCandidate(engine);
         
-        suggestionBuilder.saveCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
+        suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
     }
     
     /* =========================================================================== */
@@ -293,6 +291,9 @@ if (bus.is_connected()) {
         bus.register_component(component);
     }
     IBus.main();
+    
+    //Exiting, save candidate selections
+    suggestionBuilder._saveCandidateSelectionsToFile();
 }
 else
     print("Exiting because IBus Bus not found, maybe the daemon is not running ?");

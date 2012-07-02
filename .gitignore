@@ -8,4 +8,5 @@ config.log
 config.status
 configure
 Makefile.in
-
+install-sh
+missing

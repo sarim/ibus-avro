@@ -157,17 +157,20 @@ if (bus.is_connected()) {
                     engine.lookuptable.cursor_down();
                     engine.update_lookup_table_fast(engine.lookuptable,true);
                     }
+                    return true;
                 }
-           
+                
             } else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Control_L || keyval == IBus.Control_R || keyval == IBus.Insert || keyval == IBus.Delete || keyval == IBus.Home || keyval == IBus.Page_Up || keyval == IBus.Page_Down || keyval == IBus.End || keyval == IBus.Alt_L || keyval == IBus.Alt_R) {
-                let selectedindex = engine.lookuptable.get_cursor_pos();
-                let text = engine.lookuptable.get_candidate(selectedindex);
-                engine.commit_text(text);
-                engine.buffertext = "";
-                engine.lookuptable.clear();
-                engine.hide_preedit_text();
-                engine.hide_auxiliary_text();
-                engine.hide_lookup_table();
+                if (engine.buffertext.length > 0) {
+                    let selectedindex = engine.lookuptable.get_cursor_pos();
+                    let text = engine.lookuptable.get_candidate(selectedindex);
+                    engine.commit_text(text);
+                    engine.buffertext = "";
+                    engine.lookuptable.clear();
+                    engine.hide_preedit_text();
+                    engine.hide_auxiliary_text();
+                    engine.hide_lookup_table();
+                }
             }
             return false;
         });
@@ -198,10 +201,30 @@ if (bus.is_connected()) {
                 engine.hide_auxiliary_text();
             }
         });
+
+        engine.connect('focus-in', function () {      
+        var proplist = new IBus.PropList();
+        //var propp = IBus.Property.new("avroprop",IBus.PropType.MENU,IBus.Text.new_from_string("Avro radio"),eevars.get_pkgdatadir() + "/avro-bangla.png",IBus.Text.new_from_string("Atoolo"),true,true,1,null);
         
+        var propp = new IBus.Property({
+            key:'setup',
+            label:IBus.Text.new_from_string("Preferences - Avro"),
+            icon:'gtk-preferences',
+            tooltip:IBus.Text.new_from_string("Configure Avro")
+        });
+        
+        proplist.append(propp);
+        
+        engine.register_properties(proplist);
+        //print('prop update');
+        });
+
 
         engine.buffertext = "";
         engine.lookuptable = IBus.LookupTable.new(7,0,true,true);
+        
+        
+        //engine.update_property(propp);
         return engine;
     }
 

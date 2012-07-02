@@ -206,18 +206,33 @@ if (bus.is_connected()) {
     }
 
     var factory = IBus.Factory.new(bus.get_connection());
-    //factory.add_engine("avro-phonetic",GObject.type_from_name('IBusEngine'));
     factory.connect('create-engine', _create_engine_cb);
-    var component = new IBus.Component({
-        name: "org.freedesktop.IBus.Avro",
-        description: "Avro phonetic",
-        version: "0.9",
-        license: "MPL",
-        author: "Sarim Khan <sarim2005@gmail.com>",
-        homepage: "https://github.com/sarim/ibus-avro",
-        exec: eevars.get_libexecdir() + "/main-gjs.js",
-        textdomain: "avro-phonetic"
-    });
+
+    // property 'exec' is changed to 'command-line' in recent ibus,the try-catch block is here for supporting both.
+    var component = null;   
+    try {      
+        component = new IBus.Component({
+            name: "org.freedesktop.IBus.Avro",
+            description: "Avro phonetic",
+            version: "0.9",
+            license: "MPL",
+            author: "Sarim Khan <sarim2005@gmail.com>",
+            homepage: "https://github.com/sarim/ibus-avro",
+            command_line: eevars.get_libexecdir() + "/main-gjs.js",
+            textdomain: "avro-phonetic"
+        });
+    } catch (error) {
+        component = new IBus.Component({
+            name: "org.freedesktop.IBus.Avro",
+            description: "Avro phonetic",
+            version: "0.9",
+            license: "MPL",
+            author: "Sarim Khan <sarim2005@gmail.com>",
+            homepage: "https://github.com/sarim/ibus-avro",
+            exec: eevars.get_libexecdir() + "/main-gjs.js",
+            textdomain: "avro-phonetic"
+        });
+    }
 
     var avroenginedesc = new IBus.EngineDesc({
         name: "avro-phonetic",

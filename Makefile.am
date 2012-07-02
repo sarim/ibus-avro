@@ -40,8 +40,8 @@ install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-ban
 	${INSTALL} -m 644 dbsearch.js ${pkgdatadir}/dbsearch.js
 	${INSTALL} -m 644 avroregexlib.js ${pkgdatadir}/avroregexlib.js
 	${INSTALL} -m 644 suggestionbuilder.js ${pkgdatadir}/suggestionbuilder.js
+	${INSTALL} -m 644 levenshtein.js ${pkgdatadir}/levenshtein.js
 	${INSTALL} -m 666 autocorrect.js ${pkgdatadir}/autocorrect.js
-	${INSTALL} -m 666 levenshtein.js ${pkgdatadir}/levenshtein.js
 	${INSTALL} -m 644 avro-bangla.png ${pkgdatadir}/avro-bangla.png
 	${INSTALL} -m 644 ibus-avro.xml ${pkgdatadir}/../ibus/component/ibus-avro.xml
 	

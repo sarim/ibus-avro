@@ -134,11 +134,27 @@ if (bus.is_connected()) {
                 commitCandidate(engine);
             }
         });
-        
+
+        engine.connect('focus-in', function () {    
+            var propp = new IBus.Property({
+                key:'setup',
+                label:IBus.Text.new_from_string("Preferences - Avro"),
+                icon:'gtk-preferences',
+                tooltip:IBus.Text.new_from_string("Configure Avro")
+            });
+
+            proplist.append(propp);
+
+            engine.register_properties(proplist);
+            //print('prop update');
+        });
+              
+        var proplist = new IBus.PropList();
+        //var propp = IBus.Property.new("avroprop",IBus.PropType.MENU,IBus.Text.new_from_string("Avro radio"),eevars.get_pkgdatadir() + "/avro-bangla.png",IBus.Text.new_from_string("Atoolo"),true,true,1,null);
         engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);
         resetAll(engine);
         return engine;
-    }
+    }        
 
     /* =========================================================================== */
     /* =========================================================================== */
@@ -231,18 +247,33 @@ if (bus.is_connected()) {
     /* =========================================================================== */
 
     var factory = IBus.Factory.new(bus.get_connection());
-    //factory.add_engine("avro-phonetic",GObject.type_from_name('IBusEngine'));
     factory.connect('create-engine', _create_engine_cb);
-    var component = new IBus.Component({
-        name: "org.freedesktop.IBus.Avro",
-        description: "Avro phonetic",
-        version: "0.9",
-        license: "MPL 1.1",
-        author: "Sarim Khan <sarim2005@gmail.com>",
-        homepage: "https://github.com/sarim/ibus-avro",
-        exec: eevars.get_libexecdir() + "/main-gjs.js",
-        textdomain: "avro-phonetic"
-    });
+
+    // property 'exec' is changed to 'command-line' in recent ibus,the try-catch block is here for supporting both.
+    var component = null;   
+    try {      
+        component = new IBus.Component({
+            name: "org.freedesktop.IBus.Avro",
+            description: "Avro phonetic",
+            version: "0.9",
+            license: "MPL 1.1",
+            author: "Sarim Khan <sarim2005@gmail.com>",
+            homepage: "https://github.com/sarim/ibus-avro",
+            command_line: eevars.get_libexecdir() + "/main-gjs.js",
+            textdomain: "avro-phonetic"
+        });
+    } catch (error) {
+        component = new IBus.Component({
+            name: "org.freedesktop.IBus.Avro",
+            description: "Avro phonetic",
+            version: "0.9",
+            license: "MPL 1.1",
+            author: "Sarim Khan <sarim2005@gmail.com>",
+            homepage: "https://github.com/sarim/ibus-avro",
+            exec: eevars.get_libexecdir() + "/main-gjs.js",
+            textdomain: "avro-phonetic"
+        });
+    }
 
     var avroenginedesc = new IBus.EngineDesc({
         name: "avro-phonetic",

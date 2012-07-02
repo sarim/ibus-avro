@@ -168,26 +168,23 @@ function main () {
 
         var file = gio.File.new_for_path ("database.js");
 
-        {
-            if (file.query_exists (null)) {
-                file.delete (null);
-            }
-            
-            // Create a new file with this name
-            var file_stream = file.create (gio.FileCreateFlags.NONE, null);
-            
-            var __db = new DB ();
-            __db.loadDb();
-            
-            var json = JSON.stringify(database);
-            json = "var tables = " + _convertToUnicodeValue(json) + ";";
-            
-
-            // Write text data to file
-            var data_stream =  gio.DataOutputStream.new (file_stream);
-            data_stream.put_string (json, null);
+        if (file.query_exists (null)) {
+            file.delete (null);
         }
+        
+        // Create a new file with this name
+        var file_stream = file.create (gio.FileCreateFlags.NONE, null);
+        
+        var __db = new DB ();
+        __db.loadDb();
+        
+        var json = JSON.stringify(database);
+        json = "var tables = " + _convertToUnicodeValue(json) + ";";
+        
 
+        // Write text data to file
+        var data_stream =  gio.DataOutputStream.new (file_stream);
+        data_stream.put_string (json, null);
 
     } catch (e) {
         print ("Error: " +  e.message);

@@ -31,6 +31,7 @@ const dictsearch = imports.dbsearch;
 const autocorrectdb = imports.autocorrect.db;
 const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
 const utfconv = imports.utf8;
+const EditDistance = imports.levenshtein;
 
 function SuggestionBuilder(){
     this._init();
@@ -99,7 +100,18 @@ SuggestionBuilder.prototype = {
         //Copy array
         var sortedSuggestion = dictSuggestion.slice(0);
         
-        //TODO: Sort sortedSuggestion here
+        sortedSuggestion.sort(function(a, b){
+            var da = EditDistance.levenshtein(phonetic, a);
+            var db = EditDistance.levenshtein(phonetic, b);
+
+            if (da < db){
+                 return -1;  
+            } else if (da > db){
+                 return 1;  
+            } else{
+                return 0;
+            }
+        });
         
         return sortedSuggestion;
     },
@@ -181,4 +193,4 @@ function test(word){
     logger(suggestion);
 }
 
-//test('amra');
+//test('ki');

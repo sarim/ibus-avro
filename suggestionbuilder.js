@@ -57,8 +57,7 @@ SuggestionBuilder.prototype = {
     
     
     _correctCase:function (banglish){
-        //TODO: Correct case here
-        return banglish;
+        return Avroparser.fixString(banglish);
     },
     
     

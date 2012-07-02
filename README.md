@@ -8,7 +8,9 @@ Now in early stage of development, but its pretty usable.
 1. Open terminal/package manager and install following packages:
  
 		git 
+		libibus-1.0-0
 		libibus-1.0-dev
+		ibus
 		automake 
 		autoconf
 		gjs
@@ -17,10 +19,10 @@ Now in early stage of development, but its pretty usable.
 
     __For Ubuntu 12.04__
     
-    	sudo apt-get install git libibus-1.0-dev automake autoconf gjs gir1.2-gjsdbus-1.0 gir1.2-ibus-1.0
+    	sudo apt-get install git ibus libibus-1.0-dev automake autoconf gjs gir1.2-gjsdbus-1.0 gir1.2-ibus-1.0
 	
 	
-    __For other linux distributions (Gnome 3 only)__
+    __For other linux distributions__
     
     You'll need all related build tools like `automake`, `autoconf` etc...
     and Latest __IBus__ from _git_ compiled with _gobject-introspection_ support enabled.

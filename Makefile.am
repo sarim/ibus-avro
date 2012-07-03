@@ -37,6 +37,7 @@ install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-ban
 	${INSTALL} -m 644 avrolib.js ${pkgdatadir}/avrolib.js
 	${INSTALL} -m 644 utf8.js ${pkgdatadir}/utf8.js
 	${INSTALL} -m 644 database.js ${pkgdatadir}/database.js
+	${INSTALL} -m 644 suffixdict.js ${pkgdatadir}/suffixdict.js
 	${INSTALL} -m 644 dbsearch.js ${pkgdatadir}/dbsearch.js
 	${INSTALL} -m 644 avroregexlib.js ${pkgdatadir}/avroregexlib.js
 	${INSTALL} -m 644 suggestionbuilder.js ${pkgdatadir}/suggestionbuilder.js

@@ -21,7 +21,7 @@
     Copyright (C) Sarim Khan (http://www.sarimkhan.com). All Rights Reserved.
 
 
-    Contributor(s): ______________________________________.
+    Contributor(s): Mehdi Hasan Khan <mhasan@omicronlab.com>
 
     *****************************************************************************
     =============================================================================
@@ -29,15 +29,12 @@
 
 
 
-imports.searchPath.unshift('.');
+
 const IBus = imports.gi.IBus;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
-const utfconv = imports.utf8;
+imports.searchPath.unshift('.');
 const eevars = imports.evars;
-const dictdb = imports.dictclient;
-const autocorrectdb = imports.autocorrect.db;
+const suggestion = imports.suggestionbuilder;
+
 //check if running from ibus
 exec_by_ibus = (ARGV[0] == '--ibus')
 
@@ -48,7 +45,13 @@ IBus.init();
 var bus = new IBus.Bus();
 
 if (bus.is_connected()) {
-
+    
+    /* =========================================================================== */
+    /* =========================================================================== */
+    /*                           IBus Engine                                       */
+    /* =========================================================================== */
+    /* =========================================================================== */
+    
     var id = 0;
 
     function _create_engine_cb(factory, engine_name) {
@@ -65,7 +68,7 @@ if (bus.is_connected()) {
             //print keypress infos, helpful for debugging
             print(keyval + " " + keycode + " " + state);
 
-            // ignore release event
+            //ignore release event
             if (!(state == 0 || state == 1 || state == 16 || state == 17)) {
                 return false;
             }
@@ -77,156 +80,169 @@ if (bus.is_connected()) {
 
             // process letter key events
             if (keyval >= 33 && keyval <= 126) {
+                
                 engine.buffertext += IBus.keyval_to_unicode(keyval);
-                
-                //checking if the word is in autocorrect db
-                let bntext;
-                if(autocorrectdb[engine.buffertext]){
-                    if (autocorrectdb[engine.buffertext] == engine.buffertext)
-                        bntext = engine.buffertext;
-                    else
-                        bntext = Avroparser.parse(autocorrectdb[engine.buffertext]);  
-                }            
-                else                 
-                    bntext = Avroparser.parse(engine.buffertext);
-                bntext = utfconv.utf8Decode(bntext);
-                let text = IBus.Text.new_from_string(bntext);
-                engine.update_preedit_text(text, bntext.length, true);
-
-                let entext = IBus.Text.new_from_string(engine.buffertext);
-                engine.update_auxiliary_text(entext, true);
-                engine.lookuptable.clear();
-                engine.lookuptable.append_candidate(text);
-                engine.update_lookup_table_fast(engine.lookuptable,true);
-                dictdb.suggest(engine.buffertext,engine);
-           
-                
+                updateCurrentSuggestions(engine);
                 return true;
-            } else if (keyval == IBus.Return || keyval == IBus.space) {
+                
+            } else if (keyval == IBus.Return || keyval == IBus.space || keyval == IBus.Tab) {
 
-                let selectedindex = engine.lookuptable.get_cursor_pos();
-                let text = engine.lookuptable.get_candidate(selectedindex);
-                engine.commit_text(text);
-                engine.buffertext = "";
-                engine.lookuptable.clear();
-                engine.hide_preedit_text();
-                engine.hide_auxiliary_text();
-                engine.hide_lookup_table();
-
-                if (keyval == IBus.space) {
-                    engine.commit_text(IBus.Text.new_from_string(" "));
-                    return true;
-                }
+                commitCandidate(engine);
 
             } else if (keyval == IBus.BackSpace) {
                 if (engine.buffertext.length > 0) {
                     engine.buffertext = engine.buffertext.substr(0, engine.buffertext.length - 1);
-                    //checking if the word is in autocorrect db
-                    let bntext;
-                    if(autocorrectdb[engine.buffertext])
-                        bntext = Avroparser.parse(autocorrectdb[engine.buffertext]);              
-                    else                 
-                        bntext = Avroparser.parse(engine.buffertext);
-                    bntext = utfconv.utf8Decode(bntext);
-                    let text = IBus.Text.new_from_string(bntext);
-                    engine.update_preedit_text(text, bntext.length, true);
-                    let entext = IBus.Text.new_from_string(engine.buffertext);
-                    engine.update_auxiliary_text(entext, true);
-                    engine.lookuptable.clear();
-                    engine.lookuptable.append_candidate(text);
-                    engine.update_lookup_table_fast(engine.lookuptable,true);
-                    dictdb.suggest(engine.buffertext,engine);
+                    updateCurrentSuggestions(engine);
+                    
                     if (engine.buffertext.length <= 0) {
-                        engine.lookuptable.clear();
-                        engine.update_lookup_table_fast(engine.lookuptable,false);
-                        engine.hide_preedit_text();
-                        engine.hide_auxiliary_text();
-                        engine.hide_lookup_table();                   
-                        }
+                        resetAll(engine);                  
+                    }
                     return true;
                 } 
-
                 
             } else if (keyval == IBus.Up || keyval == IBus.Down) {
-                if (engine.lookuptable.get_number_of_candidates() != 0){                    
+                if (engine.currentSuggestions.length > 1){                    
                     if (keyval == IBus.Up) {
-                    engine.lookuptable.cursor_up();
-                    engine.update_lookup_table_fast(engine.lookuptable,true);
+                        decSelection(engine);
                     }
                     else if (keyval == IBus.Down) {
-                    engine.lookuptable.cursor_down();
-                    engine.update_lookup_table_fast(engine.lookuptable,true);
+                        incSelection(engine);
                     }
+                    
                     return true;
+                } else {
+                    commitCandidate(engine);
                 }
-                
-            } else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Control_L || keyval == IBus.Control_R || keyval == IBus.Insert || keyval == IBus.Delete || keyval == IBus.Home || keyval == IBus.Page_Up || keyval == IBus.Page_Down || keyval == IBus.End || keyval == IBus.Alt_L || keyval == IBus.Alt_R) {
-                if (engine.buffertext.length > 0) {
-                    let selectedindex = engine.lookuptable.get_cursor_pos();
-                    let text = engine.lookuptable.get_candidate(selectedindex);
-                    engine.commit_text(text);
-                    engine.buffertext = "";
-                    engine.lookuptable.clear();
-                    engine.hide_preedit_text();
-                    engine.hide_auxiliary_text();
-                    engine.hide_lookup_table();
-                }
+           
+            } else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Control_L || keyval == IBus.Control_R || keyval == IBus.Insert || keyval == IBus.Delete || keyval == IBus.Home || keyval == IBus.Page_Up || keyval == IBus.Page_Down || keyval == IBus.End || keyval == IBus.Alt_L || keyval == IBus.Alt_R || keyval == IBus.Super_L || keyval == IBus.Super_R) {
+                commitCandidate(engine);
             }
             return false;
         });
 
         engine.connect('candidate-clicked', function (engine,index,button,state) {
             if (engine.buffertext.length > 0) {
-                
+                engine.currentSelection = index;
+                preeditCandidate(engine);
                 print("candidate clicked: " + index + " " + button + " " + state);
-                let text = engine.lookuptable.get_candidate(index);
-                engine.commit_text(text);
-                engine.buffertext = "";
-                engine.lookuptable.clear();
-                engine.hide_preedit_text();
-                engine.hide_auxiliary_text();
-                engine.hide_lookup_table();
             }
             
         });
         
         engine.connect('focus-out', function () {
             if (engine.buffertext.length > 0) {
-                let bntext = Avroparser.parse(engine.buffertext);
-                bntext = utfconv.utf8Decode(bntext);
-                let text = IBus.Text.new_from_string(bntext);
-                engine.commit_text(text);
-                engine.buffertext = "";
-                engine.hide_preedit_text();
-                engine.hide_auxiliary_text();
+                commitCandidate(engine);
             }
         });
 
-        engine.connect('focus-in', function () {      
+        engine.connect('focus-in', function () {    
+            var propp = new IBus.Property({
+                key:'setup',
+                label:IBus.Text.new_from_string("Preferences - Avro"),
+                icon:'gtk-preferences',
+                tooltip:IBus.Text.new_from_string("Configure Avro")
+            });
+
+            proplist.append(propp);
+
+            engine.register_properties(proplist);
+            //print('prop update');
+        });
+              
         var proplist = new IBus.PropList();
         //var propp = IBus.Property.new("avroprop",IBus.PropType.MENU,IBus.Text.new_from_string("Avro radio"),eevars.get_pkgdatadir() + "/avro-bangla.png",IBus.Text.new_from_string("Atoolo"),true,true,1,null);
-        
-        var propp = new IBus.Property({
-            key:'setup',
-            label:IBus.Text.new_from_string("Preferences - Avro"),
-            icon:'gtk-preferences',
-            tooltip:IBus.Text.new_from_string("Configure Avro")
-        });
-        
-        proplist.append(propp);
-        
-        engine.register_properties(proplist);
-        //print('prop update');
-        });
-
-
-        engine.buffertext = "";
-        engine.lookuptable = IBus.LookupTable.new(7,0,true,true);
-        
-        
-        //engine.update_property(propp);
+        engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);
+        resetAll(engine);
         return engine;
+    }        
+
+    /* =========================================================================== */
+    /* =========================================================================== */
+    /*                  Engine Utility Functions                                   */
+    /* =========================================================================== */
+    /* =========================================================================== */
+    
+    var suggestionBuilder = new suggestion.SuggestionBuilder();
+    
+    function resetAll(engine){
+        engine.currentSuggestions = [];
+        engine.currentSelection = 0;
+        
+        engine.buffertext = "";
+        engine.lookuptable.clear();
+        engine.hide_preedit_text();
+        engine.hide_auxiliary_text();
+        engine.hide_lookup_table();
     }
+    
+    
+    function updateCurrentSuggestions(engine){
+        var suggestion = suggestionBuilder.suggest(engine.buffertext);
+        engine.currentSuggestions = suggestion['words'].slice(0);
+        engine.currentSelection = suggestion['prevSelection'];
+        
+        fillLookupTable (engine);
+    }
+    
+    
+    function fillLookupTable (engine){
+        var auxiliaryText = IBus.Text.new_from_string(engine.buffertext);
+        engine.update_auxiliary_text(auxiliaryText, true);
+        engine.lookuptable.clear();
+        
+        engine.currentSuggestions.forEach(function(word){
+            let wtext = IBus.Text.new_from_string(word);
+            engine.lookuptable.append_candidate(wtext);
+        });
+        
+        preeditCandidate(engine);
+    }
+    
+    
+    function preeditCandidate(engine){
+        engine.lookuptable.set_cursor_pos(engine.currentSelection);
+        engine.update_lookup_table_fast(engine.lookuptable,true);
+        
+        var preeditText = IBus.Text.new_from_string(engine.currentSuggestions[engine.currentSelection]);
+        engine.update_preedit_text(preeditText, engine.currentSuggestions[engine.currentSelection].length, true);
+    }
+    
+    function commitCandidate(engine){
+        if (engine.buffertext.length > 0){
+            var commitText = IBus.Text.new_from_string(engine.currentSuggestions[engine.currentSelection]);
+            engine.commit_text(commitText);
+        }
+        
+        resetAll(engine);
+    }
+    
+    function incSelection(engine){
+        var lastIndex = engine.currentSuggestions.length - 1;
+        
+        if ((engine.currentSelection + 1) > lastIndex){
+            engine.currentSelection = -1;
+        } 
+        ++engine.currentSelection;
+        preeditCandidate(engine);
+        
+        suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
+    }
+    
+    function decSelection(engine){
+        if ((engine.currentSelection - 1) < 0){
+            engine.currentSelection = engine.currentSuggestions.length;
+        }
+        --engine.currentSelection;
+        preeditCandidate(engine);
+        
+        suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
+    }
+    
+    /* =========================================================================== */
+    /* =========================================================================== */
+    /*                           IBus Factory                                      */
+    /* =========================================================================== */
+    /* =========================================================================== */
 
     var factory = IBus.Factory.new(bus.get_connection());
     factory.connect('create-engine', _create_engine_cb);
@@ -238,7 +254,7 @@ if (bus.is_connected()) {
             name: "org.freedesktop.IBus.Avro",
             description: "Avro phonetic",
             version: "0.9",
-            license: "MPL",
+            license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
             homepage: "https://github.com/sarim/ibus-avro",
             command_line: eevars.get_libexecdir() + "/main-gjs.js",
@@ -249,7 +265,7 @@ if (bus.is_connected()) {
             name: "org.freedesktop.IBus.Avro",
             description: "Avro phonetic",
             version: "0.9",
-            license: "MPL",
+            license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
             homepage: "https://github.com/sarim/ibus-avro",
             exec: eevars.get_libexecdir() + "/main-gjs.js",
@@ -262,7 +278,7 @@ if (bus.is_connected()) {
         longname: "avro phonetic",
         description: "Avro Phonetic Engine",
         language: "bn",
-        license: "MPL",
+        license: "MPL 1.1",
         author: "Sarim Khan <sarim2005@gmail.com>",
         icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
         layout: "bn"
@@ -275,6 +291,9 @@ if (bus.is_connected()) {
         bus.register_component(component);
     }
     IBus.main();
+    
+    //Exiting, save candidate selections
+    suggestionBuilder._saveCandidateSelectionsToFile();
 }
 else
     print("Exiting because IBus Bus not found, maybe the daemon is not running ?");

@@ -1,5 +1,32 @@
 #!/usr/bin/env gjs
 
+/*
+    =============================================================================
+    *****************************************************************************
+    The contents of this file are subject to the Mozilla Public License
+    Version 1.1 (the "License"); you may not use this file except in
+    compliance with the License. You may obtain a copy of the License at
+    http://www.mozilla.org/MPL/
+
+    Software distributed under the License is distributed on an "AS IS"
+    basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+    License for the specific language governing rights and limitations
+    under the License.
+
+    The Original Code is jsAvroPhonetic
+
+    The Initial Developer of the Original Code is
+    Mehdi Hasan Khan <mhasan@omicronlab.com>
+
+    Copyright (C) OmicronLab (http://www.omicronlab.com). All Rights Reserved.
+
+
+    Contributor(s): ______________________________________.
+
+    *****************************************************************************
+    =============================================================================
+*/
+
 const gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gda = imports.gi.Gda;
@@ -104,13 +131,6 @@ DB.prototype = {
 	        }
 	    }
     },
-    
-    
-    _printArray: function(wArray){
-        for (w in wArray){
-            print(wArray[w]);
-        }
-    },
 
 
 	_init: function () {
@@ -186,7 +206,6 @@ function _convertToUnicodeValue(input){
 
 function saveSuffix () {
     try {
-
         var file = gio.File.new_for_path ("suffixdict.js");
 
         if (file.query_exists (null)) {
@@ -196,13 +215,9 @@ function saveSuffix () {
         // Create a new file with this name
         var file_stream = file.create (gio.FileCreateFlags.NONE, null);
         
-        var __db = new DB ();
-        __db.loadDb();
-        
         var json = JSON.stringify(suffixDict);
         json = "var db = " + _convertToUnicodeValue(json) + ";";
         
-
         // Write text data to file
         var data_stream =  gio.DataOutputStream.new (file_stream);
         data_stream.put_string (json, null);
@@ -215,7 +230,6 @@ function saveSuffix () {
 
 function saveData () {
     try {
-
         var file = gio.File.new_for_path ("database.js");
 
         if (file.query_exists (null)) {
@@ -225,13 +239,9 @@ function saveData () {
         // Create a new file with this name
         var file_stream = file.create (gio.FileCreateFlags.NONE, null);
         
-        var __db = new DB ();
-        __db.loadDb();
-        
         var json = JSON.stringify(database);
         json = "var tables = " + _convertToUnicodeValue(json) + ";";
         
-
         // Write text data to file
         var data_stream =  gio.DataOutputStream.new (file_stream);
         data_stream.put_string (json, null);
@@ -241,5 +251,7 @@ function saveData () {
     }
 }
 
+var __db = new DB ();
+__db.loadDb();
 saveData();
 saveSuffix();

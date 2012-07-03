@@ -53,12 +53,12 @@ SuggestionBuilder.prototype = {
     _getDictionarySuggestion: function(splitWord){
         var words = [];
         
-        this._logger(this._phoneticCache[splitWord['middle'].toLowerCase()]);
+        var key = splitWord['middle'].toLowerCase();
         
-        if (this._phoneticCache[splitWord['middle'].toLowerCase()]){
-            words = this._phoneticCache[splitWord['middle'].toLowerCase()].slice(0);
+        if (this._phoneticCache[key]){
+            words = this._phoneticCache[key].slice(0);
         } else {
-            words = this._dbSearch.search(splitWord['middle']);
+            words = this._dbSearch.search(key);
         }
         return words;
     },

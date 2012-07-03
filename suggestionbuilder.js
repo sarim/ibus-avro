@@ -75,21 +75,24 @@ SuggestionBuilder.prototype = {
     
     
     _getAutocorrect: function(word, splitWord){
-        var corrected = '';
+        var corrected = {};
         
         //Search for whole match
         if(autocorrectdb[word]){
             // [smiley rule]
             if (autocorrectdb[word] == word){
-                corrected = word;
+                corrected['corrected'] = word;
+                corrected['exact'] = true;
             } else {
-                corrected = this._getClassicPhonetic(autocorrectdb[word]);
+                corrected['corrected'] = this._getClassicPhonetic(autocorrectdb[word]);
+                corrected['exact'] = false;
             }
         } else {
             //Whole word is not present, search without padding
             var correctedMiddle = this._correctCase(splitWord['middle']);
-             if(autocorrectdb[correctedMiddle]){
-                corrected = this._getClassicPhonetic(autocorrectdb[correctedMiddle]);
+            if(autocorrectdb[correctedMiddle]){
+                corrected['corrected'] = this._getClassicPhonetic(autocorrectdb[correctedMiddle]);
+                corrected['exact'] = false;
             }
         }
         
@@ -176,7 +179,10 @@ SuggestionBuilder.prototype = {
         var word = splitWord['middle'].toLowerCase();
         var len = word.length;
         
-        var rList = this._phoneticCache[word].slice(0);
+        var rList = [];
+        if (this._phoneticCache[word]){
+           rList = this._phoneticCache[word].slice(0);
+        }
         
         if (len >= 2){
             for (var j = 1; j <= len; j++){
@@ -186,28 +192,25 @@ SuggestionBuilder.prototype = {
                 if (suffix){
                     var key = word.substr(0, word.length - testSuffix.length); 
                     if (this._phoneticCache[key]){
-                        if(this._phoneticCache[key].length > 0){
-                            for (var k = 0; k < this._phoneticCache[key].length; k++){
-                                var cacheItem = this._phoneticCache[key][k];
-                                var cacheRightChar = cacheItem.substr(-1, 1);
-                                var suffixLeftChar = cacheItem.substr(0, suffix);
-                                if (this._isVowel(cacheRightChar) && this._isKar(suffixLeftChar)){
-                                    tempList.push(cacheItem + "\u09df" + suffix); // \u09df = B_Y
+                        for (var k = 0; k < this._phoneticCache[key].length; k++){
+                            var cacheItem = this._phoneticCache[key][k];
+                            var cacheRightChar = cacheItem.substr(-1, 1);
+                            var suffixLeftChar = cacheItem.substr(0, suffix);
+                            if (this._isVowel(cacheRightChar) && this._isKar(suffixLeftChar)){
+                                tempList.push(cacheItem + "\u09df" + suffix); // \u09df = B_Y
+                            } else {
+                                if (cacheRightChar == "\u09ce"){ // \u09ce = b_Khandatta
+                                    tempList.push(cacheItem.substr(0,cacheItem.length - 1) + "\u09a4" + suffix); // \u09a4 = b_T
+                                } else if (cacheRightChar == "\u0982"){ // \u0982 = b_Anushar
+                                    tempList.push(cacheItem.substr(0,cacheItem.length - 1) + "\u0999" + suffix); // \u09a4 = b_NGA
                                 } else {
-                                    if (cacheRightChar == "\u09ce"){ // \u09ce = b_Khandatta
-                                        tempList.push(cacheItem.substr(0,cacheItem.length - 1) + "\u09a4" + suffix); // \u09a4 = b_T
-                                    } else if (cacheRightChar == "\u0982"){ // \u0982 = b_Anushar
-                                        tempList.push(cacheItem.substr(0,cacheItem.length - 1) + "\u0999" + suffix); // \u09a4 = b_NGA
-                                    } else {
-                                        tempList.push(cacheItem + suffix);
-                                    }
+                                    tempList.push(cacheItem + suffix);
                                 }
                             }
-                            
-                            
-                            for (i in tempList){
-                                rList.push(tempList[i]);
-                            }
+                        }
+                        
+                        for (i in tempList){
+                            rList.push(tempList[i]);
                         }
                     }
                 }
@@ -222,8 +225,8 @@ SuggestionBuilder.prototype = {
         var words = [];
         
         //1st Item: Autocorrect
-        if (autoCorrect.length > 0){
-            words.push(autoCorrect);
+        if (autoCorrect['corrected']){
+            words.push(autoCorrect['corrected']);
         }
         
         //2nd Item: Classic Avro Phonetic
@@ -233,24 +236,32 @@ SuggestionBuilder.prototype = {
         
         //Update Phonetic Cache
         if(!this._phoneticCache[splitWord['middle'].toLowerCase()]){
-            this._phoneticCache[splitWord['middle'].toLowerCase()] = dictSuggestion.slice(0);
+            if (dictSuggestion.length > 0){
+                this._phoneticCache[splitWord['middle'].toLowerCase()] = dictSuggestion.slice(0);
+            }
         }
         //Add Suffix
         var dictSuggestionWithSuffix = this._addSuffix(splitWord);
-        
+
         var sortedWords = this._sortByPhoneticRelevance(phonetic, dictSuggestionWithSuffix);
         for (i in sortedWords){
             this._addToArray(words, sortedWords[i]);
-        }
+        }   
         
         var suggestion = {};
         
         //Is there any previous custom selection of the user?
         suggestion['prevSelection'] = this._getPreviousSelection(splitWord, words);
         
-        //Add padding to all
+        //Add padding to all, except exact autocorrect
         for (i in words){
-            words[i] = splitWord['begin'] + words[i] + splitWord['end'];
+            if (autoCorrect['exact']){
+                if (autoCorrect['corrected'] != words[i]){
+                    words[i] = splitWord['begin'] + words[i] + splitWord['end'];
+                }
+            } else {
+                words[i] = splitWord['begin'] + words[i] + splitWord['end'];   
+            }
         }
         
         suggestion['words'] = words;
@@ -280,7 +291,7 @@ SuggestionBuilder.prototype = {
                 var json = '';
                 
                 json = data_stream.read_until("", null);
-                print(json);
+                //print(json);
                 this._candidateSelections = JSON.parse(json[0]);
                 
             } else {

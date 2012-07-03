@@ -2,11 +2,11 @@
 <!-- filename: enchant.xml -->
 <component>
 	<name>org.freedesktop.IBus.Avro</name>
-	<description>Avro phonetic</description>
+	<description>Avro Phonetic</description>
 	<exec>${libexecdir}/ibusavro</exec>
 	<version>0.9</version>
 	<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
-	<license>MPL</license>
+	<license>MPL 1.1</license>
 	<homepage>https://github.com/sarim/ibus-avro</homepage>
 	<textdomain>ibus-avro</textdomain>
 
@@ -18,7 +18,7 @@
 			<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
 			<icon>${pkgdatadir}/avro-bangla.png</icon>
 			<layout>bn</layout>
-			<longname>Avro</longname>
+			<longname>Avro Phonetic</longname>
 			<description>Avro Phonetic Input Method</description>
 			<rank>0</rank>
 		</engine>

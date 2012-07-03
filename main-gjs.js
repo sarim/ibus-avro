@@ -252,7 +252,7 @@ if (bus.is_connected()) {
     try {      
         component = new IBus.Component({
             name: "org.freedesktop.IBus.Avro",
-            description: "Avro phonetic",
+            description: "Avro Phonetic",
             version: "0.9",
             license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
@@ -263,7 +263,7 @@ if (bus.is_connected()) {
     } catch (error) {
         component = new IBus.Component({
             name: "org.freedesktop.IBus.Avro",
-            description: "Avro phonetic",
+            description: "Avro Phonetic",
             version: "0.9",
             license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
@@ -275,7 +275,7 @@ if (bus.is_connected()) {
 
     var avroenginedesc = new IBus.EngineDesc({
         name: "avro-phonetic",
-        longname: "avro phonetic",
+        longname: "Avro Phonetic",
         description: "Avro Phonetic Engine",
         language: "bn",
         license: "MPL 1.1",
@@ -291,9 +291,6 @@ if (bus.is_connected()) {
         bus.register_component(component);
     }
     IBus.main();
-    
-    //Exiting, save candidate selections
-    suggestionBuilder._saveCandidateSelectionsToFile();
 }
 else
     print("Exiting because IBus Bus not found, maybe the daemon is not running ?");

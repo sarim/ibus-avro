@@ -89,11 +89,13 @@ SuggestionBuilder.prototype = {
     
     
     _separatePadding: function(word){
-        //TODO: Complete this dummy Function
+        // Feeling lost? Ask Rifat :D
+        var match = word.match(/(^(?::`|\.`|[\-\]~!@#%&*()_=+[{}'";<>\/?|.,])*?(?=(?:,{2,}))|^(?::`|\.`|[\-\]~!@#%&*()_=+[{}'";<>\/?|.,])*)(.*?(?:,,)*)((?::`|\.`|[\-\]~!@#%&*()_=+[{}'";<>\/?|.,])*$)/);
+        
         var splitWord = {};
-        splitWord['begin'] = '';
-        splitWord['middle'] = word;
-        splitWord['end'] = '';
+        splitWord['begin'] = match[1];
+        splitWord['middle'] = match[2];
+        splitWord['end'] = match[3];
         
         return splitWord;
     },
@@ -158,12 +160,19 @@ SuggestionBuilder.prototype = {
             this._addToArray(words, sortedWords[i]);
         }
         
+        var suggestion = {};
+        
+        //Is there any previous custom selection of the user?
+        suggestion['prevSelection'] = this._getPreviousSelection(splitWord, words);
+        
         //Add padding to all
         for (i in words){
             words[i] = splitWord['begin'] + words[i] + splitWord['end'];
         }
         
-        return words;
+        suggestion['words'] = words;
+        
+        return suggestion;
     },
     
     
@@ -251,10 +260,7 @@ SuggestionBuilder.prototype = {
         var autoCorrect = this._getAutocorrect(word, splitWord);
 
         //Prepare suggestion object
-        var suggestion = {};
-        //Is there any previous custom selection of the user?
-        suggestion['words'] = this._joinSuggestion(autoCorrect, dictSuggestion, phonetic, splitWord);
-        suggestion['prevSelection'] = this._getPreviousSelection(splitWord, suggestion['words']);
+        var suggestion = this._joinSuggestion(autoCorrect, dictSuggestion, phonetic, splitWord);
         
         return suggestion;
     }

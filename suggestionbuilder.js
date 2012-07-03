@@ -34,6 +34,7 @@ const autocorrectdb = imports.autocorrect.db;
 const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
 const utfconv = imports.utf8;
 const EditDistance = imports.levenshtein;
+const suffixDict = imports.suffixdict.db;
 
 function SuggestionBuilder(){
     this._init();
@@ -44,13 +45,21 @@ SuggestionBuilder.prototype = {
     _init: function(){
         this._dbSearch = new dictsearch.DBSearch ();
         this._candidateSelections = {};
+        this._phoneticCache = {};
         this._loadCandidateSelectionsFromFile();
     },
     
     
     _getDictionarySuggestion: function(splitWord){
         var words = [];
-        words = this._dbSearch.search(splitWord['middle']);
+        
+        this._logger(this._phoneticCache[splitWord['middle'].toLowerCase()]);
+        
+        if (this._phoneticCache[splitWord['middle'].toLowerCase()]){
+            words = this._phoneticCache[splitWord['middle'].toLowerCase()].slice(0);
+        } else {
+            words = this._dbSearch.search(splitWord['middle']);
+        }
         return words;
     },
     
@@ -143,6 +152,72 @@ SuggestionBuilder.prototype = {
     },
     
     
+    _isKar: function(input){
+        if (input.length < 1){
+            return false;
+        }
+        var cInput = input.charAt(0);
+        return /^[\u09be\u09bf\u09c0\u09c1\u09c2\u09c3\u09c7\u09c8\u09cb\u09cc\u09c4]$/.test(cInput);
+    },
+    
+    
+    _isVowel: function(input){
+        if (input.length < 1){
+            return false;
+        }
+        var cInput = input.charAt(0);
+        return /^[\u0985\u0986\u0987\u0988\u0989\u098a\u098b\u098f\u0990\u0993\u0994\u098c\u09e1\u09be\u09bf\u09c0\u09c1\u09c2\u09c3\u09c7\u09c8\u09cb\u09cc]$/.test(cInput);
+    },    
+    
+    
+    _addSuffix: function(splitWord){
+        var tempList = [];
+        
+        var word = splitWord['middle'].toLowerCase();
+        var len = word.length;
+        
+        var rList = this._phoneticCache[word].slice(0);
+        
+        if (len >= 2){
+            for (var j = 1; j <= len; j++){
+                var testSuffix = word.substr(j, len);
+                
+                var suffix = suffixDict[testSuffix];
+                if (suffix){
+                    var key = word.substr(0, word.length - testSuffix.length); 
+                    if (this._phoneticCache[key]){
+                        if(this._phoneticCache[key].length > 0){
+                            for (var k = 0; k < this._phoneticCache[key].length; k++){
+                                var cacheItem = this._phoneticCache[key][k];
+                                var cacheRightChar = cacheItem.substr(-1, 1);
+                                var suffixLeftChar = cacheItem.substr(0, suffix);
+                                if (this._isVowel(cacheRightChar) && this._isKar(suffixLeftChar)){
+                                    tempList.push(cacheItem + "\u09df" + suffix); // \u09df = B_Y
+                                } else {
+                                    if (cacheRightChar == "\u09ce"){ // \u09ce = b_Khandatta
+                                        tempList.push(cacheItem.substr(0,cacheItem.length - 1) + "\u09a4" + suffix); // \u09a4 = b_T
+                                    } else if (cacheRightChar == "\u0982"){ // \u0982 = b_Anushar
+                                        tempList.push(cacheItem.substr(0,cacheItem.length - 1) + "\u0999" + suffix); // \u09a4 = b_NGA
+                                    } else {
+                                        tempList.push(cacheItem + suffix);
+                                    }
+                                }
+                            }
+                            
+                            
+                            for (i in tempList){
+                                rList.push(tempList[i]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return rList;
+    },
+    
+    
     _joinSuggestion: function(autoCorrect, dictSuggestion, phonetic, splitWord){
         var words = [];
         
@@ -155,7 +230,15 @@ SuggestionBuilder.prototype = {
         this._addToArray(words, phonetic);
         
         //3rd Item: Dictionary Avro Phonetic
-        var sortedWords = this._sortByPhoneticRelevance(phonetic, dictSuggestion);
+        
+        //Update Phonetic Cache
+        if(!this._phoneticCache[splitWord['middle'].toLowerCase()]){
+            this._phoneticCache[splitWord['middle'].toLowerCase()] = dictSuggestion.slice(0);
+        }
+        //Add Suffix
+        var dictSuggestionWithSuffix = this._addSuffix(splitWord);
+        
+        var sortedWords = this._sortByPhoneticRelevance(phonetic, dictSuggestionWithSuffix);
         for (i in sortedWords){
             this._addToArray(words, sortedWords[i]);
         }
@@ -265,3 +348,13 @@ SuggestionBuilder.prototype = {
         return suggestion;
     }
 }
+
+function test(word){
+    var suggestionBuilder = new SuggestionBuilder();
+    var suggestion = suggestionBuilder.suggest(word);
+    suggestionBuilder._logger(suggestionBuilder.suggest('thelagari'));    
+    suggestionBuilder._logger(suggestion);
+    suggestionBuilder._logger(suggestionBuilder.suggest(word));    
+}
+ 
+test('thelagarita');

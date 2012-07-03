@@ -348,13 +348,3 @@ SuggestionBuilder.prototype = {
         return suggestion;
     }
 }
-
-function test(word){
-    var suggestionBuilder = new SuggestionBuilder();
-    var suggestion = suggestionBuilder.suggest(word);
-    suggestionBuilder._logger(suggestionBuilder.suggest('thelagari'));    
-    suggestionBuilder._logger(suggestion);
-    suggestionBuilder._logger(suggestionBuilder.suggest(word));    
-}
- 
-test('thelagarita');

@@ -114,8 +114,22 @@ if (bus.is_connected()) {
                     commitCandidate(engine);
                 }
            
-            } else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Control_L || keyval == IBus.Control_R || keyval == IBus.Insert || keyval == IBus.Delete || keyval == IBus.Home || keyval == IBus.Page_Up || keyval == IBus.Page_Down || keyval == IBus.End || keyval == IBus.Alt_L || keyval == IBus.Alt_R || keyval == IBus.Super_L || keyval == IBus.Super_R) {
-                commitCandidate(engine);
+            } else if (keyval == IBus.Left || 
+                       keyval == IBus.Right || 
+                       keyval == IBus.Control_L || 
+                       keyval == IBus.Control_R || 
+                       keyval == IBus.Insert || 
+                       keyval == IBus.Delete || 
+                       keyval == IBus.Home || 
+                       keyval == IBus.Page_Up || 
+                       keyval == IBus.Page_Down || 
+                       keyval == IBus.End || 
+                       keyval == IBus.Alt_L || 
+                       keyval == IBus.Alt_R || 
+                       keyval == IBus.Super_L || 
+                       keyval == IBus.Super_R) {
+                    
+                    commitCandidate(engine);
             }
             return false;
         });
@@ -124,6 +138,7 @@ if (bus.is_connected()) {
             if (engine.buffertext.length > 0) {
                 engine.currentSelection = index;
                 preeditCandidate(engine);
+                suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
                 print("candidate clicked: " + index + " " + button + " " + state);
             }
             

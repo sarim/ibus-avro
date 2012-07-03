@@ -7,6 +7,7 @@ const Gda = imports.gi.Gda;
 function DB () {}
 
 var database = {};
+var suffixDict = {};
 
 DB.prototype = {
     
@@ -66,6 +67,8 @@ DB.prototype = {
         this._loadOneTable('Z', database.w_z);
         this._loadOneTable('Khandatta', database.w_khandatta);
         
+        this._loadSuffix();
+        
         this.connection.close ();
   	},
 
@@ -74,6 +77,19 @@ DB.prototype = {
 	    this._init();
   	},
 
+    
+    _loadSuffix: function(){
+        if (this.connection){
+	        if (this.connection.is_opened){
+	            var dm = this.connection.execute_select_command ("select * from Suffix");
+                var iter = dm.create_iter();
+
+                while (iter.move_next ()) {
+                    suffixDict[Gda.value_stringify (iter.get_value_at (0))] = Gda.value_stringify (iter.get_value_at (1));
+                }
+	        }
+	    }
+    },
 
 	_loadOneTable: function (tableName, wArray) {
 	    if (this.connection){
@@ -98,6 +114,10 @@ DB.prototype = {
 
 
 	_init: function () {
+	    
+	    database = {};
+        suffixDict = {};
+	    
 	    database.w_a = [];
         database.w_aa = [];
         database.w_i = [];
@@ -163,7 +183,37 @@ function _convertToUnicodeValue(input){
     return output;
 }
 
-function main () {
+
+function saveSuffix () {
+    try {
+
+        var file = gio.File.new_for_path ("suffixdict.js");
+
+        if (file.query_exists (null)) {
+            file.delete (null);
+        }
+        
+        // Create a new file with this name
+        var file_stream = file.create (gio.FileCreateFlags.NONE, null);
+        
+        var __db = new DB ();
+        __db.loadDb();
+        
+        var json = JSON.stringify(suffixDict);
+        json = "var db = " + _convertToUnicodeValue(json) + ";";
+        
+
+        // Write text data to file
+        var data_stream =  gio.DataOutputStream.new (file_stream);
+        data_stream.put_string (json, null);
+
+    } catch (e) {
+        print ("Error: " +  e.message);
+    }
+}
+
+
+function saveData () {
     try {
 
         var file = gio.File.new_for_path ("database.js");
@@ -191,4 +241,5 @@ function main () {
     }
 }
 
-main();
+saveData();
+saveSuffix();

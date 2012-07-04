@@ -151,21 +151,27 @@ if (bus.is_connected()) {
         });
 
         engine.connect('focus-in', function () {    
-            var propp = new IBus.Property({
-                key:'setup',
-                label:IBus.Text.new_from_string("Preferences - Avro"),
-                icon:'gtk-preferences',
-                tooltip:IBus.Text.new_from_string("Configure Avro")
-            });
-
-            proplist.append(propp);
-
             engine.register_properties(proplist);
-            //print('prop update');
+        });
+
+        engine.connect('property-activate', function () {    
+            runPreferences();
         });
               
         var proplist = new IBus.PropList();
-        //var propp = IBus.Property.new("avroprop",IBus.PropType.MENU,IBus.Text.new_from_string("Avro radio"),eevars.get_pkgdatadir() + "/avro-bangla.png",IBus.Text.new_from_string("Atoolo"),true,true,1,null);
+        var propp = new IBus.Property.new(
+            'setup',
+            IBus.PropType.NORMAL,
+            IBus.Text.new_from_string("Preferences - Avro"),
+            'gtk-preferences',
+            IBus.Text.new_from_string("Configure Avro"),
+            true,
+            true,
+            IBus.PropState.UNCHECKED,
+            null
+        );
+
+        proplist.append(propp);        
         engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);
         resetAll(engine);
         return engine;
@@ -253,6 +259,10 @@ if (bus.is_connected()) {
         suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
     }
     
+    function runPreferences(){
+    //code for running preferences windows will be here
+    print("Preferences not implemented");
+    }
     /* =========================================================================== */
     /* =========================================================================== */
     /*                           IBus Factory                                      */

@@ -224,16 +224,17 @@ SuggestionBuilder.prototype = {
     _joinSuggestion: function(autoCorrect, dictSuggestion, phonetic, splitWord){
         var words = [];
         
-        //1st Item: Autocorrect
+        /* 1st Item: Autocorrect */
         if (autoCorrect['corrected']){
             words.push(autoCorrect['corrected']);
+            //Add autocorrect entry to dictSuggestion for suffix support
+            if (!autoCorrect['exact']){
+                dictSuggestion.unshift(autoCorrect['corrected']);
+            }
         }
         
-        //2nd Item: Classic Avro Phonetic
-        this._addToArray(words, phonetic);
         
-        //3rd Item: Dictionary Avro Phonetic
-        
+        /* 2rd Item: Dictionary Avro Phonetic */
         //Update Phonetic Cache
         if(!this._phoneticCache[splitWord['middle'].toLowerCase()]){
             if (dictSuggestion.length > 0){
@@ -246,7 +247,10 @@ SuggestionBuilder.prototype = {
         var sortedWords = this._sortByPhoneticRelevance(phonetic, dictSuggestionWithSuffix);
         for (i in sortedWords){
             this._addToArray(words, sortedWords[i]);
-        }   
+        }
+        
+        /* 3rd Item: Classic Avro Phonetic */
+        this._addToArray(words, phonetic);
         
         var suggestion = {};
         

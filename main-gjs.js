@@ -114,8 +114,22 @@ if (bus.is_connected()) {
                     commitCandidate(engine);
                 }
            
-            } else if (keyval == IBus.Left || keyval == IBus.Right || keyval == IBus.Control_L || keyval == IBus.Control_R || keyval == IBus.Insert || keyval == IBus.Delete || keyval == IBus.Home || keyval == IBus.Page_Up || keyval == IBus.Page_Down || keyval == IBus.End || keyval == IBus.Alt_L || keyval == IBus.Alt_R || keyval == IBus.Super_L || keyval == IBus.Super_R) {
-                commitCandidate(engine);
+            } else if (keyval == IBus.Left || 
+                       keyval == IBus.Right || 
+                       keyval == IBus.Control_L || 
+                       keyval == IBus.Control_R || 
+                       keyval == IBus.Insert || 
+                       keyval == IBus.Delete || 
+                       keyval == IBus.Home || 
+                       keyval == IBus.Page_Up || 
+                       keyval == IBus.Page_Down || 
+                       keyval == IBus.End || 
+                       keyval == IBus.Alt_L || 
+                       keyval == IBus.Alt_R || 
+                       keyval == IBus.Super_L || 
+                       keyval == IBus.Super_R) {
+                    
+                    commitCandidate(engine);
             }
             return false;
         });
@@ -124,6 +138,7 @@ if (bus.is_connected()) {
             if (engine.buffertext.length > 0) {
                 engine.currentSelection = index;
                 preeditCandidate(engine);
+                suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
                 print("candidate clicked: " + index + " " + button + " " + state);
             }
             
@@ -252,7 +267,7 @@ if (bus.is_connected()) {
     try {      
         component = new IBus.Component({
             name: "org.freedesktop.IBus.Avro",
-            description: "Avro phonetic",
+            description: "Avro Phonetic",
             version: "0.9",
             license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
@@ -263,7 +278,7 @@ if (bus.is_connected()) {
     } catch (error) {
         component = new IBus.Component({
             name: "org.freedesktop.IBus.Avro",
-            description: "Avro phonetic",
+            description: "Avro Phonetic",
             version: "0.9",
             license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
@@ -275,7 +290,7 @@ if (bus.is_connected()) {
 
     var avroenginedesc = new IBus.EngineDesc({
         name: "avro-phonetic",
-        longname: "avro phonetic",
+        longname: "Avro Phonetic",
         description: "Avro Phonetic Engine",
         language: "bn",
         license: "MPL 1.1",
@@ -291,9 +306,6 @@ if (bus.is_connected()) {
         bus.register_component(component);
     }
     IBus.main();
-    
-    //Exiting, save candidate selections
-    suggestionBuilder._saveCandidateSelectionsToFile();
 }
 else
     print("Exiting because IBus Bus not found, maybe the daemon is not running ?");

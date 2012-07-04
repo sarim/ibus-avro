@@ -248,9 +248,21 @@ AvroRegex.prototype = {
                 },
                 {
                     "find":"a",
-                    "replace":"(([অএ]্যা?)|([আএ])|([‍‌]?(্য)?া)|(য়া))",
+                    "replace":"(([অএ]্যা?)|([অআএ])|([‍‌]?(্য)?া)|(য়া))?",
                     "rules":
                     [
+                        {
+                            "matches":
+                            [
+                                {
+                                    "type":"prefix",
+                                    "scope":"punctuation",
+                                    "value":"",
+                                    "negative":"FALSE"
+                                }
+                            ],
+                            "replace":"(([অএ]্যা?)|([অআএ])|([‍‌]?(্য)?া)|(য়া))"
+                        }
                     ]
                 },
                 {

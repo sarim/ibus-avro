@@ -28,7 +28,7 @@ ibusavro: ibusavro.in
 		eval "echo \"$${s}\""; \
 	) > $@
 
-install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png
+install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png database.js suffixdict.js dbsearch.js avroregexlib.js suggestionbuilder.js levenshtein.js autocorrect.js
 	mkdir -p $(pkgdatadir)/
 	mkdir -p $(libexecdir)/
 	${INSTALL} -m 775 ibusavro $(libexecdir)/ibusavro

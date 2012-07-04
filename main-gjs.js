@@ -261,6 +261,7 @@ if (bus.is_connected()) {
     
     function runPreferences(){
     //code for running preferences windows will be here
+    print("Preferences not implemented");
     }
     /* =========================================================================== */
     /* =========================================================================== */

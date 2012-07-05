@@ -20,7 +20,7 @@
 			<layout>bn</layout>
 			<longname>Avro Phonetic</longname>
 			<description>Avro Phonetic Input Method</description>
-            <setup>${pkgdatadir}/pref.js</setup>
+			<setup>/usr/bin/env gjs --include-path=${pkgdatadir} ${pkgdatadir}/pref.js</setup>
 			<rank>0</rank>
 		</engine>
 	</engines>

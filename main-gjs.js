@@ -28,12 +28,12 @@
 */
 
 
-
-
 const IBus = imports.gi.IBus;
 
 const eevars = imports.evars;
 const suggestion = imports.suggestionbuilder;
+const Gio = imports.gi.Gio;
+const prefwindow = imports.pref;
 
 //check if running from ibus
 exec_by_ibus = (ARGV[0] == '--ibus')
@@ -173,7 +173,9 @@ if (bus.is_connected()) {
 
         proplist.append(propp);        
         engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);
+        engine.lookuptable.set_orientation(1);
         resetAll(engine);
+        initSetting(engine);
         return engine;
     }        
 
@@ -184,6 +186,26 @@ if (bus.is_connected()) {
     /* =========================================================================== */
     
     var suggestionBuilder = new suggestion.SuggestionBuilder();
+    
+    function initSetting(engine){
+        engine.setting = Gio.Settings.new("org.omicronlab.avro");
+    
+        //set up a asynchronous callback for instant change later
+        engine.setting.connect('changed',function(){readSetting(engine);});
+    
+        //read manually first time
+        readSetting(engine);
+    }
+    
+    
+    function readSetting(engine){
+        engine.setting_switch_auxtxt = engine.setting.get_boolean('switch-auxtxt');
+        engine.setting_switch_lutable = engine.setting.get_boolean('switch-lutable');
+        let k = engine.setting.get_int('lutable-size');
+        print (k);
+        engine.lookuptable.set_page_size(k);
+    }
+    
     
     function resetAll(engine){
         engine.currentSuggestions = [];
@@ -208,7 +230,8 @@ if (bus.is_connected()) {
     
     function fillLookupTable (engine){
         var auxiliaryText = IBus.Text.new_from_string(engine.buffertext);
-        engine.update_auxiliary_text(auxiliaryText, true);
+        if (engine.setting_switch_auxtxt)
+            engine.update_auxiliary_text(auxiliaryText, true);
         engine.lookuptable.clear();
         
         engine.currentSuggestions.forEach(function(word){
@@ -262,8 +285,8 @@ if (bus.is_connected()) {
     }
     
     function runPreferences(){
-    //code for running preferences windows will be here
-    print("Preferences not implemented");
+        //code for running preferences windows will be here
+        prefwindow.runpref();
     }
     /* =========================================================================== */
     /* =========================================================================== */
@@ -299,17 +322,33 @@ if (bus.is_connected()) {
             textdomain: "avro-phonetic"
         });
     }
-
-    var avroenginedesc = new IBus.EngineDesc({
-        name: "avro-phonetic",
-        longname: "Avro Phonetic",
-        description: "Avro Phonetic Engine",
-        language: "bn",
-        license: "MPL 1.1",
-        author: "Sarim Khan <sarim2005@gmail.com>",
-        icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
-        layout: "bn"
-    });
+    
+    //opensuse's ibus supports only Property(Menu) but ubuntu only supports "setup" param for Preferences Button, try-catch in rescue
+    try {
+        var avroenginedesc = new IBus.EngineDesc({
+            name: "avro-phonetic",
+            longname: "Avro Phonetic",
+            description: "Avro Phonetic Engine",
+            language: "bn",
+            license: "MPL 1.1",
+            author: "Sarim Khan <sarim2005@gmail.com>",
+            icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
+            layout: "bn",
+            setup: "/usr/bin/env gjs --include-path=" + eevars.get_pkgdatadir() + " " + eevars.get_pkgdatadir() + "/pref.js --standalone"
+        });
+    } catch (error) {
+        var avroenginedesc = new IBus.EngineDesc({
+            name: "avro-phonetic",
+            longname: "Avro Phonetic",
+            description: "Avro Phonetic Engine",
+            language: "bn",
+            license: "MPL 1.1",
+            author: "Sarim Khan <sarim2005@gmail.com>",
+            icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
+            layout: "bn"
+        });
+    
+    }
 
     component.add_engine(avroenginedesc);
     if (exec_by_ibus) {

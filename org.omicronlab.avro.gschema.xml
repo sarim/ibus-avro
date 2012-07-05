@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.omicronlab.avro" path="/org/omicronlab/avro/">
+    <key type="b" name="switch-auxtxt">
+      <default>true</default>
+      <summary>switch-auxtxt</summary>
+      <description>Whether Auxiliary (English) Text will be shown</description>
+    </key>
+    <key type="b" name="switch-lutable">
+      <default>true</default>
+      <summary>switch-lutable</summary>
+      <description>Whether Dictionary Suggestion will be shown</description>
+    </key>
+    <key type="i" name="lutable-size">
+      <default>16</default>
+      <summary>lutable-size</summary>
+      <description>Dictionary Suggestion Lookup Table Size</description>
+    </key>    
+  </schema>
+</schemalist>

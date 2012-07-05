@@ -26,7 +26,6 @@
     =============================================================================
 */
 
-imports.searchPath.unshift('.');
 const utfconv = imports.utf8;
 
 function AvroRegex () {}

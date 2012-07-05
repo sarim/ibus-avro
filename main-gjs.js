@@ -31,7 +31,7 @@
 
 
 const IBus = imports.gi.IBus;
-imports.searchPath.unshift('.');
+
 const eevars = imports.evars;
 const suggestion = imports.suggestionbuilder;
 

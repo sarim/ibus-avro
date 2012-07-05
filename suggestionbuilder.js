@@ -28,7 +28,6 @@
 const gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
-imports.searchPath.unshift('.');
 const dictsearch = imports.dbsearch;
 const autocorrectdb = imports.autocorrect.db;
 const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;

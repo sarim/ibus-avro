@@ -26,7 +26,6 @@
 */
 
 
-imports.searchPath.unshift('.');
 const db = imports.avrodict;
 const RegexServer = imports.avroregexlib;
 const utfconv = imports.utf8;

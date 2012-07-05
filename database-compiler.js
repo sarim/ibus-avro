@@ -230,7 +230,7 @@ function saveSuffix () {
 
 function saveData () {
     try {
-        var file = gio.File.new_for_path ("database.js");
+        var file = gio.File.new_for_path ("avrodict.js");
 
         if (file.query_exists (null)) {
             file.delete (null);

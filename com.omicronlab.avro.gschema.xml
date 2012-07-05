@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.omicronlab.avro" path="/org/omicronlab/avro/">
+  <schema id="com.omicronlab.avro" path="/com/omicronlab/avro/">
     <key type="b" name="switch-auxtxt">
       <default>true</default>
       <summary>switch-auxtxt</summary>

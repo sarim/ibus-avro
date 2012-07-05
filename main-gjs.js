@@ -28,9 +28,8 @@
 */
 
 
-
-imports.searchPath.unshift('.');
 const IBus = imports.gi.IBus;
+
 const eevars = imports.evars;
 const suggestion = imports.suggestionbuilder;
 const Gio = imports.gi.Gio;
@@ -189,22 +188,24 @@ if (bus.is_connected()) {
     var suggestionBuilder = new suggestion.SuggestionBuilder();
     
     function initSetting(engine){
-    engine.setting = Gio.Settings.new("org.omicronlab.avro");
+        engine.setting = Gio.Settings.new("com.omicronlab.avro");
     
-    //set up a asynchronous callback for instant change later
-    engine.setting.connect('changed',function(){readSetting(engine);});
+        //set up a asynchronous callback for instant change later
+        engine.setting.connect('changed',function(){readSetting(engine);});
     
-    //read manually first time
-    readSetting(engine);
+        //read manually first time
+        readSetting(engine);
     }
     
+    
     function readSetting(engine){
-    engine.setting_switch_auxtxt = engine.setting.get_boolean('switch-auxtxt');
-    engine.setting_switch_lutable = engine.setting.get_boolean('switch-lutable');
-    let k = engine.setting.get_int('lutable-size');
-    print (k);
-    engine.lookuptable.set_page_size(k);
-    }    
+        engine.setting_switch_auxtxt = engine.setting.get_boolean('switch-auxtxt');
+        engine.setting_switch_lutable = engine.setting.get_boolean('switch-lutable');
+        let k = engine.setting.get_int('lutable-size');
+        print (k);
+        engine.lookuptable.set_page_size(k);
+    }
+    
     
     function resetAll(engine){
         engine.currentSuggestions = [];
@@ -256,6 +257,8 @@ if (bus.is_connected()) {
             engine.commit_text(commitText);
         }
         
+        suggestionBuilder.stringCommitted(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
+        
         resetAll(engine);
     }
     
@@ -282,8 +285,8 @@ if (bus.is_connected()) {
     }
     
     function runPreferences(){
-    //code for running preferences windows will be here
-    prefwindow.runpref();
+        //code for running preferences windows will be here
+        prefwindow.runpref();
     }
     /* =========================================================================== */
     /* =========================================================================== */
@@ -300,7 +303,7 @@ if (bus.is_connected()) {
         component = new IBus.Component({
             name: "org.freedesktop.IBus.Avro",
             description: "Avro Phonetic",
-            version: "0.9",
+            version: "1.0",
             license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
             homepage: "https://github.com/sarim/ibus-avro",
@@ -311,7 +314,7 @@ if (bus.is_connected()) {
         component = new IBus.Component({
             name: "org.freedesktop.IBus.Avro",
             description: "Avro Phonetic",
-            version: "0.9",
+            version: "1.0",
             license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
             homepage: "https://github.com/sarim/ibus-avro",

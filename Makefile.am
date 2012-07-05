@@ -26,7 +26,7 @@ install: evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png
 	${INSTALL} -m 755 main-gjs.js ${pkgdatadir}/main-gjs.js	
 	${INSTALL} -m 644 avrolib.js ${pkgdatadir}/avrolib.js
 	${INSTALL} -m 644 utf8.js ${pkgdatadir}/utf8.js
-	${INSTALL} -m 644 database.js ${pkgdatadir}/database.js
+	${INSTALL} -m 644 avrodict.js ${pkgdatadir}/avrodict.js
 	${INSTALL} -m 644 suffixdict.js ${pkgdatadir}/suffixdict.js
 	${INSTALL} -m 644 dbsearch.js ${pkgdatadir}/dbsearch.js
 	${INSTALL} -m 644 avroregexlib.js ${pkgdatadir}/avroregexlib.js
@@ -41,10 +41,10 @@ install: evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png
 	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
 
 uninstall: 
-	rm -rf ${pkgdatadir}
 	rm ${pkgdatadir}/../ibus/component/ibus-avro.xml
 	rm ${pkgdatadir}/../glib-2.0/schemas/org.omicronlab.avro.gschema.xml
 	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
-	
+	rm -rf ${pkgdatadir}
+
 clean:
 	rm -r evars.js ibus-avro.xml Makefile autom4te.cache/ aclocal.m4 config.log config.status configure Makefile.in install-sh missing

@@ -291,7 +291,6 @@ SuggestionBuilder.prototype = {
                 var json = '';
                 
                 json = data_stream.read_until("", null);
-                //print(json);
                 this._candidateSelections = JSON.parse(json[0]);
                 
             } else {
@@ -336,7 +335,7 @@ SuggestionBuilder.prototype = {
     
     
     _logger: function (obj, msg){
-    	print ((msg || 'Log') + ': ' + JSON.stringify(obj, null, '\t'));
+    	//print ((msg || 'Log') + ': ' + JSON.stringify(obj, null, '\t'));
     },
     
     

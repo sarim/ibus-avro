@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.freedesktop.avro" path="/org/freedesktop/avro/">
+  <schema id="org.omicronlab.avro" path="/org/omicronlab/avro/">
     <key type="b" name="switch-tooltip">
       <default>false</default>
       <summary>switch-auxtxt</summary>

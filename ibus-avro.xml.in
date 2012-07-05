@@ -3,7 +3,7 @@
 <component>
 	<name>org.freedesktop.IBus.Avro</name>
 	<description>Avro Phonetic</description>
-	<exec>/usr/bin/env gjs --include-path=${pkgdatadir} ${pkgdatadir}/main-gjs.js --ibus</exec>
+	<exec>/usr/bin/env gjs --include-path=${pkgdatadir} ${pkgdatadir}/main-gjs.js --ibus > /dev/null</exec>
 	<version>0.9</version>
 	<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
 	<license>MPL 1.1</license>

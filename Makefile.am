@@ -28,7 +28,7 @@ ibusavro: ibusavro.in
 		eval "echo \"$${s}\""; \
 	) > $@
 
-install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png database.js suffixdict.js dbsearch.js avroregexlib.js suggestionbuilder.js levenshtein.js autocorrect.js
+install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png avrodict.js suffixdict.js dbsearch.js avroregexlib.js suggestionbuilder.js levenshtein.js autocorrect.js
 	mkdir -p $(pkgdatadir)/
 	mkdir -p $(libexecdir)/
 	${INSTALL} -m 775 ibusavro $(libexecdir)/ibusavro
@@ -36,7 +36,7 @@ install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-ban
 	${INSTALL} -m 644 main-gjs.js ${pkgdatadir}/main-gjs.js	
 	${INSTALL} -m 644 avrolib.js ${pkgdatadir}/avrolib.js
 	${INSTALL} -m 644 utf8.js ${pkgdatadir}/utf8.js
-	${INSTALL} -m 644 database.js ${pkgdatadir}/database.js
+	${INSTALL} -m 644 avrodict.js ${pkgdatadir}/avrodict.js
 	${INSTALL} -m 644 suffixdict.js ${pkgdatadir}/suffixdict.js
 	${INSTALL} -m 644 dbsearch.js ${pkgdatadir}/dbsearch.js
 	${INSTALL} -m 644 avroregexlib.js ${pkgdatadir}/avroregexlib.js

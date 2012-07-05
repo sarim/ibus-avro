@@ -33,6 +33,7 @@ imports.searchPath.unshift('.');
 const IBus = imports.gi.IBus;
 const eevars = imports.evars;
 const suggestion = imports.suggestionbuilder;
+const Gio = imports.gi.Gio;
 
 //check if running from ibus
 exec_by_ibus = (ARGV[0] == '--ibus')

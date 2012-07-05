@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkListStore" id="liststore1"/>
+  <object class="GtkAdjustment" id="lutable_size">
+    <property name="upper">16</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Avro Preferences</property>
+    <property name="modal">True</property>
+    <property name="urgency_hint">True</property>
+    <property name="opacity">0.84999999999999998</property>
     <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
@@ -21,6 +31,8 @@
               <object class="GtkGrid" id="grid1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="row_homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
@@ -73,6 +85,64 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label4">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Items in Suggestion List : </property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScale" id="scale1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_right">18</property>
+                    <property name="adjustment">lutable_size</property>
+                    <property name="show_fill_level">True</property>
+                    <property name="fill_level">16</property>
+                    <property name="round_digits">1</property>
+                    <property name="digits">0</property>
+                    <property name="value_pos">left</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Suggestion List Orientation : </property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBox" id="combobox1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="model">liststore1</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>

@@ -34,6 +34,7 @@ const IBus = imports.gi.IBus;
 const eevars = imports.evars;
 const suggestion = imports.suggestionbuilder;
 const Gio = imports.gi.Gio;
+const prefwindow = imports.pref;
 
 //check if running from ibus
 exec_by_ibus = (ARGV[0] == '--ibus')
@@ -173,6 +174,7 @@ if (bus.is_connected()) {
 
         proplist.append(propp);        
         engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);
+        engine.lookuptable.set_orientation(1);
         resetAll(engine);
         initSetting(engine);
         return engine;
@@ -197,8 +199,11 @@ if (bus.is_connected()) {
     }
     
     function readSetting(engine){
-    engine.setting_switch_auxtxt = engine.setting.get_value('switch-auxtxt');
-    engine.setting_switch_lutable = engine.setting.get_value('switch-lutable');
+    engine.setting_switch_auxtxt = engine.setting.get_boolean('switch-auxtxt');
+    engine.setting_switch_lutable = engine.setting.get_boolean('switch-lutable');
+    let k = engine.setting.get_int('lutable-size');
+    print (k);
+    engine.lookuptable.set_page_size(k);
     }    
     
     function resetAll(engine){
@@ -224,7 +229,8 @@ if (bus.is_connected()) {
     
     function fillLookupTable (engine){
         var auxiliaryText = IBus.Text.new_from_string(engine.buffertext);
-        engine.update_auxiliary_text(auxiliaryText, true);
+        if (engine.setting_switch_auxtxt)
+            engine.update_auxiliary_text(auxiliaryText, true);
         engine.lookuptable.clear();
         
         engine.currentSuggestions.forEach(function(word){
@@ -277,7 +283,7 @@ if (bus.is_connected()) {
     
     function runPreferences(){
     //code for running preferences windows will be here
-    print("Preferences not implemented");
+    prefwindow.runpref();
     }
     /* =========================================================================== */
     /* =========================================================================== */
@@ -313,7 +319,8 @@ if (bus.is_connected()) {
             textdomain: "avro-phonetic"
         });
     }
-//well well, suse's ibus supports only Properly(Menu) but ubuntu only supports "setup" param for Preferences Button, try-catch in rescue
+    
+    //opensuse's ibus supports only Property(Menu) but ubuntu only supports "setup" param for Preferences Button, try-catch in rescue
     try {
         var avroenginedesc = new IBus.EngineDesc({
             name: "avro-phonetic",
@@ -324,7 +331,7 @@ if (bus.is_connected()) {
             author: "Sarim Khan <sarim2005@gmail.com>",
             icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
             layout: "bn",
-            setup: eevars.get_pkgdatadir() + "/pref.js"
+            setup: "/usr/bin/env gjs --include-path=" + eevars.get_pkgdatadir() + " " + eevars.get_pkgdatadir() + "/pref.js --standalone"
         });
     } catch (error) {
         var avroenginedesc = new IBus.EngineDesc({

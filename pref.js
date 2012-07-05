@@ -1,5 +1,3 @@
-#!/usr/bin/env gjs
-
 /*
     =============================================================================
     *****************************************************************************
@@ -27,26 +25,37 @@
     =============================================================================
 */
 
+imports.searchPath.unshift('.');
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const eevars = imports.evars;
 
-Gtk.init(null, 0);
-let builder = new Gtk.Builder();
-builder.add_from_file(eevars.get_pkgdatadir() + "/avropref.ui");
+function runpref() {
 
-let prefwindow = builder.get_object("window1");
-let switch_auxtxt = builder.get_object("switch_auxtxt");
-let switch_lutable = builder.get_object("switch_lutable");
+    Gtk.init(null, 0);
+    let builder = new Gtk.Builder();
+    builder.add_from_file(eevars.get_pkgdatadir() + "/avropref.ui");
+
+    let prefwindow = builder.get_object("window1");
+    let switch_auxtxt = builder.get_object("switch_auxtxt");
+    let switch_lutable = builder.get_object("switch_lutable");
+    let lutable_size = builder.get_object("lutable_size");
+
+    let setting = Gio.Settings.new("org.omicronlab.avro")
+    setting.bind("switch-auxtxt", switch_auxtxt, "active", Gio.SettingsBindFlags.DEFAULT)
+    setting.bind("switch-lutable", switch_lutable, "active", Gio.SettingsBindFlags.DEFAULT)
+    setting.bind("lutable-size", lutable_size, "value", Gio.SettingsBindFlags.DEFAULT)
 
 
-let setting = Gio.Settings.new("org.omicronlab.avro")
-setting.bind("switch-auxtxt", switch_auxtxt, "active", Gio.SettingsBindFlags.DEFAULT)
-setting.bind("switch-lutable", switch_lutable, "active", Gio.SettingsBindFlags.DEFAULT)
+    prefwindow.connect ("destroy", function(){Gtk.main_quit()});
+    prefwindow.show_all();
 
+    Gtk.main();
+}
 
-prefwindow.connect ("destroy", function(){Gtk.main_quit()});
-prefwindow.show_all();
-
-Gtk.main();
+//check if running standalone
+if(ARGV[0] == '--standalone'){
+    //running standalone, so no one to call me,calling myself
+    runpref();
+}

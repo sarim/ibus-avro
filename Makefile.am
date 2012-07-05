@@ -18,17 +18,8 @@ evars.js: evars.js.in
 		s=`cat $<`; \
 		eval "echo \"$${s}\""; \
 	) > $@
-	
-ibusavro: ibusavro.in
-	$(AM_V_GEN) \
-	( \
-		libexecdir=${libexecdir}; \
-		pkgdatadir=${pkgdatadir}; \
-		s=`cat $<`; \
-		eval "echo \"$${s}\""; \
-	) > $@
 
-install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png avrodict.js suffixdict.js dbsearch.js avroregexlib.js suggestionbuilder.js levenshtein.js autocorrect.js
+install: evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png avrodict.js suffixdict.js dbsearch.js avroregexlib.js suggestionbuilder.js levenshtein.js autocorrect.js
 	mkdir -p $(pkgdatadir)/
 	mkdir -p $(libexecdir)/
 	${INSTALL} -m 644 evars.js ${pkgdatadir}/evars.js

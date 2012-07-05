@@ -313,18 +313,32 @@ if (bus.is_connected()) {
             textdomain: "avro-phonetic"
         });
     }
-
-    var avroenginedesc = new IBus.EngineDesc({
-        name: "avro-phonetic",
-        longname: "Avro Phonetic",
-        description: "Avro Phonetic Engine",
-        language: "bn",
-        license: "MPL 1.1",
-        author: "Sarim Khan <sarim2005@gmail.com>",
-        icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
-        layout: "bn",
-        setup: eevars.get_pkgdatadir() + "/pref.js"
-    });
+//well well, suse's ibus supports only Properly(Menu) but ubuntu only supports "setup" param for Preferences Button, try-catch in rescue
+    try {
+        var avroenginedesc = new IBus.EngineDesc({
+            name: "avro-phonetic",
+            longname: "Avro Phonetic",
+            description: "Avro Phonetic Engine",
+            language: "bn",
+            license: "MPL 1.1",
+            author: "Sarim Khan <sarim2005@gmail.com>",
+            icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
+            layout: "bn",
+            setup: eevars.get_pkgdatadir() + "/pref.js"
+        });
+    } catch (error) {
+        var avroenginedesc = new IBus.EngineDesc({
+            name: "avro-phonetic",
+            longname: "Avro Phonetic",
+            description: "Avro Phonetic Engine",
+            language: "bn",
+            license: "MPL 1.1",
+            author: "Sarim Khan <sarim2005@gmail.com>",
+            icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
+            layout: "bn"
+        });
+    
+    }
 
     component.add_engine(avroenginedesc);
     if (exec_by_ibus) {

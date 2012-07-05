@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
   <schema id="org.omicronlab.avro" path="/org/omicronlab/avro/">
-    <key type="b" name="switch-tooltip">
+    <key type="b" name="switch-auxtxt">
       <default>false</default>
       <summary>switch-auxtxt</summary>
       <description>Whether Auxiliary (English) Text will be shown</description>

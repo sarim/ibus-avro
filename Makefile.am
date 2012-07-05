@@ -37,12 +37,12 @@ install: evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png a
 	${INSTALL} -m 644 avropref.ui ${pkgdatadir}/avropref.ui	
 	${INSTALL} -m 644 avro-bangla.png ${pkgdatadir}/avro-bangla.png
 	${INSTALL} -m 644 ibus-avro.xml ${pkgdatadir}/../ibus/component/ibus-avro.xml
-	${INSTALL} -m 644 org.omicronlab.avro.gschema.xml ${pkgdatadir}/../glib-2.0/schemas/org.omicronlab.avro.gschema.xml
+	${INSTALL} -m 644 com.omicronlab.avro.gschema.xml ${pkgdatadir}/../glib-2.0/schemas/com.omicronlab.avro.gschema.xml
 	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
 
 uninstall: 
 	rm ${pkgdatadir}/../ibus/component/ibus-avro.xml
-	rm ${pkgdatadir}/../glib-2.0/schemas/org.omicronlab.avro.gschema.xml
+	rm ${pkgdatadir}/../glib-2.0/schemas/com.omicronlab.avro.gschema.xml
 	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
 	rm -rf ${pkgdatadir}
 

@@ -188,7 +188,7 @@ if (bus.is_connected()) {
     var suggestionBuilder = new suggestion.SuggestionBuilder();
     
     function initSetting(engine){
-        engine.setting = Gio.Settings.new("org.omicronlab.avro");
+        engine.setting = Gio.Settings.new("com.omicronlab.avro");
     
         //set up a asynchronous callback for instant change later
         engine.setting.connect('changed',function(){readSetting(engine);});

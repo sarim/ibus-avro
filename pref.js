@@ -42,7 +42,7 @@ function runpref() {
     let switch_lutable = builder.get_object("switch_lutable");
     let lutable_size = builder.get_object("lutable_size");
 
-    let setting = Gio.Settings.new("org.omicronlab.avro")
+    let setting = Gio.Settings.new("com.omicronlab.avro")
     setting.bind("switch-auxtxt", switch_auxtxt, "active", Gio.SettingsBindFlags.DEFAULT)
     setting.bind("switch-lutable", switch_lutable, "active", Gio.SettingsBindFlags.DEFAULT)
     setting.bind("lutable-size", lutable_size, "value", Gio.SettingsBindFlags.DEFAULT)

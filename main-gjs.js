@@ -303,7 +303,7 @@ if (bus.is_connected()) {
         component = new IBus.Component({
             name: "org.freedesktop.IBus.Avro",
             description: "Avro Phonetic",
-            version: "0.9",
+            version: "1.0",
             license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
             homepage: "https://github.com/sarim/ibus-avro",
@@ -314,7 +314,7 @@ if (bus.is_connected()) {
         component = new IBus.Component({
             name: "org.freedesktop.IBus.Avro",
             description: "Avro Phonetic",
-            version: "0.9",
+            version: "1.0",
             license: "MPL 1.1",
             author: "Sarim Khan <sarim2005@gmail.com>",
             homepage: "https://github.com/sarim/ibus-avro",

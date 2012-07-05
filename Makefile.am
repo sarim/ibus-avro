@@ -19,7 +19,7 @@ evars.js: evars.js.in
 		eval "echo \"$${s}\""; \
 	) > $@
 	
-install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png
+install: evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png
 	mkdir -p $(pkgdatadir)/
 	mkdir -p $(libexecdir)/
 	${INSTALL} -m 644 evars.js ${pkgdatadir}/evars.js
@@ -38,6 +38,12 @@ install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-ban
 	${INSTALL} -m 644 avro-bangla.png ${pkgdatadir}/avro-bangla.png
 	${INSTALL} -m 644 ibus-avro.xml ${pkgdatadir}/../ibus/component/ibus-avro.xml
 	${INSTALL} -m 644 org.omicronlab.avro.gschema.xml ${pkgdatadir}/../glib-2.0/schemas/org.omicronlab.avro.gschema.xml
+	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
+
+uninstall: 
+	rm -rf ${pkgdatadir}
+	rm ${pkgdatadir}/../ibus/component/ibus-avro.xml
+	rm ${pkgdatadir}/../glib-2.0/schemas/org.omicronlab.avro.gschema.xml
 	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
 	
 clean:

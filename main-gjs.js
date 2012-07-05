@@ -29,9 +29,8 @@
 
 
 
-
-const IBus = imports.gi.IBus;
 imports.searchPath.unshift('.');
+const IBus = imports.gi.IBus;
 const eevars = imports.evars;
 const suggestion = imports.suggestionbuilder;
 
@@ -151,7 +150,7 @@ if (bus.is_connected()) {
         });
 
         engine.connect('focus-in', function () {    
-            //engine.register_properties(proplist);
+            engine.register_properties(proplist);
         });
 
         engine.connect('property-activate', function () {    
@@ -174,6 +173,7 @@ if (bus.is_connected()) {
         proplist.append(propp);        
         engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);
         resetAll(engine);
+        initSetting(engine);
         return engine;
     }        
 
@@ -184,6 +184,21 @@ if (bus.is_connected()) {
     /* =========================================================================== */
     
     var suggestionBuilder = new suggestion.SuggestionBuilder();
+    
+    function initSetting(engine){
+    engine.setting = Gio.Settings.new("org.freedesktop.avro");
+    
+    //set up a asynchronous callback for instant change later
+    engine.setting.connect('changed',function(){readSetting(engine);});
+    
+    //read manually first time
+    readSetting(engine);
+    }
+    
+    function readSetting(engine){
+    engine.setting_switch_auxtxt = engine.setting.get_value('switch-auxtxt');
+    engine.setting_switch_lutable = engine.setting.get_value('switch-lutable');
+    }    
     
     function resetAll(engine){
         engine.currentSuggestions = [];
@@ -307,7 +322,7 @@ if (bus.is_connected()) {
         author: "Sarim Khan <sarim2005@gmail.com>",
         icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
         layout: "bn",
-        setup:"fuck"
+        setup: eevars.get_pkgdatadir() + "/pref.js"
     });
 
     component.add_engine(avroenginedesc);

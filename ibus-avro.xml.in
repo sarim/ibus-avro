@@ -1,9 +1,9 @@
 <?xml version=\"1.0\" encoding=\"utf-8\"?>
-<!-- filename: enchant.xml -->
+<!-- filename: ibus-avro.xml -->
 <component>
 	<name>org.freedesktop.IBus.Avro</name>
 	<description>Avro Phonetic</description>
-	<exec>${libexecdir}/ibusavro</exec>
+	<exec>${pkgdatadir}/main-gjs.js --ibus</exec>
 	<version>0.9</version>
 	<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
 	<license>MPL 1.1</license>

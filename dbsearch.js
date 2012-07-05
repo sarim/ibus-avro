@@ -58,16 +58,16 @@ DBSearch.prototype = {
                 tableList = ["i", "ii", "e", "y"];
                 break;
             case 'f':
-                tableList = ["ph", "e"];
+                tableList = ["ph"];
                 break;
             case 'g':
                 tableList = ["g", "gh", "j"];
                 break;
             case 'h':
-                tableList = ["h", "e"];
+                tableList = ["h"];
                 break;
             case 'i':
-                tableList = ["aa", "i", "ii", "y"];
+                tableList = ["i", "ii", "y"];
                 break;
             case 'j':
                 tableList = ["j", "jh", "z"];
@@ -76,13 +76,13 @@ DBSearch.prototype = {
                 tableList = ["k", "kh"];
                 break;
             case 'l':
-                tableList = ["l", "e"];
+                tableList = ["l"];
                 break;
             case 'm':
-                tableList = ["e", "h", "m"];
+                tableList = ["h", "m"];
                 break;
             case 'n':
-                tableList = ["e", "n", "nya", "nga", "nn"];
+                tableList = ["n", "nya", "nga", "nn"];
                 break;
             case 'o':
                 tableList = ["a", "u", "uu", "oi", "o", "ou", "y"];
@@ -94,31 +94,61 @@ DBSearch.prototype = {
                 tableList = ["k"];
                 break;
             case 'r':
-                tableList = ["aa", "rri", "h", "r", "rr", "rrh"];
+                tableList = ["rri", "h", "r", "rr", "rrh"];
                 break;
             case 's':
-                tableList = ["e", "s", "sh", "ss"];
+                tableList = ["s", "sh", "ss"];
                 break;
             case 't':
                 tableList = ["t", "th", "tt", "tth", "khandatta"];
                 break;
             case 'u':
-                tableList = ["i", "u", "uu", "y"];
+                tableList = ["u", "uu", "y"];
                 break;
             case 'v':
                 tableList = ["bh"];
                 break;
             case 'w':
-                tableList = ["o", "dd"];
+                tableList = ["o"];
                 break;
             case 'x':
                 tableList = ["e", "k"];
                 break;
             case 'y':
-                tableList = ["i", "o", "y"];
+                tableList = ["i", "y"];
                 break;
             case 'z':
                 tableList = ["h", "j", "jh", "z"];
+                break;
+            case '1':
+                tableList = ["e"];
+                break;
+            case '2':
+                tableList = ["d"];
+                break;
+            case '3':
+                tableList = ["t"];
+                break;
+            case '4':
+                tableList = ["c"];
+                break;
+            case '5':
+                tableList = ["p"];
+                break;
+            case '6':
+                tableList = ["ch"];
+                break;
+            case '7':
+                tableList = ["s"];
+                break;
+            case '8':
+                tableList = ["aa"];
+                break;
+            case '9':
+                tableList = ["n"];
+                break;
+            case '0':
+                tableList = ["sh"];
                 break;
             default:
                 break;

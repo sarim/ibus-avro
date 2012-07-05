@@ -151,7 +151,7 @@ if (bus.is_connected()) {
         });
 
         engine.connect('focus-in', function () {    
-            engine.register_properties(proplist);
+            //engine.register_properties(proplist);
         });
 
         engine.connect('property-activate', function () {    
@@ -306,7 +306,8 @@ if (bus.is_connected()) {
         license: "MPL 1.1",
         author: "Sarim Khan <sarim2005@gmail.com>",
         icon: eevars.get_pkgdatadir() + "/avro-bangla.png",
-        layout: "bn"
+        layout: "bn",
+        setup:"fuck"
     });
 
     component.add_engine(avroenginedesc);

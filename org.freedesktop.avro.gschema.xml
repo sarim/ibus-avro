@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.freedesktop.avro" path="/org/freedesktop/avro/">
+    <key type="b" name="switch-tooltip">
+      <default>false</default>
+      <summary>switch-auxtxt</summary>
+      <description>Whether Auxiliary (English) Text will be shown</description>
+    </key>
+    <key type="b" name="switch-lutable">
+      <default>false</default>
+      <summary>switch-lutable</summary>
+      <description>Whether Dictionary Suggestion will be shown</description>
+    </key>
+  </schema>
+</schemalist>

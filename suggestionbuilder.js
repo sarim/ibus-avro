@@ -46,6 +46,7 @@ SuggestionBuilder.prototype = {
         this._candidateSelections = {};
         this._phoneticCache = {};
         this._loadCandidateSelectionsFromFile();
+        this._tempCache = {};
     },
     
     
@@ -172,9 +173,19 @@ SuggestionBuilder.prototype = {
     },    
     
     
+    _addToTempCache: function(full, base, eng){
+        //Don't overwrite
+        if (!this._tempCache[full]){
+            this._tempCache[full] = {};
+            this._tempCache[full].base = base;
+            this._tempCache[full].eng = eng;
+        }
+    },
+    
+    
     _addSuffix: function(splitWord){
         var tempList = [];
-        
+        var fullWord = '';
         var word = splitWord['middle'].toLowerCase();
         var len = word.length;
         
@@ -182,6 +193,8 @@ SuggestionBuilder.prototype = {
         if (this._phoneticCache[word]){
            rList = this._phoneticCache[word].slice(0);
         }
+        
+        this._tempCache = {};
         
         if (len >= 2){
             for (var j = 1; j <= len; j++){
@@ -196,14 +209,21 @@ SuggestionBuilder.prototype = {
                             var cacheRightChar = cacheItem.substr(-1);
                             var suffixLeftChar = suffix.substr(0, 1);
                             if (this._isVowel(cacheRightChar) && this._isKar(suffixLeftChar)){
-                                tempList.push(cacheItem + "\u09df" + suffix); // \u09df = B_Y
+                                fullWord = cacheItem + "\u09df" + suffix; // \u09df = B_Y
+                                tempList.push(fullWord);
+                                this._addToTempCache(fullWord, cacheItem, key);
                             } else {
                                 if (cacheRightChar == "\u09ce"){ // \u09ce = b_Khandatta
-                                    tempList.push(cacheItem.substr(0, cacheItem.length - 1) + "\u09a4" + suffix); // \u09a4 = b_T
+                                    fullWord = cacheItem.substr(0, cacheItem.length - 1) + "\u09a4" + suffix; // \u09a4 = b_T
+                                    tempList.push(fullWord);
+                                    this._addToTempCache(fullWord, cacheItem, key);
                                 } else if (cacheRightChar == "\u0982"){ // \u0982 = b_Anushar
-                                    tempList.push(cacheItem.substr(0, cacheItem.length - 1) + "\u0999" + suffix); // \u09a4 = b_NGA
+                                    fullWord = cacheItem.substr(0, cacheItem.length - 1) + "\u0999" + suffix; // \u09a4 = b_NGA
+                                    tempList.push(fullWord);
                                 } else {
-                                    tempList.push(cacheItem + suffix);
+                                    fullWord = cacheItem + suffix;
+                                    tempList.push(fullWord);
+                                    this._addToTempCache(fullWord, cacheItem, key);
                                 }
                             }
                         }
@@ -374,6 +394,22 @@ SuggestionBuilder.prototype = {
         this._candidateSelections[word] = candidate;
         
         this._saveCandidateSelectionsToFile();
+    },
+    
+    
+    stringCommitted: function(word, candidate){
+        //If it is called, user made the final decision here
+        
+        //Check and save selection without suffix if that is not present
+        if (this._tempCache[candidate]){
+            var base = this._tempCache[candidate].base;
+            var eng = this._tempCache[candidate].eng;
+            //Don't overwrite existing value
+            if (!this._candidateSelections[eng]){
+                this._candidateSelections[eng] = base;
+                this._saveCandidateSelectionsToFile();
+            }
+        }
     },
     
     

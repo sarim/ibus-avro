@@ -234,6 +234,8 @@ if (bus.is_connected()) {
             engine.commit_text(commitText);
         }
         
+        suggestionBuilder.stringCommitted(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
+        
         resetAll(engine);
     }
     

@@ -37,7 +37,8 @@ install: ibusavro evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-ban
 	${INSTALL} -m 644 avropref.ui ${pkgdatadir}/avropref.ui	
 	${INSTALL} -m 644 avro-bangla.png ${pkgdatadir}/avro-bangla.png
 	${INSTALL} -m 644 ibus-avro.xml ${pkgdatadir}/../ibus/component/ibus-avro.xml
-	
+	${INSTALL} -m 644 org.omicronlab.avro.gschema.xml ${pkgdatadir}/../glib-2.0/schemas/org.omicronlab.avro.gschema.xml
+	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
 	
 clean:
-	rm ibusavro evars.js ibus-avro.xml Makefile
+	rm -r evars.js ibus-avro.xml Makefile autom4te.cache/ aclocal.m4 config.log config.status configure Makefile.in install-sh missing

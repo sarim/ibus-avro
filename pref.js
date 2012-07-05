@@ -30,17 +30,18 @@
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
+const eevars = imports.evars;
 
 Gtk.init(null, 0);
 let builder = new Gtk.Builder();
-builder.add_from_file("/home/sarim/avropref.ui");
+builder.add_from_file(eevars.get_pkgdatadir() + "/avropref.ui");
 
 let prefwindow = builder.get_object("window1");
 let switch_auxtxt = builder.get_object("switch_auxtxt");
 let switch_lutable = builder.get_object("switch_lutable");
 
 
-let setting = Gio.Settings.new("org.freedesktop.avro")
+let setting = Gio.Settings.new("org.omicronlab.avro")
 setting.bind("switch-auxtxt", switch_auxtxt, "active", Gio.SettingsBindFlags.DEFAULT)
 setting.bind("switch-lutable", switch_lutable, "active", Gio.SettingsBindFlags.DEFAULT)
 

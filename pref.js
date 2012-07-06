@@ -39,7 +39,7 @@ function runpref() {
 
     let prefwindow = builder.get_object("window1");
     let switch_preview = builder.get_object("switch_preview");
-    let switch_lutable = builder.get_object("switch_dict");
+    let switch_dict = builder.get_object("switch_dict");
     let lutable_size = builder.get_object("lutable_size");
     let cboxorient = builder.get_object("cboxorient");
 

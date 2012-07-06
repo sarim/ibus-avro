@@ -225,7 +225,10 @@ if (bus.is_connected()) {
         engine.setting = Gio.Settings.new("com.omicronlab.avro");
     
         //set up a asynchronous callback for instant change later
-        engine.setting.connect('changed',function(){readSetting(engine);});
+        engine.setting.connect('changed', 
+            function(){
+                readSetting(engine);
+        });
     
         //read manually first time
         readSetting(engine);
@@ -236,7 +239,12 @@ if (bus.is_connected()) {
         engine.setting_switch_auxtxt = engine.setting.get_boolean('switch-auxtxt');
         engine.setting_switch_lutable = engine.setting.get_boolean('switch-lutable');
         engine.lookuptable.set_orientation(engine.setting.get_int('cboxorient'));
-        engine.lookuptable.set_page_size(engine.setting.get_int('lutable-size'));
+        engine.setting_lutable_size = engine.setting.get_int('lutable-size');
+        engine.lookuptable.set_page_size(engine.setting_lutable_size);
+        
+        var dictPref =  suggestionBuilder.getPref();
+        dictPref.dictEnable = engine.setting_switch_lutable;
+        suggestionBuilder.setPref(dictPref);
     }
     
     
@@ -387,6 +395,7 @@ if (bus.is_connected()) {
     }
 
     component.add_engine(avroenginedesc);
+    
     if (exec_by_ibus) {
         bus.request_name("org.freedesktop.IBus.Avro", 0);
     } else {

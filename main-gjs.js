@@ -29,7 +29,7 @@
 
 
 const IBus = imports.gi.IBus;
-
+imports.searchPath.unshift('.');
 const eevars = imports.evars;
 const suggestion = imports.suggestionbuilder;
 const Gio = imports.gi.Gio;
@@ -79,16 +79,19 @@ if (bus.is_connected()) {
             }
 
             // process letter key events
-            if (keyval >= 33 && keyval <= 126) {
+            if ((keyval >= 33 && keyval <= 126) ||
+                (keyval >= IBus.KP_0 && keyval <= IBus.KP_9) ||
+                 keyval == IBus.KP_Add ||
+                 keyval == IBus.KP_Decimal ||
+                 keyval == IBus.KP_Divide ||
+                 keyval == IBus.KP_Multiply ||
+                 keyval == IBus.KP_Divide ||
+                 keyval == IBus.KP_Subtract) {
                 
                 engine.buffertext += IBus.keyval_to_unicode(keyval);
                 updateCurrentSuggestions(engine);
                 return true;
                 
-            } else if (keyval == IBus.Return || keyval == IBus.space || keyval == IBus.Tab) {
-
-                commitCandidate(engine);
-
             } else if (keyval == IBus.BackSpace) {
                 if (engine.buffertext.length > 0) {
                     engine.buffertext = engine.buffertext.substr(0, engine.buffertext.length - 1);
@@ -99,9 +102,25 @@ if (bus.is_connected()) {
                     }
                     return true;
                 } 
+            } else if (keyval == IBus.Left || keyval == IBus.KP_Left || keyval == IBus.Right || keyval == IBus.KP_Right) {
+                if (engine.currentSuggestions.length <= 0 || engine.lookuptable.get_orientation() == 1){                    
+                    commitCandidate(engine);
+                } else {
+                    if (keyval == IBus.Left || keyval == IBus.KP_Left) {
+                        decSelection(engine);
+                    }
+                    else if (keyval == IBus.Right || keyval == IBus.KP_Right) {
+                        incSelection(engine);
+                    }
+                    
+                    return true;
+                }
                 
-            } else if (keyval == IBus.Up || keyval == IBus.Down) {
-                if (engine.currentSuggestions.length > 1){                    
+            } else if (keyval == IBus.Up || keyval == IBus.KP_Up || keyval == IBus.Down || keyval == IBus.KP_Down) {
+                print (engine.lookuptable.get_orientation());
+                if (engine.currentSuggestions.length <= 0 || engine.lookuptable.get_orientation() == 0){                    
+                    commitCandidate(engine);
+                } else {
                     if (keyval == IBus.Up) {
                         decSelection(engine);
                     }
@@ -110,24 +129,30 @@ if (bus.is_connected()) {
                     }
                     
                     return true;
-                } else {
-                    commitCandidate(engine);
                 }
            
-            } else if (keyval == IBus.Left || 
-                       keyval == IBus.Right || 
-                       keyval == IBus.Control_L || 
+            } else if (keyval == IBus.Control_L || 
                        keyval == IBus.Control_R || 
                        keyval == IBus.Insert || 
+                       keyval == IBus.KP_Insert || 
                        keyval == IBus.Delete || 
+                       keyval == IBus.KP_Delete || 
                        keyval == IBus.Home || 
+                       keyval == IBus.KP_Home || 
                        keyval == IBus.Page_Up || 
+                       keyval == IBus.KP_Page_Up || 
                        keyval == IBus.Page_Down || 
+                       keyval == IBus.KP_Page_Down || 
                        keyval == IBus.End || 
+                       keyval == IBus.KP_End || 
                        keyval == IBus.Alt_L || 
                        keyval == IBus.Alt_R || 
                        keyval == IBus.Super_L || 
-                       keyval == IBus.Super_R) {
+                       keyval == IBus.Super_R || 
+                       keyval == IBus.Return || 
+                       keyval == IBus.space || 
+                       keyval == IBus.Tab || 
+                       keyval == IBus.KP_Enter) {
                     
                     commitCandidate(engine);
             }
@@ -172,8 +197,7 @@ if (bus.is_connected()) {
         );
 
         proplist.append(propp);        
-        engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);
-        engine.lookuptable.set_orientation(1);
+        engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);        
         resetAll(engine);
         initSetting(engine);
         return engine;
@@ -201,9 +225,8 @@ if (bus.is_connected()) {
     function readSetting(engine){
         engine.setting_switch_auxtxt = engine.setting.get_boolean('switch-auxtxt');
         engine.setting_switch_lutable = engine.setting.get_boolean('switch-lutable');
-        let k = engine.setting.get_int('lutable-size');
-        print (k);
-        engine.lookuptable.set_page_size(k);
+        engine.lookuptable.set_orientation(engine.setting.get_int('cboxorient'));
+        engine.lookuptable.set_page_size(engine.setting.get_int('lutable-size'));
     }
     
     
@@ -236,7 +259,10 @@ if (bus.is_connected()) {
         
         engine.currentSuggestions.forEach(function(word){
             let wtext = IBus.Text.new_from_string(word);
+            //default, ibus sets "1,2,3,4...." as label, i didn't find how to hide it,but a empty string can partially hide it
+            let wlabel = IBus.Text.new_from_string('');;
             engine.lookuptable.append_candidate(wtext);
+            engine.lookuptable.append_label(wlabel);
         });
         
         preeditCandidate(engine);

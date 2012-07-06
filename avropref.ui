@@ -2,17 +2,18 @@
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkAdjustment" id="lutable_size">
-    <property name="lower">1</property>
+    <property name="lower">5</property>
     <property name="upper">16</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Avro Preferences</property>
+    <property name="title" translatable="yes">Avro Phonetic Preferences</property>
+    <property name="resizable">False</property>
     <property name="modal">True</property>
+    <property name="icon">avro-bangla.png</property>
     <property name="urgency_hint">True</property>
-    <property name="opacity">0.84999999999999998</property>
     <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
@@ -31,14 +32,15 @@
               <object class="GtkGrid" id="grid1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="row_homogeneous">True</property>
-                <property name="column_homogeneous">True</property>
+                <property name="row_spacing">10</property>
+                <property name="column_spacing">10</property>
                 <child>
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="yalign">0.49000000953674316</property>
-                    <property name="label" translatable="yes">Show Auxiliary (English) Text : </property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">Preview Window:</property>
+                    <property name="justify">right</property>
                     <property name="width_chars">25</property>
                   </object>
                   <packing>
@@ -52,7 +54,8 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Use Dictionary Suggestion : </property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">Dictionary Suggestion:</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -93,7 +96,8 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Items in Suggestion List : </property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">Maximum suggestions:</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -125,7 +129,8 @@
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Suggestion List Orientation : </property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">Suggestion List Orientation:</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -154,16 +159,6 @@
                 </child>
               </object>
             </child>
-          </object>
-        </child>
-        <child type="label">
-          <object class="GtkLabel" id="label1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">&lt;b&gt;Settings for Avro Phonetic&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-            <property name="justify">center</property>
-            <property name="width_chars">40</property>
           </object>
         </child>
       </object>

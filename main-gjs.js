@@ -92,6 +92,16 @@ if (bus.is_connected()) {
                 updateCurrentSuggestions(engine);
                 return true;
                 
+            } else if (keyval == IBus.Return || keyval == IBus.space || keyval == IBus.Tab) {
+                if (engine.buffertext.length > 0){
+                    if (keyval == IBus.Return && engine.buffertext.length > 0 && engine.currentSuggestions.length > 1){
+                        commitCandidate(engine);
+                        return true;
+                    } else {
+                        commitCandidate(engine);
+                    }
+                }
+
             } else if (keyval == IBus.BackSpace) {
                 if (engine.buffertext.length > 0) {
                     engine.buffertext = engine.buffertext.substr(0, engine.buffertext.length - 1);

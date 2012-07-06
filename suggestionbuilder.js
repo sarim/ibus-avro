@@ -351,19 +351,30 @@ SuggestionBuilder.prototype = {
             var file = gio.File.new_for_path(GLib.get_home_dir() + "/.candidate-selections.json");
         
             if (file.query_exists (null)) {
+                /*
                 var file_stream = file.read(null);
                 var data_stream = gio.DataInputStream.new(file_stream);
-                var json = '';
-                
-                json = data_stream.read_until("", null);
+                var json = data_stream.read_until("", null);
                 this._candidateSelections = JSON.parse(json[0]);
-                
+                */
+                file.read_async(0, null,
+                		function(source, result){
+                		    var file_stream = source.read_finish(result);
+                		    
+                		    if (file_stream){
+                		        var data_stream = gio.DataInputStream.new(file_stream);
+                                var json = data_stream.read_until("", null);
+                                this._candidateSelections = JSON.parse(json[0]);
+                		    } else {
+                		        this._logger(e, 'Error in _loadCandidateSelectionsFromFile');
+                		    }
+                		});
             } else {
                 this._candidateSelections = {};
             }
         } catch (e){
            this._candidateSelections = {};
-           this._logger(e, '_loadCandidateSelectionsFromFile Error');
+           this._logger(e, 'Error in _loadCandidateSelectionsFromFile');
         }
     },
     
@@ -371,18 +382,35 @@ SuggestionBuilder.prototype = {
     _saveCandidateSelectionsToFile: function(){
         try {
             var file = gio.File.new_for_path ( GLib.get_home_dir() + "/.candidate-selections.json");
-                if (file.query_exists (null)) {
-                    file.delete (null);
-                }
-                // Create a new file with this name
-                var file_stream = file.create (gio.FileCreateFlags.NONE, null);
+            
+            if (file.query_exists (null)) {
+                file.delete (null);
+            }
+            /*
+            var file_stream = file.create (gio.FileCreateFlags.NONE, null);
+            var json = JSON.stringify(this._candidateSelections);
+            json = this._convertToUnicodeValue(json);
+            // Write text data to file
+            var data_stream =  gio.DataOutputStream.new (file_stream);
+            data_stream.put_string (json, null);
+            */
+            var that = this;
+            // Create a new file with this name
+            file.create_async(gio.FileCreateFlags.NONE, 0, null, 
+                    function(source, result){
+                        var file_stream = source.create_finish(result);
+                        
+                        if (file_stream){
+                            var json = JSON.stringify(that._candidateSelections);
+                            json = that._convertToUnicodeValue(json);
 
-                var json = JSON.stringify(this._candidateSelections);
-                json = this._convertToUnicodeValue(json);
-
-                // Write text data to file
-                var data_stream =  gio.DataOutputStream.new (file_stream);
-                data_stream.put_string (json, null);
+                            // Write text data to file
+                            var data_stream =  gio.DataOutputStream.new (file_stream);
+                            data_stream.put_string (json, null);
+                        } else {
+                            this._logger(e, 'Error in _saveCandidateSelectionsToFile');
+                        }
+                    });
         } catch (e) {
            this._logger(e, '_saveCandidateSelectionsToFile Error');
        }
@@ -391,8 +419,6 @@ SuggestionBuilder.prototype = {
 
     _updateCandidateSelection: function(word, candidate){
         this._candidateSelections[word] = candidate;
-        
-        this._saveCandidateSelectionsToFile();
     },
     
     
@@ -409,6 +435,8 @@ SuggestionBuilder.prototype = {
                 this._saveCandidateSelectionsToFile();
             }
         }
+        
+        this._saveCandidateSelectionsToFile();
     },
     
     
@@ -420,7 +448,7 @@ SuggestionBuilder.prototype = {
     
     
     _logger: function (obj, msg){
-    	//print ((msg || 'Log') + ': ' + JSON.stringify(obj, null, '\t'));
+    	print ((msg || 'Log') + ': ' + JSON.stringify(obj, null, '\t'));
     },
     
     

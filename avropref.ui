@@ -65,7 +65,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkSwitch" id="switch_auxtxt">
+                  <object class="GtkSwitch" id="switch_preview">
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -79,7 +79,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkSwitch" id="switch_lutable">
+                  <object class="GtkSwitch" id="switch_dict">
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>

@@ -236,14 +236,14 @@ if (bus.is_connected()) {
     
     
     function readSetting(engine){
-        engine.setting_switch_auxtxt = engine.setting.get_boolean('switch-auxtxt');
-        engine.setting_switch_lutable = engine.setting.get_boolean('switch-lutable');
+        engine.setting_switch_preview = engine.setting.get_boolean('switch-preview');
+        engine.setting_switch_dict = engine.setting.get_boolean('switch-dict');
         engine.lookuptable.set_orientation(engine.setting.get_int('cboxorient'));
         engine.setting_lutable_size = engine.setting.get_int('lutable-size');
         engine.lookuptable.set_page_size(engine.setting_lutable_size);
         
         var dictPref =  suggestionBuilder.getPref();
-        dictPref.dictEnable = engine.setting_switch_lutable;
+        dictPref.dictEnable = engine.setting_switch_dict;
         suggestionBuilder.setPref(dictPref);
     }
     
@@ -262,7 +262,7 @@ if (bus.is_connected()) {
     
     function updateCurrentSuggestions(engine){
         var suggestion = suggestionBuilder.suggest(engine.buffertext);
-        engine.currentSuggestions = suggestion['words'].slice(0);
+        engine.currentSuggestions = suggestion['words'].slice(0, engine.setting_lutable_size);
         engine.currentSelection = suggestion['prevSelection'];
         
         fillLookupTable (engine);
@@ -271,8 +271,10 @@ if (bus.is_connected()) {
     
     function fillLookupTable (engine){
         var auxiliaryText = IBus.Text.new_from_string(engine.buffertext);
-        if (engine.setting_switch_auxtxt)
+        
+        if (engine.setting_switch_preview){
             engine.update_auxiliary_text(auxiliaryText, true);
+        }
         engine.lookuptable.clear();
         
         engine.currentSuggestions.forEach(function(word){

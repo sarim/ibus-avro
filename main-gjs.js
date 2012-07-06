@@ -270,28 +270,30 @@ if (bus.is_connected()) {
     
     
     function fillLookupTable (engine){
-        var auxiliaryText = IBus.Text.new_from_string(engine.buffertext);
         
         if (engine.setting_switch_preview){
+            var auxiliaryText = IBus.Text.new_from_string(engine.buffertext);
             engine.update_auxiliary_text(auxiliaryText, true);
-        }
-        engine.lookuptable.clear();
+            engine.lookuptable.clear();
         
-        engine.currentSuggestions.forEach(function(word){
-            let wtext = IBus.Text.new_from_string(word);
-            //default, ibus sets "1,2,3,4...." as label, i didn't find how to hide it,but a empty string can partially hide it
-            let wlabel = IBus.Text.new_from_string('');;
-            engine.lookuptable.append_candidate(wtext);
-            engine.lookuptable.append_label(wlabel);
-        });
+            engine.currentSuggestions.forEach(function(word){
+                let wtext = IBus.Text.new_from_string(word);
+                //default, ibus sets "1,2,3,4...." as label, i didn't find how to hide it,but a empty string can partially hide it
+                let wlabel = IBus.Text.new_from_string('');;
+                engine.lookuptable.append_candidate(wtext);
+                engine.lookuptable.append_label(wlabel);
+            });
+        }
         
         preeditCandidate(engine);
     }
     
     
     function preeditCandidate(engine){
-        engine.lookuptable.set_cursor_pos(engine.currentSelection);
-        engine.update_lookup_table_fast(engine.lookuptable,true);
+        if (engine.setting_switch_preview){
+            engine.lookuptable.set_cursor_pos(engine.currentSelection);
+            engine.update_lookup_table_fast(engine.lookuptable,true);
+        }
         
         var preeditText = IBus.Text.new_from_string(engine.currentSuggestions[engine.currentSelection]);
         engine.update_preedit_text(preeditText, engine.currentSuggestions[engine.currentSelection].length, true);

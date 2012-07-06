@@ -47,6 +47,15 @@ SuggestionBuilder.prototype = {
         this._phoneticCache = {};
         this._loadCandidateSelectionsFromFile();
         this._tempCache = {};
+        this._pref = this._defaultPref();
+    },
+    
+    
+    _defaultPref: function(){
+        var pref = {};
+        pref.dictEnable = true;
+        
+        return pref;
     },
     
     
@@ -243,52 +252,63 @@ SuggestionBuilder.prototype = {
     _joinSuggestion: function(autoCorrect, dictSuggestion, phonetic, splitWord){
         var words = [];
         
-        /* 1st Item: Autocorrect */
-        if (autoCorrect['corrected']){
-            words.push(autoCorrect['corrected']);
-            //Add autocorrect entry to dictSuggestion for suffix support
-            if (!autoCorrect['exact']){
-                dictSuggestion.push(autoCorrect['corrected']);
-            }
-        }
-        
-        
-        /* 2rd Item: Dictionary Avro Phonetic */
-        //Update Phonetic Cache
-        if(!this._phoneticCache[splitWord['middle'].toLowerCase()]){
-            if (dictSuggestion.length > 0){
-                this._phoneticCache[splitWord['middle'].toLowerCase()] = dictSuggestion.slice(0);
-            }
-        }
-        //Add Suffix
-        var dictSuggestionWithSuffix = this._addSuffix(splitWord);
+        if (!this._pref.dictEnable){
+                words.push(phonetic);
+                words[0] = splitWord['begin'] + words[0] + splitWord['end'];
+            
+                var suggestion = {};
+                suggestion['words'] = words;
+                suggestion['prevSelection'] = 0;
+        } else {
 
-        var sortedWords = this._sortByPhoneticRelevance(phonetic, dictSuggestionWithSuffix);
-        for (i in sortedWords){
-            this._addToArray(words, sortedWords[i]);
-        }
-        
-        /* 3rd Item: Classic Avro Phonetic */
-        this._addToArray(words, phonetic);
-        
-        var suggestion = {};
-        
-        //Is there any previous custom selection of the user?
-        suggestion['prevSelection'] = this._getPreviousSelection(splitWord, words);
-        
-        //Add padding to all, except exact autocorrect
-        for (i in words){
-            if (autoCorrect['exact']){
-                if (autoCorrect['corrected'] != words[i]){
-                    words[i] = splitWord['begin'] + words[i] + splitWord['end'];
+                /* 1st Item: Autocorrect */
+                if (autoCorrect['corrected']){
+                    words.push(autoCorrect['corrected']);
+                    //Add autocorrect entry to dictSuggestion for suffix support
+                    if (!autoCorrect['exact']){
+                        dictSuggestion.push(autoCorrect['corrected']);
+                    }
                 }
-            } else {
-                words[i] = splitWord['begin'] + words[i] + splitWord['end'];   
-            }
+        
+        
+                /* 2rd Item: Dictionary Avro Phonetic */
+                //Update Phonetic Cache
+                if(!this._phoneticCache[splitWord['middle'].toLowerCase()]){
+                    if (dictSuggestion.length > 0){
+                        this._phoneticCache[splitWord['middle'].toLowerCase()] = dictSuggestion.slice(0);
+                    }
+                }
+                //Add Suffix
+                var dictSuggestionWithSuffix = this._addSuffix(splitWord);
+
+                var sortedWords = this._sortByPhoneticRelevance(phonetic, dictSuggestionWithSuffix);
+                for (i in sortedWords){
+                    this._addToArray(words, sortedWords[i]);
+                }
+        
+                /* 3rd Item: Classic Avro Phonetic */
+                this._addToArray(words, phonetic);
+        
+                var suggestion = {};
+        
+                //Is there any previous custom selection of the user?
+                suggestion['prevSelection'] = this._getPreviousSelection(splitWord, words);
+        
+                //Add padding to all, except exact autocorrect
+                for (i in words){
+                    if (autoCorrect['exact']){
+                        if (autoCorrect['corrected'] != words[i]){
+                            words[i] = splitWord['begin'] + words[i] + splitWord['end'];
+                        }
+                    } else {
+                        words[i] = splitWord['begin'] + words[i] + splitWord['end'];   
+                    }
+                }
+        
+                suggestion['words'] = words;
+        
         }
-        
-        suggestion['words'] = words;
-        
+    
         return suggestion;
     },
     
@@ -422,7 +442,28 @@ SuggestionBuilder.prototype = {
     },
     
     
+    
+    _logger: function (obj, msg){
+    	print ((msg || 'Log') + ': ' + JSON.stringify(obj, null, '\t'));
+    },
+    
+    
+    getPref: function(){
+        return this._pref;
+    },
+    
+    
+    setPref: function(pref){
+        //TODO: Add Validation
+        this._pref = pref;
+    },
+    
+    
     stringCommitted: function(word, candidate){
+        if (!this._pref.dictEnable){
+            return;
+        }
+        
         //If it is called, user made the final decision here
         
         //Check and save selection without suffix if that is not present
@@ -441,14 +482,13 @@ SuggestionBuilder.prototype = {
     
     
     updateCandidateSelection: function(word, candidate){
+        if (!this._pref.dictEnable){
+            return;
+        }
+        
         //Seperate begining and trailing padding characters, punctuations etc. from whole word
         var splitWord = this._separatePadding(word);
         this._updateCandidateSelection(splitWord['middle'], candidate);
-    },
-    
-    
-    _logger: function (obj, msg){
-    	print ((msg || 'Log') + ': ' + JSON.stringify(obj, null, '\t'));
     },
     
     
@@ -462,8 +502,11 @@ SuggestionBuilder.prototype = {
         
         //Convert the word to Bangla using 3 separate methods 
         var phonetic = this._getClassicPhonetic(splitWord['middle']);
-        var dictSuggestion = this._getDictionarySuggestion(splitWord);
-        var autoCorrect = this._getAutocorrect(word, splitWord);
+        
+        if (this._pref.dictEnable){
+            var dictSuggestion = this._getDictionarySuggestion(splitWord);
+            var autoCorrect = this._getAutocorrect(word, splitWord);
+        }
 
         //Prepare suggestion object
         var suggestion = this._joinSuggestion(autoCorrect, dictSuggestion, phonetic, splitWord);

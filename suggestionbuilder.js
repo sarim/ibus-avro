@@ -28,7 +28,6 @@
 const gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
-imports.searchPath.unshift('.');
 const dictsearch = imports.dbsearch;
 const autocorrectdb = imports.autocorrect.db;
 const Avroparser = imports.avrolib.OmicronLab.Avro.Phonetic;
@@ -47,6 +46,7 @@ SuggestionBuilder.prototype = {
         this._candidateSelections = {};
         this._phoneticCache = {};
         this._loadCandidateSelectionsFromFile();
+        this._tempCache = {};
     },
     
     
@@ -173,9 +173,19 @@ SuggestionBuilder.prototype = {
     },    
     
     
+    _addToTempCache: function(full, base, eng){
+        //Don't overwrite
+        if (!this._tempCache[full]){
+            this._tempCache[full] = {};
+            this._tempCache[full].base = base;
+            this._tempCache[full].eng = eng;
+        }
+    },
+    
+    
     _addSuffix: function(splitWord){
         var tempList = [];
-        
+        var fullWord = '';
         var word = splitWord['middle'].toLowerCase();
         var len = word.length;
         
@@ -183,6 +193,8 @@ SuggestionBuilder.prototype = {
         if (this._phoneticCache[word]){
            rList = this._phoneticCache[word].slice(0);
         }
+        
+        this._tempCache = {};
         
         if (len >= 2){
             for (var j = 1; j <= len; j++){
@@ -194,17 +206,24 @@ SuggestionBuilder.prototype = {
                     if (this._phoneticCache[key]){
                         for (var k = 0; k < this._phoneticCache[key].length; k++){
                             var cacheItem = this._phoneticCache[key][k];
-                            var cacheRightChar = cacheItem.substr(-1, 1);
-                            var suffixLeftChar = cacheItem.substr(0, suffix);
+                            var cacheRightChar = cacheItem.substr(-1);
+                            var suffixLeftChar = suffix.substr(0, 1);
                             if (this._isVowel(cacheRightChar) && this._isKar(suffixLeftChar)){
-                                tempList.push(cacheItem + "\u09df" + suffix); // \u09df = B_Y
+                                fullWord = cacheItem + "\u09df" + suffix; // \u09df = B_Y
+                                tempList.push(fullWord);
+                                this._addToTempCache(fullWord, cacheItem, key);
                             } else {
                                 if (cacheRightChar == "\u09ce"){ // \u09ce = b_Khandatta
-                                    tempList.push(cacheItem.substr(0,cacheItem.length - 1) + "\u09a4" + suffix); // \u09a4 = b_T
+                                    fullWord = cacheItem.substr(0, cacheItem.length - 1) + "\u09a4" + suffix; // \u09a4 = b_T
+                                    tempList.push(fullWord);
+                                    this._addToTempCache(fullWord, cacheItem, key);
                                 } else if (cacheRightChar == "\u0982"){ // \u0982 = b_Anushar
-                                    tempList.push(cacheItem.substr(0,cacheItem.length - 1) + "\u0999" + suffix); // \u09a4 = b_NGA
+                                    fullWord = cacheItem.substr(0, cacheItem.length - 1) + "\u0999" + suffix; // \u09a4 = b_NGA
+                                    tempList.push(fullWord);
                                 } else {
-                                    tempList.push(cacheItem + suffix);
+                                    fullWord = cacheItem + suffix;
+                                    tempList.push(fullWord);
+                                    this._addToTempCache(fullWord, cacheItem, key);
                                 }
                             }
                         }
@@ -224,16 +243,17 @@ SuggestionBuilder.prototype = {
     _joinSuggestion: function(autoCorrect, dictSuggestion, phonetic, splitWord){
         var words = [];
         
-        //1st Item: Autocorrect
+        /* 1st Item: Autocorrect */
         if (autoCorrect['corrected']){
             words.push(autoCorrect['corrected']);
+            //Add autocorrect entry to dictSuggestion for suffix support
+            if (!autoCorrect['exact']){
+                dictSuggestion.push(autoCorrect['corrected']);
+            }
         }
         
-        //2nd Item: Classic Avro Phonetic
-        this._addToArray(words, phonetic);
         
-        //3rd Item: Dictionary Avro Phonetic
-        
+        /* 2rd Item: Dictionary Avro Phonetic */
         //Update Phonetic Cache
         if(!this._phoneticCache[splitWord['middle'].toLowerCase()]){
             if (dictSuggestion.length > 0){
@@ -246,7 +266,10 @@ SuggestionBuilder.prototype = {
         var sortedWords = this._sortByPhoneticRelevance(phonetic, dictSuggestionWithSuffix);
         for (i in sortedWords){
             this._addToArray(words, sortedWords[i]);
-        }   
+        }
+        
+        /* 3rd Item: Classic Avro Phonetic */
+        this._addToArray(words, phonetic);
         
         var suggestion = {};
         
@@ -270,14 +293,56 @@ SuggestionBuilder.prototype = {
     },
     
     
-    _getPreviousSelection: function (splitWord, words){
-        if (this._candidateSelections[splitWord['middle']]){
-            var i = words.indexOf(this._candidateSelections[splitWord['middle']]);
-            if (i >= 0){
-                return i;
+    _getPreviousSelection: function (splitWord, suggestionWords){
+        var word = splitWord['middle'];
+        var len = word.length;
+        var selectedWord = '';
+        
+        if (this._candidateSelections[word]){
+            selectedWord = this._candidateSelections[word];
+        } else {
+            //Full word was not found, try checking without suffix
+            if (len >= 2){
+                for (var j = 1; j < len; j++){
+                    var testSuffix = word.substr(-j).toLowerCase();
+
+                    var suffix = suffixDict[testSuffix];
+                    if (suffix){
+                        var key = word.substr(0, word.length - testSuffix.length);
+
+                        if (this._candidateSelections[key]){
+
+                            //Get possible words for key
+                            var keyWord = this._candidateSelections[key];
+
+                            var kwRightChar = keyWord.substr(-1);
+                            var suffixLeftChar = suffix.substr(0, 1);
+
+                            var selectedWord = '';
+
+                            if (this._isVowel(kwRightChar) && this._isKar(suffixLeftChar)){
+                                 selectedWord = keyWord + "\u09df" + suffix; // \u09df = B_Y
+                             } else {
+                                 if (kwRightChar == "\u09ce"){ // \u09ce = b_Khandatta
+                                     selectedWord = keyWord.substr(0, keyWord.length - 1) + "\u09a4" + suffix; // \u09a4 = b_T
+                                 } else if (kwRightChar == "\u0982"){ // \u0982 = b_Anushar
+                                     selectedWord = keyWord.substr(0, keyWord.length - 1) + "\u0999" + suffix; // \u09a4 = b_NGA
+                                 } else {
+                                     selectedWord = keyWord + suffix;
+                                 }
+                             }
+                             
+                             //Save this referrence
+                            this._updateCandidateSelection(word, selectedWord);
+                            break;
+                        }
+                    }
+                }
             }
         }
-        return 0;
+        
+        var i = suggestionWords.indexOf(selectedWord);
+        return (i < 0) ? i = 0 : i;
     },
     
     
@@ -322,15 +387,35 @@ SuggestionBuilder.prototype = {
            this._logger(e, '_saveCandidateSelectionsToFile Error');
        }
     },
+
+
+    _updateCandidateSelection: function(word, candidate){
+        this._candidateSelections[word] = candidate;
+        
+        this._saveCandidateSelectionsToFile();
+    },
+    
+    
+    stringCommitted: function(word, candidate){
+        //If it is called, user made the final decision here
+        
+        //Check and save selection without suffix if that is not present
+        if (this._tempCache[candidate]){
+            var base = this._tempCache[candidate].base;
+            var eng = this._tempCache[candidate].eng;
+            //Don't overwrite existing value
+            if (!this._candidateSelections[eng]){
+                this._candidateSelections[eng] = base;
+                this._saveCandidateSelectionsToFile();
+            }
+        }
+    },
     
     
     updateCandidateSelection: function(word, candidate){
         //Seperate begining and trailing padding characters, punctuations etc. from whole word
         var splitWord = this._separatePadding(word);
-        
-        this._candidateSelections[splitWord['middle']] = candidate;
-        
-        this._saveCandidateSelectionsToFile();
+        this._updateCandidateSelection(splitWord['middle'], candidate);
     },
     
     

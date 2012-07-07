@@ -52,10 +52,8 @@ install: all
 installdeb: all
 	mkdir -p $(DESTDIR)$(pkgdatadir)/
 	mkdir -p $(DESTDIR)$(libexecdir)/
-	mkdir -p $(pkgdatadir)/
-	mkdir -p $(libexecdir)/
-	mkdir -p ${pkgdatadir}/../glib-2.0/schemas/
-	mkdir -p ${pkgdatadir}/../ibus/component/	
+	mkdir -p $(DESTDIR)${pkgdatadir}/../glib-2.0/schemas/
+	mkdir -p $(DESTDIR)${pkgdatadir}/../ibus/component/	
 	${INSTALL} -m 644 evars.js $(DESTDIR)${pkgdatadir}/evars.js
 	${INSTALL} -m 755 main-gjs.js $(DESTDIR)${pkgdatadir}/main-gjs.js	
 	${INSTALL} -m 644 avrolib.js $(DESTDIR)${pkgdatadir}/avrolib.js

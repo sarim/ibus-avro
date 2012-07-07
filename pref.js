@@ -31,29 +31,26 @@ const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const eevars = imports.evars;
 
+var prefwindow, switch_preview, switch_newline, switch_dict, lutable_size, cboxorient, scale1;
+
 function runpref() {
 
     Gtk.init(null, 0);
     let builder = new Gtk.Builder();
     builder.add_from_file(eevars.get_pkgdatadir() + "/avropref.ui");
 
-    let prefwindow = builder.get_object("window1");
-    let switch_preview = builder.get_object("switch_preview");
-    let switch_dict = builder.get_object("switch_dict");
-    let switch_newline = builder.get_object("switch_newline");
-    let lutable_size = builder.get_object("lutable_size");
-    let cboxorient = builder.get_object("cboxorient");
+    prefwindow = builder.get_object("window1");
+    switch_preview = builder.get_object("switch_preview");
+    switch_newline = builder.get_object("switch_newline");
+    switch_dict = builder.get_object("switch_dict");
+    lutable_size = builder.get_object("lutable_size"); 
+    scale1 = builder.get_object("scale1"); 
+    cboxorient = builder.get_object("cboxorient");
     
-    switch_preview.connect("notify::active", function(widget, data){
-        if (!switch_preview.get_active()){
-            switch_dict.set_active(false);
-        }
-    });
-    
-    //Initialize after loading
-    if (!switch_preview.get_active()){
-       switch_dict.set_active(false); 
-    }
+    switch_preview.connect("notify::active", validate);
+    switch_newline.connect("notify::active", validate);
+    switch_dict.connect("notify::active", validate);
+
 
     let setting = Gio.Settings.new("com.omicronlab.avro")
     setting.bind("switch-preview", switch_preview, "active", Gio.SettingsBindFlags.DEFAULT)
@@ -62,10 +59,29 @@ function runpref() {
     setting.bind("lutable-size", lutable_size, "value", Gio.SettingsBindFlags.DEFAULT)
     setting.bind("cboxorient", cboxorient, "active", Gio.SettingsBindFlags.DEFAULT)
 
+    validate();
+
     prefwindow.connect ("destroy", function(){Gtk.main_quit()});
     prefwindow.show_all();
 
     Gtk.main();
+}
+
+function validate(){
+    if (!switch_preview.get_active()){
+        switch_newline.set_active(false);
+        switch_dict.set_active(false);
+
+        switch_dict.sensitive = false;
+        switch_newline.sensitive = false;
+        scale1.sensitive = false;
+        cboxorient.sensitive = false;
+    } else {
+        switch_dict.sensitive = true;
+        switch_newline.sensitive = true;
+        scale1.sensitive = true;
+        cboxorient.sensitive = true;
+    }
 }
 
 //check if running standalone

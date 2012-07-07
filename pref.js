@@ -42,6 +42,17 @@ function runpref() {
     let switch_dict = builder.get_object("switch_dict");
     let lutable_size = builder.get_object("lutable_size");
     let cboxorient = builder.get_object("cboxorient");
+    
+    switch_preview.connect("notify::active", function(widget, data){
+        if (!switch_preview.get_active()){
+            switch_dict.set_active(false);
+        }
+    });
+    
+    //Initialize after loading
+    if (!switch_preview.get_active()){
+       switch_dict.set_active(false); 
+    }
 
     let setting = Gio.Settings.new("com.omicronlab.avro")
     setting.bind("switch-preview", switch_preview, "active", Gio.SettingsBindFlags.DEFAULT)

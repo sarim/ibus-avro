@@ -81,5 +81,6 @@ uninstall:
 
 clean:
 	@:
-
+cleanup:
+	rm -r evars.js ibus-avro.xml Makefile autom4te.cache/ aclocal.m4 config.log config.status configure Makefile.in install-sh missing
 .PHONY: all build clean

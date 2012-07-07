@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="com.omicronlab.avro" path="/com/omicronlab/avro/">
+    <key type="b" name="switch-preview">
+      <default>true</default>
+      <summary>switch-preview</summary>
+      <description>Whether Preview window (auxiliary text, suggestions) will be shown</description>
+    </key>
+    <key type="b" name="switch-dict">
+      <default>true</default>
+      <summary>switch-dict</summary>
+      <description>Whether dictionary suggestions will be shown</description>
+    </key>
+    <key type="b" name="switch-newline">
+      <default>false</default>
+      <summary>switch-newline</summary>
+      <description>Whether enter key should commit newline after applying candidate</description>
+    </key>
+    <key type="i" name="lutable-size">
+      <default>16</default>
+      <summary>lutable-size</summary>
+      <description>Dictionary suggestion lookup table size</description>
+    </key>    
+    <key type="i" name="cboxorient">
+      <default>0</default>
+      <summary>cboxorient</summary>
+      <description>Orientation of Lookup Table</description>
+    </key>    
+
+  </schema>
+</schemalist>

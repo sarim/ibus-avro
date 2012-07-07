@@ -94,7 +94,7 @@ if (bus.is_connected()) {
                 
             } else if (keyval == IBus.Return || keyval == IBus.space || keyval == IBus.Tab) {
                 if (engine.buffertext.length > 0){
-                    if (keyval == IBus.Return && engine.buffertext.length > 0 && engine.currentSuggestions.length > 1 && (!engine.setting_switch_newline)){
+                    if ((keyval == IBus.Return) && engine.setting_switch_newline && engine.setting_switch_preview && (engine.buffertext.length > 0)){
                         commitCandidate(engine);
                         return true;
                     } else {
@@ -245,6 +245,7 @@ if (bus.is_connected()) {
         
         if (!engine.setting_switch_preview){
             engine.setting_switch_dict = false;
+            engine.setting_switch_newline = false;
         }
         
         var dictPref =  suggestionBuilder.getPref();

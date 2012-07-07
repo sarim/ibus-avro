@@ -94,7 +94,7 @@ if (bus.is_connected()) {
                 
             } else if (keyval == IBus.Return || keyval == IBus.space || keyval == IBus.Tab) {
                 if (engine.buffertext.length > 0){
-                    if (keyval == IBus.Return && engine.buffertext.length > 0 && engine.currentSuggestions.length > 1){
+                    if (keyval == IBus.Return && engine.buffertext.length > 0 && engine.currentSuggestions.length > 1 && (!engine.setting_switch_newline)){
                         commitCandidate(engine);
                         return true;
                     } else {
@@ -225,7 +225,10 @@ if (bus.is_connected()) {
         engine.setting = Gio.Settings.new("com.omicronlab.avro");
     
         //set up a asynchronous callback for instant change later
-        engine.setting.connect('changed',function(){readSetting(engine);});
+        engine.setting.connect('changed', 
+            function(){
+                readSetting(engine);
+        });
     
         //read manually first time
         readSetting(engine);
@@ -233,10 +236,20 @@ if (bus.is_connected()) {
     
     
     function readSetting(engine){
-        engine.setting_switch_auxtxt = engine.setting.get_boolean('switch-auxtxt');
-        engine.setting_switch_lutable = engine.setting.get_boolean('switch-lutable');
+        engine.setting_switch_preview = engine.setting.get_boolean('switch-preview');
+        engine.setting_switch_dict = engine.setting.get_boolean('switch-dict');
+        engine.setting_switch_newline = engine.setting.get_boolean('switch-newline');
         engine.lookuptable.set_orientation(engine.setting.get_int('cboxorient'));
-        engine.lookuptable.set_page_size(engine.setting.get_int('lutable-size'));
+        engine.setting_lutable_size = engine.setting.get_int('lutable-size');
+        engine.lookuptable.set_page_size(engine.setting_lutable_size);
+        
+        if (!engine.setting_switch_preview){
+            engine.setting_switch_dict = false;
+        }
+        
+        var dictPref =  suggestionBuilder.getPref();
+        dictPref.dictEnable = engine.setting_switch_dict;
+        suggestionBuilder.setPref(dictPref);
     }
     
     
@@ -254,7 +267,7 @@ if (bus.is_connected()) {
     
     function updateCurrentSuggestions(engine){
         var suggestion = suggestionBuilder.suggest(engine.buffertext);
-        engine.currentSuggestions = suggestion['words'].slice(0);
+        engine.currentSuggestions = suggestion['words'].slice(0, engine.setting_lutable_size);
         engine.currentSelection = suggestion['prevSelection'];
         
         fillLookupTable (engine);
@@ -262,26 +275,35 @@ if (bus.is_connected()) {
     
     
     function fillLookupTable (engine){
-        var auxiliaryText = IBus.Text.new_from_string(engine.buffertext);
-        if (engine.setting_switch_auxtxt)
-            engine.update_auxiliary_text(auxiliaryText, true);
-        engine.lookuptable.clear();
         
-        engine.currentSuggestions.forEach(function(word){
-            let wtext = IBus.Text.new_from_string(word);
-            //default, ibus sets "1,2,3,4...." as label, i didn't find how to hide it,but a empty string can partially hide it
-            let wlabel = IBus.Text.new_from_string('');;
-            engine.lookuptable.append_candidate(wtext);
-            engine.lookuptable.append_label(wlabel);
-        });
+        if (engine.setting_switch_preview){
+            var auxiliaryText = IBus.Text.new_from_string(engine.buffertext);
+            engine.update_auxiliary_text(auxiliaryText, true);
+            
+            if (engine.setting_switch_dict){
+                engine.lookuptable.clear();
+
+                engine.currentSuggestions.forEach(function(word){
+                    let wtext = IBus.Text.new_from_string(word);
+                    //default, ibus sets "1,2,3,4...." as label, i didn't find how to hide it,but a empty string can partially hide it
+                    let wlabel = IBus.Text.new_from_string('');;
+                    engine.lookuptable.append_candidate(wtext);
+                    engine.lookuptable.append_label(wlabel);
+                });   
+            }
+        }
         
         preeditCandidate(engine);
     }
     
     
     function preeditCandidate(engine){
-        engine.lookuptable.set_cursor_pos(engine.currentSelection);
-        engine.update_lookup_table_fast(engine.lookuptable,true);
+        if (engine.setting_switch_preview){
+            if (engine.setting_switch_dict){
+                engine.lookuptable.set_cursor_pos(engine.currentSelection);
+                engine.update_lookup_table_fast(engine.lookuptable,true);
+            }
+        }
         
         var preeditText = IBus.Text.new_from_string(engine.currentSuggestions[engine.currentSelection]);
         engine.update_preedit_text(preeditText, engine.currentSuggestions[engine.currentSelection].length, true);
@@ -387,6 +409,7 @@ if (bus.is_connected()) {
     }
 
     component.add_engine(avroenginedesc);
+    
     if (exec_by_ibus) {
         bus.request_name("org.freedesktop.IBus.Avro", 0);
     } else {

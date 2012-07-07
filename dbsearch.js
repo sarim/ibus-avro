@@ -119,36 +119,6 @@ DBSearch.prototype = {
             case 'z':
                 tableList = ["h", "j", "jh", "z"];
                 break;
-            case '1':
-                tableList = ["e"];
-                break;
-            case '2':
-                tableList = ["d"];
-                break;
-            case '3':
-                tableList = ["t"];
-                break;
-            case '4':
-                tableList = ["c"];
-                break;
-            case '5':
-                tableList = ["p"];
-                break;
-            case '6':
-                tableList = ["ch"];
-                break;
-            case '7':
-                tableList = ["s"];
-                break;
-            case '8':
-                tableList = ["aa"];
-                break;
-            case '9':
-                tableList = ["n"];
-                break;
-            case '0':
-                tableList = ["sh"];
-                break;
             default:
                 break;
          }

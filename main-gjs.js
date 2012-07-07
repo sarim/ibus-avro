@@ -94,7 +94,7 @@ if (bus.is_connected()) {
                 
             } else if (keyval == IBus.Return || keyval == IBus.space || keyval == IBus.Tab) {
                 if (engine.buffertext.length > 0){
-                    if (keyval == IBus.Return && engine.buffertext.length > 0 && engine.currentSuggestions.length > 1){
+                    if (keyval == IBus.Return && engine.buffertext.length > 0 && engine.currentSuggestions.length > 1 && (!engine.setting_switch_newline)){
                         commitCandidate(engine);
                         return true;
                     } else {
@@ -238,6 +238,7 @@ if (bus.is_connected()) {
     function readSetting(engine){
         engine.setting_switch_preview = engine.setting.get_boolean('switch-preview');
         engine.setting_switch_dict = engine.setting.get_boolean('switch-dict');
+        engine.setting_switch_newline = engine.setting.get_boolean('switch-newline');
         engine.lookuptable.set_orientation(engine.setting.get_int('cboxorient'));
         engine.setting_lutable_size = engine.setting.get_int('lutable-size');
         engine.lookuptable.set_page_size(engine.setting_lutable_size);

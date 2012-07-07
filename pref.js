@@ -40,6 +40,7 @@ function runpref() {
     let prefwindow = builder.get_object("window1");
     let switch_preview = builder.get_object("switch_preview");
     let switch_dict = builder.get_object("switch_dict");
+    let switch_newline = builder.get_object("switch_newline");
     let lutable_size = builder.get_object("lutable_size");
     let cboxorient = builder.get_object("cboxorient");
     
@@ -57,6 +58,7 @@ function runpref() {
     let setting = Gio.Settings.new("com.omicronlab.avro")
     setting.bind("switch-preview", switch_preview, "active", Gio.SettingsBindFlags.DEFAULT)
     setting.bind("switch-dict", switch_dict, "active", Gio.SettingsBindFlags.DEFAULT)
+    setting.bind("switch-newline", switch_newline, "active", Gio.SettingsBindFlags.DEFAULT)
     setting.bind("lutable-size", lutable_size, "value", Gio.SettingsBindFlags.DEFAULT)
     setting.bind("cboxorient", cboxorient, "active", Gio.SettingsBindFlags.DEFAULT)
 

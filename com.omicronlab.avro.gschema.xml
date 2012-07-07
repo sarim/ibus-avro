@@ -11,6 +11,11 @@
       <summary>switch-dict</summary>
       <description>Whether dictionary suggestions will be shown</description>
     </key>
+    <key type="b" name="switch-newline">
+      <default>false</default>
+      <summary>switch-newline</summary>
+      <description>Whether enter key should commit newline after applying candidate</description>
+    </key>
     <key type="i" name="lutable-size">
       <default>16</default>
       <summary>lutable-size</summary>

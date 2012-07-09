@@ -26,9 +26,7 @@
 */
 
 
-imports.searchPath.unshift('.');
-const eevars = imports.evars;
-const DbServer = imports.db;
+const db = imports.avrodict;
 const RegexServer = imports.avroregexlib;
 const utfconv = imports.utf8;
 
@@ -59,16 +57,16 @@ DBSearch.prototype = {
                 tableList = ["i", "ii", "e", "y"];
                 break;
             case 'f':
-                tableList = ["ph", "e"];
+                tableList = ["ph"];
                 break;
             case 'g':
                 tableList = ["g", "gh", "j"];
                 break;
             case 'h':
-                tableList = ["h", "e"];
+                tableList = ["h"];
                 break;
             case 'i':
-                tableList = ["aa", "i", "ii", "y"];
+                tableList = ["i", "ii", "y"];
                 break;
             case 'j':
                 tableList = ["j", "jh", "z"];
@@ -77,13 +75,13 @@ DBSearch.prototype = {
                 tableList = ["k", "kh"];
                 break;
             case 'l':
-                tableList = ["l", "e"];
+                tableList = ["l"];
                 break;
             case 'm':
-                tableList = ["e", "h", "m"];
+                tableList = ["h", "m"];
                 break;
             case 'n':
-                tableList = ["e", "n", "nya", "nga", "nn"];
+                tableList = ["n", "nya", "nga", "nn"];
                 break;
             case 'o':
                 tableList = ["a", "u", "uu", "oi", "o", "ou", "y"];
@@ -95,28 +93,28 @@ DBSearch.prototype = {
                 tableList = ["k"];
                 break;
             case 'r':
-                tableList = ["aa", "rri", "h", "r", "rr", "rrh"];
+                tableList = ["rri", "h", "r", "rr", "rrh"];
                 break;
             case 's':
-                tableList = ["e", "s", "sh", "ss"];
+                tableList = ["s", "sh", "ss"];
                 break;
             case 't':
                 tableList = ["t", "th", "tt", "tth", "khandatta"];
                 break;
             case 'u':
-                tableList = ["i", "u", "uu", "y"];
+                tableList = ["u", "uu", "y"];
                 break;
             case 'v':
                 tableList = ["bh"];
                 break;
             case 'w':
-                tableList = ["o", "dd"];
+                tableList = ["o"];
                 break;
             case 'x':
                 tableList = ["e", "k"];
                 break;
             case 'y':
-                tableList = ["i", "o", "y"];
+                tableList = ["i", "y"];
                 break;
             case 'z':
                 tableList = ["h", "j", "jh", "z"];
@@ -132,7 +130,7 @@ DBSearch.prototype = {
         
         for(i in tableList) {
              var table = 'w_' + tableList[i];
-             retWords = retWords.concat(this._searchInArray(pattern, this._db[table]));
+             retWords = retWords.concat(this._searchInArray(pattern, db.tables[table]));
          }
         
         return retWords;
@@ -160,11 +158,9 @@ DBSearch.prototype = {
             print(words[w]);
         }
   	},
-
-
+  	
+  	
 	_init: function () {
-        this._db = new DbServer.DB();
-        this._db.loadDb ();
         this._regex = new RegexServer.AvroRegex();
   	}
 }
@@ -174,4 +170,4 @@ DBSearch.prototype = {
 /* Test code */
 /* --------- */
 // var __dbSearch = new DBSearch ();
-// __dbSearch._printWords('u');
+// __dbSearch._printWords('onirban');

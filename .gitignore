@@ -1,0 +1,11 @@
+ibus-avro.xml
+Makefile
+evars.js
+autom4te.cache/
+aclocal.m4
+config.log
+config.status
+configure
+Makefile.in
+install-sh
+missing

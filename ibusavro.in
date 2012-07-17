@@ -1,3 +1,0 @@
-#!/bin/bash
-export GJS_PATH=${pkgdatadir}
-gjs ${pkgdatadir}/main-gjs.js --ibus

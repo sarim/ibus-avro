@@ -3,5 +3,4 @@ layout: default
 title: About ibus-avro
 ---
 
-About:
-avro phonetic for linux
+###About ibus-avro: Avro Phonetic for Linux

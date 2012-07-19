@@ -10,7 +10,9 @@ Open **Terminal** and enter the following commands one by one.
 Step 1: Become root
 
 	sudo -s
+	
 or
+
 	su 
 	
 Step 2: Add ibus-avro repository
@@ -23,7 +25,9 @@ Step 3: Install ibus-avro
 	yum install ibus-avro
 	
 
-###Setting IBus and Avro
+
+
+###Setting up IBus and Avro
 
 You may need to set IBus as your default input method so that it starts automatically every time you log on.
 
@@ -39,6 +43,8 @@ You may need to set IBus as your default input method so that it starts automati
  10. You will be logged out, Log in again and Open any writing app Ex:Gedit
  11. Now Press `Ctrl+Space` to toggle between _English_ and _Avro_ (Bengali)
  12. Enjoy __Avro Phonetic!__
+ 
+ 
  
 ###Uninstalling ibus-avro
 

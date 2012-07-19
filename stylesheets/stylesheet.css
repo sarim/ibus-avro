@@ -250,3 +250,9 @@ a {
 .cf {
   zoom:1;
 }
+
+iframe.obs {
+	width: 100%;
+	height: 600px;
+	border: 0;
+}

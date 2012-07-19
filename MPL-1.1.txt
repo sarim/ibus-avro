@@ -444,13 +444,13 @@ EXHIBIT A -Mozilla Public License.
      License for the specific language governing rights and limitations
      under the License.
 
-     The Original Code is JAvroPhonetic.
+     The Original Code is ibus-avro.
 
      The Initial Developer of the Original Code is 
-     Rifat Nabi <to.rifat@gmail.com>
+     Sarim Khan <sarim2005@gmail.com>
 
-     Copyright (C) OmicronLab <http://www.omicronlab.com>. All Rights Reserved.
+     Copyright (C) Sarim Khan, unless otherwise stated. All Rights Reserved.
 
 
-     Contributor(s): Mehdi Hasan <mhasan@omicronlab.com>"
+     Contributor(s): Mehdi Hasan <mhasan@omicronlab.com>, Rifat Nabi <to.rifat@gmail.com>"
 

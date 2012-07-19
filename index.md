@@ -29,10 +29,10 @@ ibus-avro currently provides binary packages for the following Linux distributio
 * [openSUSE 12.1](/opensuse_12.1.html)
 
 
-Or, follow quick installation instruction here:
+<!--Or, follow quick installation instruction here:
 
 <iframe width="100%" height="600" frameborder="0" src="http://software.opensuse.org/download/package.iframe?project=home:sarimkhan&package=ibus-avro&fcolor=EAEAEA&hcolor=B5E853&acolor=B5E853&bcolor=151515">hojoborolo</iframe>
-
+-->
 
 For using on other distributions, you'll need to download the source code from [github repository](https://github.com/sarim/ibus-avro). Please follow the [readme](https://github.com/sarim/ibus-avro/blob/master/README.md) file for detail instructions.
 

@@ -55,4 +55,4 @@ You may need to set IBus as your default input method so that it starts automati
  
 ###Uninstalling ibus-avro
 
-	yum remove ibus-avro
+	sudo yum remove ibus-avro

@@ -21,12 +21,25 @@ title: ibus-avro - Avro Phonetic Bangla typing for Linux
 Stable. Current version is 1.0. See [version history](/history.html).
 
 ###Download and installation
-ibus-avro currently provides binary packages for the following Linux distributions:
+ibus-avro currently provides binary packages for the following Linux distributions: (*click on the links for detail instructions on installation and usage*)
 
 * [Ubuntu 12.04](/ubuntu_12.04.html)
 * [Fedora 16](/fedora_16.html)
 * [Fedora 17](/fedora_17.html)
 * [openSUSE 12.1](/opensuse_12.1.html)
+
+
+Or, follow quick installation instruction here:
+
+<style>
+iframe {
+	width: 100%;
+	height: 600px;
+	border: 0;
+	}
+</style>
+<iframe src="http://software.opensuse.org/download/package.iframe?project=home:sarimkhan&package=ibus-avro&fcolor=EAEAEA&hcolor=B5E853&acolor=B5E853&bcolor=151515"></iframe>
+
 
 For using on other distributions, you'll need to download the source code from [github repository](https://github.com/sarim/ibus-avro). Please follow the [readme](https://github.com/sarim/ibus-avro/blob/master/README.md) file for detail instructions.
 

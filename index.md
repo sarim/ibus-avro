@@ -15,7 +15,7 @@ title: ibus-avro - Avro Phonetic Bangla typing for Linux
 * Autocorrect support brings commonly used English words to Bangla (like, Facebook, download etc.) even with their original English spelling.
 * Customizable.
 
-###Screenshots
+###Screenshot
 
 ###Project status
 Stable. Current version is 1.0. See [version history](/history.html).

@@ -42,9 +42,9 @@ Step 4: Install ibus-avro
 
 You may want to set IBus as your default input method so that it starts automatically every time you log in.
 
-1. Run __Input Method Switcher__ (`im-switch`) from *Dash*
-2. Select __IBus__
-3. Log out and log in again.
+ 1. Run __Input Method Switcher__ (`im-switch`) from *Dash*
+ 2. Select __IBus__
+ 3. Log out and log in again.
 
 	
 ###Uninstalling ibus-avro

@@ -1,8 +1,6 @@
 # Avro phonetic for Linux in IBus
 Avro phonetic implementation for Linux in IBus.
 
-Now in early stage of development, but its pretty usable.
-
 ## Installation
 
 1. Open terminal/package manager and install following packages:

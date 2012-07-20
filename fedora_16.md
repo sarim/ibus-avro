@@ -18,7 +18,7 @@ or
 Step 2: Add ibus-avro repository
 
 	cd /etc/yum.repos.d/
-	wget http://download.opensuse.org/repositories/home:sarimkhan/Fedora_16/home:sarimkhan.repo
+	curl -L -O http://download.opensuse.org/repositories/home:sarimkhan/Fedora_16/home:sarimkhan.repo
 
 Step 3: Install ibus-avro
 

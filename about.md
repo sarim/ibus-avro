@@ -7,7 +7,7 @@ title: About ibus-avro
 
 ####Contributors
  
-1. __IBus Engine__, packaging and maintenance by [__Sarim Khan__](https://github.com/sarim)
+1. __Avro Phonetic IBus Engine__, packaging and maintenance by [__Sarim Khan__](http://www.facebook.com/sarimk)
 
 2. [__Avro Phonetic JavaScript Library__](https://github.com/torifat/jsAvroPhonetic) by [__Rifat Nabi__](https://github.com/torifat)
 

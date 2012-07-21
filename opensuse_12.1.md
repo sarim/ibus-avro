@@ -6,8 +6,8 @@ title: Installing ibus-avro on openSUSE 12.1
 
 ###Installing ibus-avro on openSUSE 12.1
 
-NB: Before installing, you should know that ibus-avro requires latest version of some libraries that aren't in the default repositories.
-During the installation process, They'll be automatically installed from repository - `GNOME-3.4` and `home:sarimkhan`. That will update core libraries of gnome to 3.4 version. If you agree, follow the steps below.
+Before installing, please note that ibus-avro requires latest version of some libraries that aren't available in the default repositories of openSUSE 12.1.
+During the installation process they'll be automatically installed from  `GNOME-3.4` and `home:sarimkhan` repositories. This will update core libraries of GNOME to version 3.4. If you agree, follow the steps below.
 
 Step 1: Download and Run the [One Click Installer](http://linux.omicronlab.com/ibus-avro.ymp)
 
@@ -75,7 +75,7 @@ Step 13: Wait as the packages will be downloaded and installed.
 
 
 
-Step 14: Congratz, Installation Finished :)
+Step 14: Congratulations, installation finished! :)
 ![opensuse](/images/opensuse12.1/suse14.png "opensuse")
 
 Now Logout from your session and login again.
@@ -90,7 +90,7 @@ Step 1: After logging in, The IBus icon will be shown, Right click on it and cli
 
 
 
-Step 2: In _IBus Preferences_, Goto _Input Method_ tab and click _Select an Input Method_. Navigate to `Bengali > Avro Phonetic`
+Step 2: In _IBus Preferences_, Go to _Input Method_ tab and click _Select an Input Method_. Navigate to `Bengali > Avro Phonetic`
 ![opensuse](/images/opensuse12.1/suse16.png "opensuse")
 
 

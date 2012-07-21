@@ -6,8 +6,8 @@ title: Installing ibus-avro on openSUSE 12.1
 
 ###Installing ibus-avro on openSUSE 12.1
 
-NB: Before installing, you should know that ibus-avro requires latest version of some libraries that aren't in the default repositaries.
-During the installtion process, They'll be automatically installed from repositary - `GNOME-3.4` and `home:sarimkhan`. That will update core libraries of gnome to 3.4 version. If you agree, follow the steps below.
+NB: Before installing, you should know that ibus-avro requires latest version of some libraries that aren't in the default repositories.
+During the installation process, They'll be automatically installed from repository - `GNOME-3.4` and `home:sarimkhan`. That will update core libraries of gnome to 3.4 version. If you agree, follow the steps below.
 
 Step 1: Download and Run the [One Click Installer](http://linux.omicronlab.com/ibus-avro.ymp)
 
@@ -35,12 +35,12 @@ Step 5: It'll ask for confirmation, press _Yes_
 
 
 
-Step 6: Installation process will begin, required repositaries will be fetched. Stay still
+Step 6: Installation process will begin, required repositories will be fetched. Stay still
 ![opensuse](/images/opensuse12.1/suse6.png "opensuse")
 
 
 
-Step 7: It'll ask to trust the keys, Drag the bottom-right corner of the dialog to strech it and press _Trust_
+Step 7: It'll ask to trust the keys, Drag the bottom-right corner of the dialog to stretch it and press _Trust_
 ![opensuse](/images/opensuse12.1/suse7.png "opensuse")
 
 
@@ -114,7 +114,7 @@ Enjoy :D
 
 ###Uninstalling ibus-avro
 
-Step 1: Goto _Activies_ Window, `Applications > System Tools > Install/Remove Softwares`
+Step 1: Goto _Activity_ Window, `Applications > System Tools > Install/Remove Software`
 
 Step 2: Locate `ibus-avro` by writing its name in the _Find_ textbox
 

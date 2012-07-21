@@ -1,0 +1,41 @@
+<metapackage xmlns:os="http://opensuse.org/Standards/One_Click_Install" xmlns="http://opensuse.org/Standards/One_Click_Install">
+  <group>
+    <repositories>
+      <repository recommended="true">
+        <name>home:sarimkhan</name>
+        <summary>sarimkhan's Home Project</summary>
+        <description>Some experiment of my idle brain.
+ </description>
+        <url>http://download.opensuse.org/repositories/home:/sarimkhan/openSUSE_12.1/</url>
+      </repository>
+      <repository recommended="false">
+        <name>openSUSE:12.1</name>
+        <summary>openSUSE 12.1 </summary>
+        <description>
+</description>
+        <url>http://download.opensuse.org/distribution/12.1/repo/oss/</url>
+      </repository>
+      <repository recommended="true">
+        <name>GNOME:STABLE:3.4</name>
+        <summary>GNOME 3.4</summary>
+        <description>This is the stable release of GNOME 3.4 for openSUSE 12.1.
+
+To use this repo, please use zypper dup --from GNOME:STABLE:3.4 (or foo.name given to the repo by you).</description>
+        <url>http://download.opensuse.org/repositories/GNOME:/STABLE:/3.4/openSUSE_12.1/</url>
+      </repository>
+      <repository recommended="true">
+        <name>openSUSE:12.1:Update</name>
+        <summary>Online updates for openSUSE 12.1</summary>
+        <description></description>
+        <url>http://download.opensuse.org/update/12.1/</url>
+      </repository>
+    </repositories>
+    <software>
+      <item>
+        <name>ibus-avro</name>
+        <summary>Avro Phonetic</summary>
+        <description>Avro phonetic implementation for Linux in IBus.</description>
+      </item>
+    </software>
+  </group>
+</metapackage>

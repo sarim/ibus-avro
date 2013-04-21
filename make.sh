@@ -1,0 +1,1 @@
+g++ -DHAVE_CONFIG_H -I. -I ~/v8/include/ -I ~/avrov8/ -I/usr/include/ibus-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/enchant -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DPKGDATADIR=\"/usr/share/ibus-tmpl\" -libus-1.0  -lgio-2.0 -lgobject-2.0 -lglib-2.0 -pthread -lgmodule-2.0 -lglib-2.0 -L ~/avrov8/ -lskv8 -g -O2 engine.c main.c

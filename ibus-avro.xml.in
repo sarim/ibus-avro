@@ -1,0 +1,28 @@
+<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<!-- filename: ibus-avro.xml -->
+<component>
+	<name>org.freedesktop.IBus.Avro</name>
+	<description>Avro Phonetic</description>
+	<exec>ibus-avro --ibus > /dev/null</exec>
+	<version>1.1</version>
+	<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
+	<license>MPL 1.1</license>
+	<homepage>https://github.com/sarim/ibus-avro</homepage>
+	<textdomain>ibus-avro</textdomain>
+
+	<engines>
+		<engine>
+			<name>ibus-avro</name>
+			<language>bn</language>
+			<license>MPL</license>
+			<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
+			<icon>${pkgdatadir}/avro-bangla.png</icon>
+			<layout>bn</layout>
+			<longname>Avro Phonetic</longname>
+			<description>Avro Phonetic Input Method</description>
+			<setup>ibus-avro-pref --standalone</setup>
+			<rank>0</rank>
+		</engine>
+	</engines>
+
+</component>

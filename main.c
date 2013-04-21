@@ -36,31 +36,31 @@ init (void)
 	
     factory = ibus_factory_new (ibus_bus_get_connection (bus));
     g_object_ref_sink (factory);
-    ibus_factory_add_engine (factory, "enchant", IBUS_TYPE_ENCHANT_ENGINE);
+    ibus_factory_add_engine (factory, "ibus-avro", IBUS_TYPE_ENCHANT_ENGINE);
 
     if (ibus) {
-        ibus_bus_request_name (bus, "org.freedesktop.IBus.Enchant", 0);
+        ibus_bus_request_name (bus, "com.omicronlab.IBus.Avro", 0);
     }
     else {
         IBusComponent *component;
 
-        component = ibus_component_new ("org.freedesktop.IBus.Enchant",
-                                        "Enchant",
-                                        "0.1.0",
-                                        "GPL",
-                                        "Peng Huang <shawn.p.huang@gmail.com>",
-                                        "http://code.google.com/p/ibus/",
+        component = ibus_component_new ("com.omicronlab.IBus.Avro",
+                                        "Avro Phonetic",
+                                        "1.1",
+                                        "MPL",
+                                        "Sarim Khan <sarim2005@gmail.com>",
+                                        "https://github.com/sarim/ibus-avro",
                                         "",
-                                        "ibus-tmpl");
+                                        "ibus-avro");
         ibus_component_add_engine (component,
-                                   ibus_engine_desc_new ("enchant",
-                                                         "Enchant",
-                                                         "Enchant",
-                                                         "ko",
-                                                         "GPL",
-                                                         "Peng Huang <shawn.p.huang@gmail.com>",
-                                                         PKGDATADIR"/icons/ibus-enchant.svg",
-                                                         "us"));
+                                   ibus_engine_desc_new ("ibus-avro",
+                                                         "Avro Phonetic",
+                                                         "Avro Phonetic",
+                                                         "bn",
+                                                         "MPL",
+                                                         "Sarim Khan <sarim2005@gmail.com>",
+                                                         PKGDATADIR"/avro-bangla.png",
+                                                         "bn"));
         ibus_bus_register_component (bus, component);
     }
 }

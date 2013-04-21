@@ -1,0 +1,3 @@
+[submodule "avrov8"]
+	path = avrov8
+	url = https://github.com/sarim/avrov8.git

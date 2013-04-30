@@ -10,7 +10,9 @@ struct _IBusAvroEngine {
 
     /* members */
     GString *preedit;
+    GString *bnpreedit;
     gint cursor_pos;
+    gint candidate_pos;
 
     IBusLookupTable *table;
 };
@@ -29,6 +31,12 @@ static gboolean
                                              guint               	 keyval,
                                              guint               	 keycode,
                                              guint               	 modifiers);
+static void 
+            ibus_avro_engine_candidate_clicked
+                                            (IBusEngine             *engine,
+                                             guint                   index,
+                                             guint                   button,
+                                             guint                   state);
 static void ibus_avro_engine_focus_in    (IBusEngine             *engine);
 static void ibus_avro_engine_focus_out   (IBusEngine             *engine);
 static void ibus_avro_engine_reset       (IBusEngine             *engine);
@@ -60,7 +68,7 @@ static void ibus_avro_engine_commit_string
                                             (IBusAvroEngine      *avro,
                                              const gchar            *string);
 static void ibus_avro_engine_update      (IBusAvroEngine      *avro);
-
+static void ibus_avro_engine_update_preedit (IBusAvroEngine *avro);
 
 G_DEFINE_TYPE (IBusAvroEngine, ibus_avro_engine, IBUS_TYPE_ENGINE)
 
@@ -73,6 +81,7 @@ ibus_avro_engine_class_init (IBusAvroEngineClass *klass)
 	ibus_object_class->destroy = (IBusObjectDestroyFunc) ibus_avro_engine_destroy;
 
     engine_class->process_key_event = ibus_avro_engine_process_key_event;
+    engine_class->candidate_clicked = ibus_avro_engine_candidate_clicked;
 }
 
 static void
@@ -80,7 +89,9 @@ ibus_avro_engine_init (IBusAvroEngine *avro)
 {
     loadjs();
     avro->preedit = g_string_new ("");
+    avro->bnpreedit = g_string_new ("");
     avro->cursor_pos = 0;
+    avro->candidate_pos = 0;
 
     avro->table = ibus_lookup_table_new (9, 0, TRUE, TRUE);
     g_object_ref_sink (avro->table);
@@ -90,6 +101,8 @@ static void
 ibus_avro_engine_destroy (IBusAvroEngine *avro)
 {
     if (avro->preedit) {
+        g_string_free (avro->bnpreedit, TRUE);
+        avro->bnpreedit = NULL;
         g_string_free (avro->preedit, TRUE);
         avro->preedit = NULL;
     }
@@ -113,7 +126,8 @@ ibus_avro_engine_update_lookup_table (IBusAvroEngine *avro)
 
 
 
-    
+    ibus_engine_update_auxiliary_text((IBusEngine *) avro,ibus_text_new_from_string(avro->preedit->str),TRUE);
+
     if (avro->preedit->len == 0) {
         ibus_engine_hide_lookup_table ((IBusEngine *) avro);
        return;
@@ -124,14 +138,6 @@ ibus_avro_engine_update_lookup_table (IBusAvroEngine *avro)
     std::vector<std::string> suggts = recvlists( avro->preedit->str);
     n_sug = suggts.size();
 
-    //char ** bnsugs = recvlists(avro->preedit->str,&n_sug);
-    //sugs = (gchar **)bnsugs;
-    /*sugs = avro_dict_suggest (dict,
-                                 avro->preedit->str,
-                                 avro->preedit->len,
-                                 &n_sug);
-                                 */
-
 
     if (/*sugs == NULL ||*/ n_sug == 0) {
         ibus_engine_hide_lookup_table ((IBusEngine *) avro);
@@ -139,13 +145,16 @@ ibus_avro_engine_update_lookup_table (IBusAvroEngine *avro)
     }
 
 
+
     for (i = 0; i < n_sug; i++) {
         ibus_lookup_table_append_candidate (avro->table, ibus_text_new_from_string (suggts[i].c_str()));
     }
 
-
-
     ibus_engine_update_lookup_table ((IBusEngine *) avro, avro->table, TRUE);
+
+    avro->candidate_pos = 0;
+
+    ibus_avro_engine_update_preedit (avro);
 
     //if (sugs)
     //    avro_dict_free_suggestions (dict, sugs);
@@ -157,11 +166,15 @@ ibus_avro_engine_update_preedit (IBusAvroEngine *avro)
     IBusText *text;
     gint retval;
 
-    text = ibus_text_new_from_static_string (avro->preedit->str);
+    if (avro->preedit->len > 0)
+    g_string_assign (avro->bnpreedit,  ibus_text_get_text(ibus_lookup_table_get_candidate(avro->table,avro->candidate_pos)));
+
+
+    text = ibus_text_new_from_static_string (avro->bnpreedit->str);
     text->attrs = ibus_attr_list_new ();
     
     ibus_attr_list_append (text->attrs,
-                           ibus_attr_underline_new (IBUS_ATTR_UNDERLINE_SINGLE, 0, avro->preedit->len));
+                           ibus_attr_underline_new (IBUS_ATTR_UNDERLINE_SINGLE, 0, avro->bnpreedit->len));
 
 /*
     if (avro->preedit->len > 0) {
@@ -186,8 +199,9 @@ ibus_avro_engine_commit_preedit (IBusAvroEngine *avro)
     if (avro->preedit->len == 0)
         return FALSE;
     
-    ibus_avro_engine_commit_string (avro, avro->preedit->str);
+    ibus_avro_engine_commit_string (avro, avro->bnpreedit->str);
     g_string_assign (avro->preedit, "");
+    g_string_assign (avro->bnpreedit, "");
     avro->cursor_pos = 0;
 
     ibus_avro_engine_update (avro);
@@ -208,11 +222,43 @@ ibus_avro_engine_commit_string (IBusAvroEngine *avro,
 static void
 ibus_avro_engine_update (IBusAvroEngine *avro)
 {
-    ibus_avro_engine_update_preedit (avro);
-    ibus_engine_hide_lookup_table ((IBusEngine *)avro);
+    ibus_avro_engine_update_lookup_table (avro);
+    if (avro->preedit->len == 0){
+        g_string_assign (avro->preedit, "");
+        g_string_assign (avro->bnpreedit, "");
+        avro->cursor_pos = 0;
+        ibus_engine_hide_auxiliary_text((IBusEngine *)avro);
+        ibus_avro_engine_update_preedit (avro);
+    }
+    //ibus_avro_engine_update_preedit (avro);
+    //ibus_engine_hide_lookup_table ((IBusEngine *)avro);
+
 }
 
-#define is_alpha(c) (((c) >= IBUS_a && (c) <= IBUS_z) || ((c) >= IBUS_A && (c) <= IBUS_Z))
+static void ibus_avro_engine_candidate_pos_updated(IBusAvroEngine *avro)
+{
+    ibus_lookup_table_set_cursor_pos(avro->table,avro->candidate_pos);
+    ibus_engine_update_lookup_table ((IBusEngine *) avro, avro->table, TRUE);
+    ibus_avro_engine_update_preedit (avro);
+}
+
+static void ibus_avro_engine_candidate_clicked
+                                            (IBusEngine             *engine,
+                                             guint                   index,
+                                             guint                   button,
+                                             guint                   state)
+{
+    
+    IBusAvroEngine *avro = (IBusAvroEngine *)engine;
+
+    if (avro->preedit->len > 0){
+        avro->candidate_pos = index;
+        ibus_avro_engine_candidate_pos_updated(avro);
+
+    }
+}
+
+#define is_alpha(c) (  ( (c) >= 33 && (c) <= 126) || ((c) >= 0xffb0 && (c) <= 0xffb9) || ((c) >= 0xffab) || ((c) >= 0xffae ) || ((c) >= 0xffaf ) || ((c) >= 0xffaa) || ((c) >= 0xffab)|| ((c) >= 0xffac)|| ((c) >= 0xffad)|| ((c) >= 0xffae)|| ((c) >= 0xffaf) )
 
 static gboolean 
 ibus_avro_engine_process_key_event (IBusEngine *engine,
@@ -220,6 +266,7 @@ ibus_avro_engine_process_key_event (IBusEngine *engine,
                                        guint       keycode,
                                        guint       modifiers)
 {
+
     IBusText *text;
     IBusAvroEngine *avro = (IBusAvroEngine *)engine;
 
@@ -242,20 +289,25 @@ ibus_avro_engine_process_key_event (IBusEngine *engine,
 
 
     switch (keyval) {
+
     case IBUS_space:
-        g_string_append (avro->preedit, " ");
-        return ibus_avro_engine_commit_preedit (avro);
+        //g_string_append (avro->preedit, " ");
+        ibus_avro_engine_commit_preedit (avro);
+        return FALSE;
     case IBUS_Return:
-        return ibus_avro_engine_commit_preedit (avro);
+        ibus_avro_engine_commit_preedit (avro);
+        return FALSE;
+
+    case IBUS_Tab:
+        ibus_avro_engine_commit_preedit (avro);
+        return FALSE;
 
     case IBUS_Escape:
         if (avro->preedit->len == 0)
             return FALSE;
 
-        g_string_assign (avro->preedit, "");
-        avro->cursor_pos = 0;
-        ibus_avro_engine_update (avro);
-        return TRUE;        
+        ibus_avro_engine_commit_preedit (avro);
+        return FALSE;        
 
     case IBUS_Left:
         if (avro->preedit->len == 0)
@@ -278,9 +330,14 @@ ibus_avro_engine_process_key_event (IBusEngine *engine,
     case IBUS_Up:
         if (avro->preedit->len == 0)
             return FALSE;
-        if (avro->cursor_pos != 0) {
-            avro->cursor_pos = 0;
-            ibus_avro_engine_update (avro);
+        // if (avro->cursor_pos != 0) {
+        //     avro->cursor_pos = 0;
+        //     ibus_avro_engine_update (avro);
+        // }
+        if (avro->candidate_pos > 0){
+            ibus_lookup_table_cursor_up(avro->table);
+            avro->candidate_pos--;
+            ibus_avro_engine_candidate_pos_updated(avro);
         }
         return TRUE;
 
@@ -288,9 +345,14 @@ ibus_avro_engine_process_key_event (IBusEngine *engine,
         if (avro->preedit->len == 0)
             return FALSE;
         
-        if (avro->cursor_pos != avro->preedit->len) {
-            avro->cursor_pos = avro->preedit->len;
-            ibus_avro_engine_update (avro);
+        // if (avro->cursor_pos != avro->preedit->len) {
+        //     avro->cursor_pos = avro->preedit->len;
+        //     ibus_avro_engine_update (avro);
+        // }
+        if (avro->candidate_pos < 8){
+            ibus_lookup_table_cursor_down(avro->table);
+            avro->candidate_pos++;
+            ibus_avro_engine_candidate_pos_updated(avro);
         }
         
         return TRUE;
@@ -322,7 +384,6 @@ ibus_avro_engine_process_key_event (IBusEngine *engine,
 
         avro->cursor_pos ++;
         ibus_avro_engine_update (avro);
-        ibus_avro_engine_update_lookup_table (avro);
         return TRUE;
     }
 

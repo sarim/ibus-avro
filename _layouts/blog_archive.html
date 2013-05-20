@@ -5,7 +5,7 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link rel="stylesheet" type="text/css" href="/stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/archive.css" media="screen">
 
     <title>{{ page.title }}</title>
     
@@ -27,29 +27,16 @@
 <body>
     <header>
         <div class="container">
-            <h1><a href="http://linux.omicronlab.com">ibus-avro</a></h1>
-
-            <h2>Avro Phonetic Bangla typing for Linux</h2>
+            <h1><a href="http://linux.omicronlab.com">ibus-avro blog</a></h1>
+			<h2></h2>
 
             <section id="downloads">
-				<a href="https://github.com/sarim/ibus-avro" class="btn btn-github">View source on GitHub</a>
+				<a href="/" class="btn btn-github">Back to Home</a>
+                <a href="https://github.com/sarim/ibus-avro" class="btn btn-github">View source on GitHub</a>
                 <a href="https://github.com/sarim/ibus-avro/issues" class="btn btn-github">Report issues</a>
                 <a href="/about.html" class="btn btn-github">About ibus-avro</a>
-				<a href="/blog.html" class="btn btn-github">Blog</a>
                 <a href="http://www.omicronlab.com" class="btn btn-github">OmicronLab</a>
             </section>
-			{% if index %}
-			<section id="recents">
-			  <h3>Recent Posts</h1>
-			  <ul id="recent_posts">
-				  {% for post in site.posts do %}
-    		      <li class="post">
-			        <a href="{{ post.url }}">{{ post.title }}</a>
-			      </li>
-				  {% endfor %}
-    			  </ul>
-			</section>
-			{% endif %}
         </div>
     </header>
 

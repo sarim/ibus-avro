@@ -38,22 +38,18 @@
 				<a href="/blog.html" class="btn btn-github">Blog</a>
                 <a href="http://www.omicronlab.com" class="btn btn-github">OmicronLab</a>
             </section>
-			{% if index %}
-			<section id="recents">
-			  <h3>Recent Posts</h1>
-			  <ul id="recent_posts">
-				  {% for post in site.posts do %}
-    		      <li class="post">
-			        <a href="{{ post.url }}">{{ post.title }}</a>
-			      </li>
-				  {% endfor %}
-    			  </ul>
-			</section>
-			{% endif %}
         </div>
     </header>
 
     <div class="container">
+		{% unless page.no_header %}
+		  <header>
+		      <h1>{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
+			  <p class="meta">
+				 <time datetime="{{ page.date | datetime | date_to_xmlschema}}" pubdate>{{ page.date | date: "<span class='month'>%b</span> <span class='day'>%d</span> <span class='year'>%Y</span>"}}</time>
+			  </p>
+		  </header>
+		{% endunless %}
         <section id="main_content">
 	        {{ content }}
         </section>

@@ -12,7 +12,7 @@ body {
 
 .container {
   width: 90%;
-  max-width: 600px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
@@ -249,4 +249,12 @@ a {
 
 .cf {
   zoom:1;
+}
+
+p {
+    text-align : justify;
+}
+
+p.meta {
+    text-align : right;
 }

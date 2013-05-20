@@ -23,8 +23,9 @@ Stable. Current version is 1.0. See [version history](/history.html).
 ###Download and installation
 ibus-avro currently provides binary packages for the following Linux distributions: (*click on the links for detail instructions on installation and usage*)
 
-* [Ubuntu 12.04](/ubuntu_12.04.html)
+* [Ubuntu 13.04](/ubuntu_13.04.html)
 * [Ubuntu 12.10](/ubuntu_12.10.html)
+* [Ubuntu 12.04](/ubuntu_12.04.html)
 * [Fedora 17](/fedora_17.html)
 * [openSUSE 12.1](/opensuse_12.1.html)
 

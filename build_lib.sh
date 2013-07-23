@@ -23,9 +23,10 @@ echo global.$LIBNAME
 done
 rm ../../avrolib-*
 cd ../..
+cp v8.gyp v8-3.18.1/tools/gyp/v8.gyp
 cd v8-3.18.1
-#make clean
-#make dependencies
+make clean
+make dependencies
 
 
 make native -j 4 library=shared werror=no snapshot=off

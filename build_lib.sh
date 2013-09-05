@@ -7,14 +7,14 @@ AVROLIBS="platform utf8 suffixdict autocorrect avrodict levenshtein avrolib avro
 #AVROLIBS="platform utf8"
 cd avrov8/lib
 > ../avrolibcombined.js
-rm ../../avrolib-*
+rm ../avrolib-*
 echo global.avro = {} \; > ../../avrolibv8.js
 for LIBNAME in $AVROLIBS
 do
 echo -n \; modulename = \"$LIBNAME\" \; > ../avrolib-$LIBNAME.js
 cat $LIBNAME.js >> ../avrolib-$LIBNAME.js
-native2ascii ../avrolib-$LIBNAME.js ../../avrolib-$LIBNAME.js
-../../yui --nomunge --preserve-semi --disable-optimizations -o ../../avrolib-$LIBNAME.js.min ../../avrolib-$LIBNAME.js
+native2ascii -encoding UTF-8 ../avrolib-$LIBNAME.js ../../avrolib-$LIBNAME.js
+java -Xms1024m -Xmx1024m -jar ../../yui --nomunge --preserve-semi --disable-optimizations -o ../../avrolib-$LIBNAME.js.min ../../avrolib-$LIBNAME.js
 python -c "import json; json.dump(open('../../avrolib-$LIBNAME.js.min').read(),open('../../avrolib-$LIBNAME.json','w'))"
 echo -n \; global.avro.$LIBNAME = >> ../../avrolibv8.js
 cat ../../avrolib-$LIBNAME.json >> ../../avrolibv8.js
@@ -26,10 +26,17 @@ cd ../..
 cp v8.gyp v8-3.18.1/tools/gyp/v8.gyp
 cd v8-3.18.1
 make clean
-make dependencies
+#make dependencies
 
 
 make native -j 4 library=shared werror=no snapshot=off
-cp out/native/lib.target/libv8.so ../libs/
+mkdir -p ../libs/
+
+if [ `uname -s` == "Darwin" ] ; then
+    PRODUCT="out/native/libv8.dylib"
+else
+    PRODUCT="out/native/lib.target/libv8.so"
+fi
+cp $PRODUCT ../libs/
 
 

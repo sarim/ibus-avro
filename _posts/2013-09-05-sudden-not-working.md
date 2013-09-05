@@ -13,7 +13,7 @@ Try deleting the `.candidate-selections.json` file in your home folder. Run the 
         rm ~/.candidate-selections.json
 
 
-Now try to start ibus-avro again. 90% time this fix solves the issue.
+Now try to start ibus-avro again. 95% time this fix solves the issue.
 
 ##Debug
 Feeling geeky and want to dig deeper ? Head to the terminal and follow the instructions below to gather some more info about the error.

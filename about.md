@@ -11,7 +11,7 @@ title: About ibus-avro
 
 2. [__Avro Phonetic JavaScript Library__](https://github.com/torifat/jsAvroPhonetic) by [__Rifat Nabi__](https://github.com/torifat)
 
-3. __Avro Phonetic Dictionary and Autocorrect JavaScript Implementation__ by [__Mehdi Hasan Khan__](https://github.com/omicronlab)
+3. __Avro Phonetic Dictionary and Autocorrect JavaScript Implementation__ by [__Mehdi Hasan Khan__](https://github.com/mugli)
 
 ibus-avro is licensed under [Mozilla Public License 1.1](https://github.com/sarim/ibus-avro/blob/master/MPL-1.1.txt) ("MPL"), an open source/free software license.
 

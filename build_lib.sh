@@ -33,7 +33,7 @@ make native -j 4 library=shared werror=no snapshot=off
 mkdir -p ../libs/
 
 if [ `uname -s` == "Darwin" ] ; then
-    PRODUCT="out/native/libv8.dylib"
+    PRODUCT="out/native/libv8.dylib out/native/libicui18n.dylib out/native/libicuuc.dylib"
 else
     PRODUCT="out/native/lib.target/libv8.so"
 fi

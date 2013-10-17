@@ -1,3 +1,3 @@
 function utf8Decode(str) {
-    return decodeURIComponent( escape( str ) );
+    return decodeURIComponent( unescape( str ) );
 }

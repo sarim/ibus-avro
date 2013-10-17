@@ -36,7 +36,7 @@ const Gio = imports.gi.Gio;
 const prefwindow = imports.pref;
 
 //check if running from ibus
-exec_by_ibus = (ARGV[0] == '--ibus')
+var exec_by_ibus = (ARGV[0] == '--ibus')
 
 // Let's initialize ibus
 IBus.init();
@@ -194,7 +194,7 @@ if (bus.is_connected()) {
         });
               
         var proplist = new IBus.PropList();
-        var propp = new IBus.Property.new(
+        var propp = IBus.Property.new(
             'setup',
             IBus.PropType.NORMAL,
             IBus.Text.new_from_string("Preferences - Avro"),

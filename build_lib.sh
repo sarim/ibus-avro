@@ -23,8 +23,8 @@ echo global.$LIBNAME
 done
 rm ../../avrolib-*
 cd ../..
-cp v8.gyp v8-3.18.1/tools/gyp/v8.gyp
-cd v8-3.18.1
+cp v8.gyp v8-3.22.14/tools/gyp/v8.gyp
+cd v8-3.22.14
 make clean
 #make dependencies
 

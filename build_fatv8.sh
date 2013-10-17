@@ -17,7 +17,7 @@ cd ..
 native2ascii avrolibcombined.js ../avrolibv8.js
 cd ..
 
-cd v8-3.18.1
+cd v8-3.22.14
 make clean
 make dependencies
 

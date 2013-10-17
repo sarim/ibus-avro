@@ -17,7 +17,7 @@
       <description>Whether enter key should commit newline after applying candidate</description>
     </key>
     <key type="i" name="lutable-size">
-      <default>16</default>
+      <default>15</default>
       <summary>lutable-size</summary>
       <description>Dictionary suggestion lookup table size</description>
     </key>    

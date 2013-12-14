@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Installing ibus-avro on Ubuntu 12.10
+title: Installing ibus-avro on Ubuntu 13.04
 ---
 
-###Installing ibus-avro on Ubuntu 12.10
+###Installing ibus-avro on Ubuntu 13.04
 
 Open **Terminal** and enter the following commands one by one.
 

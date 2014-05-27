@@ -1532,6 +1532,7 @@ var db =
     "prize": "praij",
     "processor": "prosesor",
     "product": "prODakT",
+    "production":"prODakshn",
     "professional": "prOfes`nal",
     "professor": "prOfesor",
     "profile": "prOfail",

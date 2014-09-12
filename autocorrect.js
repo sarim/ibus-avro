@@ -1809,6 +1809,7 @@ var db =
     "sumana": "sumona",
     "superman": "suparmyan",
     "support": "sapOrrT",
+    "sure":"shior",
     "surf": "sarrf",
     "surgery": "sarrjari",
     "swarnendu": "sworrnendu",

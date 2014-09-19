@@ -33,9 +33,9 @@ Step 5: Now you need to logout and login again or restart your computer.
  1. Click the IM icon in menubar and Select __Text Entry Setting__
     
     ![Text Entry](/images/ubuntu13.10/1.jpg "Text Entry")
- 2. In __Text Entry Setting__ window click `+` icon (marked by arrow) in left pane. Choose `Bengali (Avro Phonetic)` from the list and press `Add` button to add __Avro__ to the list.  
+ 2. In __Text Entry Setting__ window click `+` icon (marked by arrow) in left pane. Write `avro` in the search box (marked by arrow). Choose `Bengali (Avro Phonetic)` from the list and press `Add` button to add __Avro__ to the list.  
     
-    ![Text Entry Setting](/images/ubuntu13.10/2.jpg "Text Entry Setting")
+    ![Text Entry Setting](/images/ubuntu14.04/2.jpg "Text Entry Setting")
  3. (Optional) The keyboard shortcut to switch input method has been changed to `Super+Space` since ubuntu 13.10. You can change it to your preference from __Text Entry Setting__ window.
  4. Open any text editing software (like, `gedit`). Now Press `Super+Space` to toggle between _English_ and _Avro_ (Bengali)
  5. Enjoy __Avro Phonetic!__  

@@ -1679,6 +1679,7 @@ var db =
     "september": "sepTembor",
     "serial": "sirial",
     "series": "sirij",
+    "serious": "siriyas",
     "service": "sarrvis",
     "services": "sarrvises",
     "session": "seSan",

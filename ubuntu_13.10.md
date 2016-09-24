@@ -3,7 +3,7 @@ layout: default
 title: Installing ibus-avro on Ubuntu 13.10
 ---
 
-###Installing ibus-avro on Ubuntu 13.10
+### Installing ibus-avro on Ubuntu 13.10
 
 Open **Terminal** and enter the following commands one by one.
 
@@ -29,7 +29,7 @@ Step 4: Install ibus-avro
 Step 5: Now you need to logout and login again or restart your computer.
 
 
-###Using ibus-avro
+### Using ibus-avro
  1. Click the IM icon in menubar and Select __Text Entry Setting__
     
     ![Text Entry](/images/ubuntu13.10/1.jpg "Text Entry")
@@ -43,7 +43,7 @@ Step 5: Now you need to logout and login again or restart your computer.
     ![ibus-avro on Ubuntu](/images/ubuntu13.10/3.jpg "ibus-avro on Ubuntu")
 
 	
-###Uninstalling ibus-avro
+### Uninstalling ibus-avro
 
 Step 1: Open __Text Entry Setting__ and remove Avro Phonetic by clicking `-` icon.
 

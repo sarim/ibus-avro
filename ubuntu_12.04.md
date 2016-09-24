@@ -3,7 +3,7 @@ layout: default
 title: Installing ibus-avro on Ubuntu 12.04
 ---
 
-###Installing ibus-avro on Ubuntu 12.04
+### Installing ibus-avro on Ubuntu 12.04
 
 Open **Terminal** and enter the following commands one by one.
 
@@ -28,7 +28,7 @@ Step 4: Install ibus-avro
 
 
 
-###Using ibus-avro
+### Using ibus-avro
  1. Run __IBus__ (`Applications -> System Tools -> IBus`) from _Dash_  
  ![IBus](/images/ubuntu12.04/9.png "IBus")
  2. Open __IBus__ `Preferences` from the top panel icon  
@@ -44,7 +44,7 @@ Step 4: Install ibus-avro
  8. Enjoy __Avro Phonetic!__  
  ![ibus-avro on Ubuntu](/images/ubuntu12.04/5.png "ibus-avro on Ubuntu")
 
-###Setting IBus as default input method
+### Setting IBus as default input method
 
 You may want to set IBus as your default input method so that it starts automatically every time you log in.
 
@@ -56,7 +56,7 @@ You may want to set IBus as your default input method so that it starts automati
  ![Input Method Switcher](/images/ubuntu12.04/8.png "Input Method Switcher")
 
 	
-###Uninstalling ibus-avro
+### Uninstalling ibus-avro
 
 Step 1: Open **Terminal** and enter the following command:
 

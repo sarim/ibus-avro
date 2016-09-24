@@ -3,7 +3,7 @@ layout: default
 title: ibus-avro - Avro Phonetic Bangla typing for Linux
 ---
 
-###Welcome to Avro Phonetic for Linux
+### Welcome to Avro Phonetic for Linux
 
 **ibus-avro** is the port of popular [Avro Phonetic](http://www.omicronlab.com/avro-keyboard.html) Bangla typing method to Linux. This software works as an Engine (plugin) of [IBus](http://code.google.com/p/ibus/) and let users type in English and on-the-fly transliterate them phonetically to Bangla. 
 
@@ -17,10 +17,10 @@ title: ibus-avro - Avro Phonetic Bangla typing for Linux
 
  ![ibus-avro on Ubuntu](/images/screenshot.png "ibus-avro on Ubuntu")
 
-###Project status
+### Project status
 Stable. Current version is 1.0. See [version history](/history.html).
 
-###Download and installation
+### Download and installation
 ibus-avro currently provides binary packages for the following Linux distributions: (*click on the links for detail instructions on installation and usage*)
 
 * [Ubuntu 14.04](/ubuntu_14.04.html)
@@ -41,10 +41,10 @@ ibus-avro currently provides binary packages for the following Linux distributio
 For using on other distributions, you'll need to download the source code from [github repository](https://github.com/sarim/ibus-avro). Please follow the [readme](https://github.com/sarim/ibus-avro/blob/master/README.md) file for detail instructions.
 
 
-###Bangla typing guide
+### Bangla typing guide
 Here is the Bangla tutorial (from the Windows edition) on how to type with Avro Phonetic: [Bangla typing with Avro Phonetic](http://www.omicronlab.com/download/pdf/Bangla%20Typing%20with%20Avro%20Phonetic.pdf).
 
-###License
+### License
 ibus-avro is licensed under [Mozilla Public License 1.1](https://github.com/sarim/ibus-avro/blob/master/MPL-1.1.txt) ("MPL"), an open source/free software license.
 
 

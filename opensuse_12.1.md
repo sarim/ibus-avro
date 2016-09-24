@@ -4,7 +4,7 @@ title: Installing ibus-avro on openSUSE 12.1
 ---
 
 
-###Installing ibus-avro on openSUSE 12.1
+### Installing ibus-avro on openSUSE 12.1
 
 Before installing, please note that ibus-avro requires latest version of some libraries that aren't available in the default repositories of openSUSE 12.1.
 During the installation process they'll be automatically installed from  `GNOME-3.4` and `home:sarimkhan` repositories. This will update core libraries of GNOME to version 3.4. If you agree, follow the steps below.
@@ -83,7 +83,7 @@ Now Logout from your session and login again.
 
 
 
-###Setting up IBus and Avro
+### Setting up IBus and Avro
 
 Step 1: After logging in, The IBus icon will be shown, Right click on it and click _Preferences_
 ![opensuse](/images/opensuse12.1/suse15.png "opensuse")
@@ -112,7 +112,7 @@ Step 5: You can Open _Avro Preferences_ by Left clicking Avro Icon (when avro ph
 Enjoy :D
 
 
-###Uninstalling ibus-avro
+### Uninstalling ibus-avro
 
 Step 1: Goto _Activity_ Window, `Applications > System Tools > Install/Remove Software`
 

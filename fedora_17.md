@@ -3,7 +3,7 @@ layout: default
 title: Installing ibus-avro on Fedora 17
 ---
 
-###Installing ibus-avro on Fedora 17
+### Installing ibus-avro on Fedora 17
 
 Open **Terminal** and enter the following commands one by one.
 
@@ -27,7 +27,7 @@ Step 3: Install ibus-avro
 
 
 
-###Setting up IBus and Avro
+### Setting up IBus and Avro
 
 You may need to set IBus as your default input method so that it starts automatically every time you log on.
 
@@ -53,6 +53,6 @@ You may need to set IBus as your default input method so that it starts automati
  
  
  
-###Uninstalling ibus-avro
+### Uninstalling ibus-avro
 
 	sudo yum remove ibus-avro

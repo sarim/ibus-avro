@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/godbus/dbus"
 	"github.com/sarim/goibus/ibus"
 )
@@ -9,29 +10,31 @@ import (
 type AvroEngine struct {
 	ibus.Engine
 	propList *ibus.PropList
+	u        *AvroUtil
 }
 
 func (e *AvroEngine) ProcessKeyEvent(keyval uint32, keycode uint32, state uint32) (bool, *dbus.Error) {
 	fmt.Println("Process Key Event > ", keyval, keycode, state)
 
-	if state == 0 && keyval == 115 {
-		e.UpdateAuxiliaryText(ibus.NewText("s"), true)
+	return e.u.ProcessKeyEvent(keyval, keycode, state), nil
+}
 
-		lt := ibus.NewLookupTable()
-		lt.AppendCandidate("sss")
-		lt.AppendCandidate("s")
-		lt.AppendCandidate("gittu")
-		lt.AppendLabel("1:")
-		lt.AppendLabel("2:")
-		lt.AppendLabel("3:")
-
-		e.UpdateLookupTable(lt, true)
-
-		e.UpdatePreeditText(ibus.NewText("s"), uint32(1), true)
-		//        e.CommitText(ibus.NewText("gittu"))
-		return true, nil
+func (e *AvroEngine) CandidateClicked(index uint32, button uint32, state uint32) *dbus.Error {
+	if len(e.u.State.BufferText) > 0 {
+		e.u.State.CurrentSelection = int(index)
+		e.u.PreeditCandidate()
+		//JS: suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
+		fmt.Println("User Clicked Candidate > ", index, button, state)
 	}
-	return false, nil
+	return nil
+}
+
+func (e *AvroEngine) FocusOut() *dbus.Error {
+	fmt.Println("FocusOut")
+	if len(e.u.State.BufferText) > 0 {
+		e.u.CommitCandidate()
+	}
+	return nil
 }
 
 func (e *AvroEngine) FocusIn() *dbus.Error {
@@ -42,30 +45,6 @@ func (e *AvroEngine) FocusIn() *dbus.Error {
 
 func (e *AvroEngine) PropertyActivate(prop_name string, prop_state uint32) *dbus.Error {
 	fmt.Println("PropertyActivate", prop_name)
+	e.u.RunPreferences()
 	return nil
-}
-
-var eid = 0
-
-func AvroEngineCreator(conn *dbus.Conn, engineName string) dbus.ObjectPath {
-	fmt.Println("Creating Avro Engine")
-	eid++
-	objectPath := dbus.ObjectPath(fmt.Sprintf("/org/freedesktop/IBus/Engine/GittuGo/%d", eid))
-
-	propp := ibus.NewProperty(
-		"setup",
-		ibus.PROP_TYPE_NORMAL,
-		"Preferences - Avro",
-		"gtk-preferences",
-		"Configure Avro",
-		true,
-		true,
-		ibus.PROP_STATE_UNCHECKED)
-
-	engine := &AvroEngine{ibus.BaseEngine(conn, objectPath), ibus.NewPropList(propp)}
-
-	conn.Export(engine, objectPath, ibus.IBUS_IFACE_ENGINE)
-	conn.Export(engine, objectPath, ibus.BUS_PROPERTIES_NAME)
-
-	return objectPath
 }

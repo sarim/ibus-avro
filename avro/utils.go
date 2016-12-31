@@ -50,7 +50,7 @@ func (u *AvroUtil) InitSetting() {
 	u.Setting.Preview = true
 	u.Setting.DisableDict = false
 	u.Setting.EnterNewline = true
-	u.Setting.Orientation = int(ibus.ORIENTATION_VERTICAL)
+	u.Setting.Orientation = int(ibus.ORIENTATION_HORIZONTAL)
 	u.Setting.LookupTableSize = 15
 
 	u.ReadSetting()
@@ -100,7 +100,7 @@ func (u *AvroUtil) ProcessKeyEvent(keyval uint32, keycode uint32, state uint32) 
 
 		// ibus_keyval_to_unicode replaced with string cast
 		u.State.BufferText += string(keyval)
-		fmt.Println("bufferText > ", u.State.BufferText)
+		fmt.Printf("ProcessKeyEvent: BufferText > %q\n", u.State.BufferText)
 
 		u.UpdateCurrentSuggestions()
 		return true
@@ -183,7 +183,7 @@ func (u *AvroUtil) ProcessKeyEvent(keyval uint32, keycode uint32, state uint32) 
 
 func (u *AvroUtil) UpdateCurrentSuggestions() {
 	suggestion := u.SuggestionBuilder.Suggest(u.State.BufferText)
-	fmt.Println("BufferText, UpdateCurrentSuggestions > ", u.State.BufferText, suggestion)
+	fmt.Printf("UpdateCurrentSuggestions: BufferText, Suggestions > %q, %q\n", u.State.BufferText, suggestion)
 	if len(suggestion.Words) > u.Setting.LookupTableSize {
 		u.State.CurrentSuggestions = suggestion.Words[0:u.Setting.LookupTableSize]
 	} else {

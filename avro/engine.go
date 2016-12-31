@@ -48,3 +48,25 @@ func (e *AvroEngine) PropertyActivate(prop_name string, prop_state uint32) *dbus
 	e.u.RunPreferences()
 	return nil
 }
+
+func (e *AvroEngine) PageUp() *dbus.Error {
+	fmt.Println("PageUp")
+	e.u.DecSelection()
+	return nil
+}
+
+func (e *AvroEngine) PageDown() *dbus.Error {
+	fmt.Println("PageDown")
+	e.u.IncSelection()
+	return nil
+}
+
+func (e *AvroEngine) CursorUp() *dbus.Error {
+	fmt.Println("CursorUp")
+	return nil
+}
+
+func (e *AvroEngine) CursorDown() *dbus.Error {
+	fmt.Println("CursorDown")
+	return nil
+}

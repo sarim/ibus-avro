@@ -100,8 +100,6 @@ func (u *AvroUtil) ProcessKeyEvent(keyval uint32, keycode uint32, state uint32) 
 
 		// ibus_keyval_to_unicode replaced with string cast
 		u.State.BufferText += string(keyval)
-		fmt.Printf("ProcessKeyEvent: BufferText > %q\n", u.State.BufferText)
-
 		u.UpdateCurrentSuggestions()
 		return true
 
@@ -224,16 +222,21 @@ func (u *AvroUtil) PreeditCandidate() {
 	}
 
 	preeditText := u.State.CurrentCandidate()
-	u.Engine.UpdatePreeditText(ibus.NewText(preeditText), uint32(len(preeditText)), true)
+	u.Engine.UpdatePreeditTextWithMode(ibus.NewText(preeditText), uint32(len(preeditText)), true, ibus.IBUS_ENGINE_PREEDIT_COMMIT)
 }
 
 func (u *AvroUtil) CommitCandidate() {
-	if len(u.State.BufferText) > 0 {
-		commitText := ibus.NewText(u.State.CurrentCandidate())
-		u.Engine.CommitText(commitText)
-	}
+	u.CommitCandidateWithMode(false)
+}
 
-	u.SuggestionBuilder.StringCommitted(u.State.BufferText, u.State.CurrentCandidate())
+func (u *AvroUtil) CommitCandidateWithMode(internal bool) {
+	if len(u.State.BufferText) > 0 {
+		if !internal {
+			commitText := ibus.NewText(u.State.CurrentCandidate())
+			u.Engine.CommitText(commitText)
+		}
+		u.SuggestionBuilder.StringCommitted(u.State.BufferText, u.State.CurrentCandidate())
+	}
 
 	u.ResetAll()
 }

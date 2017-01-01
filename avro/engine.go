@@ -32,7 +32,10 @@ func (e *AvroEngine) CandidateClicked(index uint32, button uint32, state uint32)
 func (e *AvroEngine) FocusOut() *dbus.Error {
 	fmt.Println("FocusOut")
 	if len(e.u.State.BufferText) > 0 {
-		e.u.CommitCandidate()
+		// calling CommitCandidateWithMode:internal=true bcz
+		// PreeditTextWithMode-IBUS_ENGINE_PREEDIT_COMMIT will've already committed text,
+		// so only committing internally. otherwise it'll will commit twice.
+		e.u.CommitCandidateWithMode(true)
 	}
 	return nil
 }

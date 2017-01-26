@@ -23,7 +23,7 @@ Avro phonetic implementation for Linux in IBus.
    
        Step by step guide: http://linux.omicronlab.com/fedora_17.html
    
-   __For  Open Suse__
+   __For Open Suse__
 
        Step by step guide: http://linux.omicronlab.com/opensuse_12.1.html
        

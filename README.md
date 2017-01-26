@@ -41,7 +41,7 @@ Avro phonetic implementation for Linux in IBus.
     You'll need all related build tools like `automake`, `autoconf` etc...
     and Latest __IBus__ from _git_ compiled with _gobject-introspection_ support enabled.
 
-     2.Now give the following commands step-by-step:
+  2.Now give the following commands step-by-step:
 
 		git clone git://github.com/sarim/ibus-avro.git
 		cd ibus-avro

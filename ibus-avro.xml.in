@@ -17,7 +17,7 @@
 			<license>MPL</license>
 			<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
 			<icon>${pkgdatadir}/avro-bangla.png</icon>
-			<layout>bn</layout>
+			<layout>en</layout>
 			<longname>Avro Phonetic</longname>
 			<description>Avro Phonetic Input Method</description>
 			<setup>/usr/bin/env gjs --include-path=${pkgdatadir} ${pkgdatadir}/pref.js --standalone</setup>

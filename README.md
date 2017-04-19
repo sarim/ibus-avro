@@ -3,7 +3,7 @@ Avro phonetic implementation for Linux in IBus.
 
 ## Installation
 
-1. Open terminal/package manager and install following packages:
+   1.Open terminal/package manager and install following packages:
  
 		git 
 		libibus-1.0-0
@@ -15,17 +15,33 @@ Avro phonetic implementation for Linux in IBus.
 		gir1.2-gjsdbus-1.0
 		gir1.2-ibus-1.0
 
-    __For Ubuntu 12.04__
+   __For Ubuntu 12.04__
     
-    	sudo apt-get install git ibus libibus-1.0-dev automake autoconf gjs gir1.2-gjsdbus-1.0 gir1.2-ibus-1.0
+     sudo apt-get install git ibus libibus-1.0-dev automake autoconf gjs gir1.2-gjsdbus-1.0 gir1.2-ibus-1.0
+	   
+   __For Fedora__
+   
+       Step by step guide: http://linux.omicronlab.com/fedora_17.html
+   
+   __For Open Suse__
+
+       Step by step guide: http://linux.omicronlab.com/opensuse_12.1.html
+       
+   __For Arch Linux__
+   
+     yaourt ibus-avro-git
 	
+     **Configuration: (only for Arch Linux)
+  
+     i. yaourt or other arch user repository helper must be installed before running the command to install the package. 
+     ii. As i-bus autometically doesn't start with the linux system, *"/usr/bin/ibus-daemon"* must be added in daemon. 
 	
-    __For other linux distributions__
+   __For other linux distributions__
     
     You'll need all related build tools like `automake`, `autoconf` etc...
     and Latest __IBus__ from _git_ compiled with _gobject-introspection_ support enabled.
 
-2. Now give the following commands step-by-step:
+  2.Now give the following commands step-by-step:
 
 		git clone git://github.com/sarim/ibus-avro.git
 		cd ibus-avro
@@ -35,14 +51,15 @@ Avro phonetic implementation for Linux in IBus.
 
 
 ## Usage
- 1. Run __IBus__ (`Applications -> System Tools -> IBus`) from _Dash_
- 2. Open __IBus__ `Preferences` from the top panel icon  
- 3. Go to `Input method`
- 4. `Select an input method -> Bengali -> Avro`
- 5. Now Click `Add` button to add __Avro__ to the list
- 6. Now restart __IBus__ from the top panel icon (`Right Click -> Restart`)
- 7. Now Press `Ctrl+Space` to toggle between _English_ and _Avro_ (Bengali)
- 8. Enjoy __Avro Phonetic!__
+
+   1. Run __IBus__ (`Applications -> System Tools -> IBus`) from _Dash_
+   2. Open __IBus__ `Preferences` from the top panel icon  
+   3. Go to `Input method`
+   4. `Select an input method -> Bengali -> Avro`
+   5. Now Click `Add` button to add __Avro__ to the list
+   6. Now restart __IBus__ from the top panel icon (`Right Click -> Restart`)
+   7. Now Press `Ctrl+Space` to toggle between _English_ and _Avro_ (Bengali)
+   8. Enjoy __Avro Phonetic!__
 
 
 ## Contributors

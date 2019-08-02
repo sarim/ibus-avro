@@ -68,6 +68,9 @@ if (bus.is_connected()) {
             //print keypress infos, helpful for debugging
             print(keyval + " " + keycode + " " + state);
 
+            //sanitize state, main reason is to weed out xorg masks
+            state = state & IBus.ModifierType.MODIFIER_MASK;
+
             //ignore release event
             if (!(state == 0 || state == 1 || state == 16 || state == 17)) {
                 return false;

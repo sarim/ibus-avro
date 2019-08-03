@@ -375,7 +375,7 @@ SuggestionBuilder.prototype = {
                 var file_stream = file.read(null);
                 var data_stream = gio.DataInputStream.new(file_stream);
                 var json = data_stream.read_until("", null);
-                this._candidateSelections = JSON.parse(json[0]);
+                this._candidateSelections = JSON.parse(json[0]) || {};
                 
                 /*
                 file.read_async(0, null,

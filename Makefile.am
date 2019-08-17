@@ -54,6 +54,7 @@ installdeb: all
 	mkdir -p $(DESTDIR)$(libexecdir)/
 	mkdir -p $(DESTDIR)${pkgdatadir}/../glib-2.0/schemas/
 	mkdir -p $(DESTDIR)${pkgdatadir}/../ibus/component/	
+	mkdir -p $(DESTDIR)${pkgdatadir}/../metainfo/
 	${INSTALL} -m 644 evars.js $(DESTDIR)${pkgdatadir}/evars.js
 	${INSTALL} -m 755 main-gjs.js $(DESTDIR)${pkgdatadir}/main-gjs.js	
 	${INSTALL} -m 644 avrolib.js $(DESTDIR)${pkgdatadir}/avrolib.js
@@ -70,6 +71,7 @@ installdeb: all
 	${INSTALL} -m 644 avro-bangla.png $(DESTDIR)${pkgdatadir}/avro-bangla.png
 	${INSTALL} -m 644 ibus-avro.xml $(DESTDIR)${pkgdatadir}/../ibus/component/ibus-avro.xml
 	${INSTALL} -m 644 com.omicronlab.avro.gschema.xml $(DESTDIR)${pkgdatadir}/../glib-2.0/schemas/com.omicronlab.avro.gschema.xml
+	${INSTALL} -m 644 com.github.sarim.ibus.avro.metainfo.xml $(DESTDIR)${pkgdatadir}/../metainfo/com.github.sarim.ibus.avro.metainfo.xml
 
 uninstall: 
 	rm ${pkgdatadir}/../ibus/component/ibus-avro.xml

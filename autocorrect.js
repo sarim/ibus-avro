@@ -1706,6 +1706,7 @@ var db =
     "ShOloana": "ShOlo`ana",
     "shOnni": "shOn`ni",
     "shopping": "Soping",
+    "shorot": "shorot``",
     "shortcut": "SorrTkaT",
     "shounak": "SOUnok",
     "show": "SO",

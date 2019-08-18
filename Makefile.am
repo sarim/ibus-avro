@@ -31,6 +31,7 @@ install: all
 	mkdir -p $(libexecdir)/
 	mkdir -p ${pkgdatadir}/../glib-2.0/schemas/
 	mkdir -p ${pkgdatadir}/../ibus/component/
+	mkdir -p ${pkgdatadir}/../applications/
 	${INSTALL} -m 644 evars.js ${pkgdatadir}/evars.js
 	${INSTALL} -m 755 main-gjs.js ${pkgdatadir}/main-gjs.js	
 	${INSTALL} -m 644 avrolib.js ${pkgdatadir}/avrolib.js
@@ -48,12 +49,15 @@ install: all
 	${INSTALL} -m 644 ibus-avro.xml ${pkgdatadir}/../ibus/component/ibus-avro.xml
 	${INSTALL} -m 644 com.omicronlab.avro.gschema.xml ${pkgdatadir}/../glib-2.0/schemas/com.omicronlab.avro.gschema.xml
 	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
+	${INSTALL} -m 644 ibus-setup-ibus-avro.desktop ${pkgdatadir}/../applications/ibus-setup-ibus-avro.desktop
 
 installdeb: all
 	mkdir -p $(DESTDIR)$(pkgdatadir)/
 	mkdir -p $(DESTDIR)$(libexecdir)/
 	mkdir -p $(DESTDIR)${pkgdatadir}/../glib-2.0/schemas/
 	mkdir -p $(DESTDIR)${pkgdatadir}/../ibus/component/	
+	mkdir -p $(DESTDIR)${pkgdatadir}/../metainfo/
+	mkdir -p $(DESTDIR)${pkgdatadir}/../applications/
 	${INSTALL} -m 644 evars.js $(DESTDIR)${pkgdatadir}/evars.js
 	${INSTALL} -m 755 main-gjs.js $(DESTDIR)${pkgdatadir}/main-gjs.js	
 	${INSTALL} -m 644 avrolib.js $(DESTDIR)${pkgdatadir}/avrolib.js
@@ -70,10 +74,13 @@ installdeb: all
 	${INSTALL} -m 644 avro-bangla.png $(DESTDIR)${pkgdatadir}/avro-bangla.png
 	${INSTALL} -m 644 ibus-avro.xml $(DESTDIR)${pkgdatadir}/../ibus/component/ibus-avro.xml
 	${INSTALL} -m 644 com.omicronlab.avro.gschema.xml $(DESTDIR)${pkgdatadir}/../glib-2.0/schemas/com.omicronlab.avro.gschema.xml
+	${INSTALL} -m 644 com.github.sarim.ibus.avro.metainfo.xml $(DESTDIR)${pkgdatadir}/../metainfo/com.github.sarim.ibus.avro.metainfo.xml
+	${INSTALL} -m 644 ibus-setup-ibus-avro.desktop $(DESTDIR)${pkgdatadir}/../applications/ibus-setup-ibus-avro.desktop
 
 uninstall: 
 	rm ${pkgdatadir}/../ibus/component/ibus-avro.xml
 	rm ${pkgdatadir}/../glib-2.0/schemas/com.omicronlab.avro.gschema.xml
+	rm ${pkgdatadir}/../applications/ibus-setup-ibus-avro.desktop
 	glib-compile-schemas ${pkgdatadir}/../glib-2.0/schemas/
 	rm -rf ${pkgdatadir}
 

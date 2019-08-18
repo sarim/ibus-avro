@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="inputmethod">
+  <id>com.github.sarim.ibus.avro</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <name>Avro Phonetic</name>
+  <summary>Bangla input method for IBus</summary>
+  <description>
+    <p>
+      ibus-avro is a port of the popular Avro Phonetic Bangla typing method
+      to Linux. This software works as an Engine (plugin) of IBus and lets
+      users type in English and on-the-fly transliterate them phonetically
+      to Bangla.
+    </p>
+  </description>
+  <url type="homepage">https://github.com/sarim/ibus-avro</url>
+  <developer_name>Sarim Khan</developer_name>
+  <project_license>MPL-1.1</project_license>
+</component>

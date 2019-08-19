@@ -377,6 +377,7 @@ var db =
     "calkumRO": "cal`kumRO",
     "call": "kol",
     "camera": "kyamera",
+    "campus": "kyampas",
     "canada": "kanaDa",
     "cancel": "kyan`sel",
     "canon": "kyanon",

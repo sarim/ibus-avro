@@ -1,23 +1,13 @@
 AUTOMAKE_OPTIONS = foreign
-FILES = autocorrect.js avro-bangla.png avrodict.js avrolib.js avropref.ui avroregexlib.js changeloggen.sh com.omicronlab.avro.gschema.xml configure.ac database-compiler.js Database.db3 dbsearch.js evars.js.in ibus-avro.xml.in levenshtein.js main-gjs.js Makefile.am pref.js README.md suffixdict.js suggestionbuilder.js utf8.js
+FILES = autocorrect.js avro-bangla.png avrodict.js avrolib.js avropref.ui avroregexlib.js changeloggen.sh com.omicronlab.avro.gschema.xml configure.ac database-compiler.js Database.db3 dbsearch.js evars.js.in ibus-avro.xml.in ibus-setup-ibus-avro.desktop.in levenshtein.js main-gjs.js Makefile.am pref.js README.md suffixdict.js suggestionbuilder.js utf8.js
 
 all: build
 	@:
 	
-build: evars.js ibus-avro.xml main-gjs.js avrolib.js utf8.js avro-bangla.png avrodict.js suffixdict.js dbsearch.js avroregexlib.js suggestionbuilder.js levenshtein.js autocorrect.js
+build: evars.js ibus-avro.xml ibus-setup-ibus-avro.desktop main-gjs.js avrolib.js utf8.js avro-bangla.png avrodict.js suffixdict.js dbsearch.js avroregexlib.js suggestionbuilder.js levenshtein.js autocorrect.js
 	@:
 
-ibus-avro.xml: ibus-avro.xml.in
-	$(AM_V_GEN) \
-	( \
-		libexecdir=${libexecdir}; \
-		pkgdatadir=${pkgdatadir}; \
-		s=`cat $<`; \
-		eval "echo \"$${s}\""; \
-	) > $@
-	
-	
-evars.js: evars.js.in
+%: %.in ibus-avro.xml.in evars.js.in evars.js.in ibus-setup-ibus-avro.desktop.in
 	$(AM_V_GEN) \
 	( \
 		libexecdir=${libexecdir}; \
@@ -87,5 +77,5 @@ uninstall:
 clean:
 	@:
 cleanup:
-	rm -r evars.js ibus-avro.xml Makefile autom4te.cache/ aclocal.m4 config.log config.status configure Makefile.in install-sh missing
+	rm -r evars.js ibus-avro.xml ibus-setup-ibus-avro.desktop Makefile autom4te.cache/ aclocal.m4 config.log config.status configure Makefile.in install-sh missing
 .PHONY: all build clean

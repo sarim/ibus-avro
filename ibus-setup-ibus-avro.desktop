@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=IBus Avro Phonetic Preferences
-Type=Application
-Exec=/usr/bin/env gjs --include-path=/usr/share/ibus-avro /usr/share/ibus-avro/pref.js --standalone
-Icon=/usr/share/ibus-avro/avro-bangla.png
-NoDisplay=true
-StartupNotify=true

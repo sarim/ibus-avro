@@ -6,7 +6,7 @@ Avro phonetic implementation for Linux in IBus.
 On Ubuntu, and on Debian's *testing* and *unstable* releases, Avro phonetic
 is distributed through the `ibus-avro` package. To install it, simply do:
 
-		sudo apt install ibus-avro
+	sudo apt install ibus-avro
 
 On other Linux distros you can install the dependencies and build/install
 using the source code in this repository.
@@ -17,6 +17,7 @@ using the source code in this repository.
 		libibus-1.0-dev
 		automake
 		autoconf
+		make
 		gjs
 		ibus
 
@@ -24,7 +25,7 @@ using the source code in this repository.
 
     As root, do:
 
-		apt install git libibus-1.0-dev automake autoconf gjs ibus
+		apt install git libibus-1.0-dev automake autoconf make gjs ibus
 
     __For other linux distributions__
 

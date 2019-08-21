@@ -3,27 +3,35 @@ Avro phonetic implementation for Linux in IBus.
 
 ## Installation
 
-1. Open terminal/package manager and install following packages:
- 
-		git 
-		libibus-1.0-0
-		libibus-1.0-dev
-		ibus
-		automake 
-		autoconf
-		gjs
-		gir1.2-gjsdbus-1.0
-		gir1.2-ibus-1.0
+On Ubuntu, and on Debian's *testing* and *unstable* releases, Avro phonetic
+is distributed through the `ibus-avro` package. To install it, simply do:
 
-    __For Ubuntu 12.04__
-    
-    	sudo apt-get install git ibus libibus-1.0-dev automake autoconf gjs gir1.2-gjsdbus-1.0 gir1.2-ibus-1.0
-	
-	
+	sudo apt install ibus-avro
+
+On other Linux distros you can install the dependencies and build/install
+using the source code in this repository.
+
+1. Open terminal/package manager and install following packages:
+
+		git
+		libibus-1.0-dev
+		automake
+		autoconf
+		make
+		gjs
+		ibus
+
+    __For e.g. Debian 10 "buster"__
+
+    As root, do:
+
+		apt install git libibus-1.0-dev automake autoconf make gjs ibus
+
     __For other linux distributions__
-    
+
     You'll need all related build tools like `automake`, `autoconf` etc...
-    and Latest __IBus__ from _git_ compiled with _gobject-introspection_ support enabled.
+    and to run it you need `ibus` and `gjs`. Use the list of packages above
+    as guidance, but please note that some packages may have other names.
 
 2. Now give the following commands step-by-step:
 

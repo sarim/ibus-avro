@@ -15,4 +15,23 @@
   <url type="homepage">https://github.com/sarim/ibus-avro</url>
   <developer_name>Sarim Khan</developer_name>
   <project_license>MPL-1.1</project_license>
+  <icon type="remote" width="48" height="48">http://linux.omicronlab.com/appstream/avro-icon.png</icon>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Avro Phonetic in ubuntu 18.04.3 LTS (gnome)</caption>
+      <image>http://linux.omicronlab.com/appstream/avro_ubuntu_gnome.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Avro Phonetic in debian 10 buster (cinnamon)</caption>
+      <image>http://linux.omicronlab.com/appstream/avro_debian_cinnamon.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Avro Phonetic in debian 10 buster (mate)</caption>
+      <image>http://linux.omicronlab.com/appstream/avro_debian_mate.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Avro Phonetic in kubuntu 18.04.3 LTS (kde)</caption>
+      <image>http://linux.omicronlab.com/appstream/avro_kubuntu_kde.png</image>
+    </screenshot>
+  </screenshots>  
 </component>

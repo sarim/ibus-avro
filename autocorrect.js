@@ -866,8 +866,9 @@ var db =
     "home": "hOm",
     "hostel": "hOsTel",
     "hotel": "hOTel",
-    "hothat": "hoThat``"
-    "hoThat": "hoThat``"
+    "hotat": "hoThat``",
+    "hothat": "hoThat``",
+    "hoThat": "hoThat``",
     "hotkey": "hoT-ki",
     "howra": "haORa",
     "howrah": "haORa",

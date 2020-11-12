@@ -62,159 +62,170 @@ if (bus.is_connected()) {
             object_path: '/org/freedesktop/IBus/Engine/' + id,
             connection: bus.get_connection()
         });
+        print("Created Engine #" + id);
 
-        engine.connect('process-key-event', function (engine, keyval, keycode, state) {
+        engine.connect('process-key-event', engine_process_key_event );
 
-            //print keypress infos, helpful for debugging
-            print(keyval + " " + keycode + " " + state);
-
-            //sanitize state, main reason is to weed out xorg masks
-            state = state & IBus.ModifierType.MODIFIER_MASK;
-
-            //ignore release event
-            if (!(state == 0 || state == 1 || state == 16 || state == 17)) {
-                return false;
-            }
-
-            // capture the shift key
-            if (keycode == 42) {
-                return true;
-            }
-
-            // process letter key events
-            if ((keyval >= 33 && keyval <= 126) ||
-                (keyval >= IBus.KP_0 && keyval <= IBus.KP_9) ||
-                 keyval == IBus.KP_Add ||
-                 keyval == IBus.KP_Decimal ||
-                 keyval == IBus.KP_Divide ||
-                 keyval == IBus.KP_Multiply ||
-                 keyval == IBus.KP_Divide ||
-                 keyval == IBus.KP_Subtract) {
-                
-                engine.buffertext += IBus.keyval_to_unicode(keyval);
-                updateCurrentSuggestions(engine);
-                return true;
-                
-            } else if (keyval == IBus.Return || keyval == IBus.space || keyval == IBus.Tab) {
-                if (engine.buffertext.length > 0){
-                    if ((keyval == IBus.Return) && engine.setting_switch_newline && engine.setting_switch_preview && (engine.buffertext.length > 0)){
-                        commitCandidate(engine);
-                        return true;
-                    } else {
-                        commitCandidate(engine);
-                    }
-                }
-
-            } else if (keyval == IBus.BackSpace) {
-                if (engine.buffertext.length > 0) {
-                    engine.buffertext = engine.buffertext.substr(0, engine.buffertext.length - 1);
-                    updateCurrentSuggestions(engine);
-                    
-                    if (engine.buffertext.length <= 0) {
-                        resetAll(engine);                  
-                    }
-                    return true;
-                } 
-            } else if (keyval == IBus.Left || keyval == IBus.KP_Left || keyval == IBus.Right || keyval == IBus.KP_Right) {
-                if (engine.currentSuggestions.length <= 0 || engine.lookuptable.get_orientation() == 1){                    
-                    commitCandidate(engine);
-                } else {
-                    if (keyval == IBus.Left || keyval == IBus.KP_Left) {
-                        decSelection(engine);
-                    }
-                    else if (keyval == IBus.Right || keyval == IBus.KP_Right) {
-                        incSelection(engine);
-                    }
-                    
-                    return true;
-                }
-                
-            } else if (keyval == IBus.Up || keyval == IBus.KP_Up || keyval == IBus.Down || keyval == IBus.KP_Down) {
-                print (engine.lookuptable.get_orientation());
-                if (engine.currentSuggestions.length <= 0 || engine.lookuptable.get_orientation() == 0){                    
-                    commitCandidate(engine);
-                } else {
-                    if (keyval == IBus.Up) {
-                        decSelection(engine);
-                    }
-                    else if (keyval == IBus.Down) {
-                        incSelection(engine);
-                    }
-                    
-                    return true;
-                }
-           
-            } else if (keyval == IBus.Control_L || 
-                       keyval == IBus.Control_R || 
-                       keyval == IBus.Insert || 
-                       keyval == IBus.KP_Insert || 
-                       keyval == IBus.Delete || 
-                       keyval == IBus.KP_Delete || 
-                       keyval == IBus.Home || 
-                       keyval == IBus.KP_Home || 
-                       keyval == IBus.Page_Up || 
-                       keyval == IBus.KP_Page_Up || 
-                       keyval == IBus.Page_Down || 
-                       keyval == IBus.KP_Page_Down || 
-                       keyval == IBus.End || 
-                       keyval == IBus.KP_End || 
-                       keyval == IBus.Alt_L || 
-                       keyval == IBus.Alt_R || 
-                       keyval == IBus.Super_L || 
-                       keyval == IBus.Super_R || 
-                       keyval == IBus.Return || 
-                       keyval == IBus.space || 
-                       keyval == IBus.Tab || 
-                       keyval == IBus.KP_Enter) {
-                    
-                    commitCandidate(engine);
-            }
-            return false;
-        });
-
-        engine.connect('candidate-clicked', function (engine,index,button,state) {
-            if (engine.buffertext.length > 0) {
-                engine.currentSelection = index;
-                preeditCandidate(engine);
-                suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
-                print("candidate clicked: " + index + " " + button + " " + state);
-            }
-            
-        });
+        engine.connect('candidate-clicked', engine_candidate_clicked );
         
-        engine.connect('focus-out', function () {
-            if (engine.buffertext.length > 0) {
-                commitCandidate(engine);
-            }
-        });
+        engine.connect('focus-out', engine_focus_out );
 
-        engine.connect('focus-in', function () {    
-            engine.register_properties(proplist);
-        });
+        engine.connect('focus-in', engine_focus_in );
 
-        engine.connect('property-activate', function () {    
-            runPreferences();
-        });
-              
-        var proplist = new IBus.PropList();
-        var propp = IBus.Property.new(
-            'setup',
-            IBus.PropType.NORMAL,
-            IBus.Text.new_from_string("Preferences - Avro"),
-            'gtk-preferences',
-            IBus.Text.new_from_string("Configure Avro"),
-            true,
-            true,
-            IBus.PropState.UNCHECKED,
-            null
-        );
+        engine.connect('property-activate', engine_property_activate );
 
-        proplist.append(propp);        
         engine.lookuptable = IBus.LookupTable.new(16, 0, true, true);        
         resetAll(engine);
         initSetting(engine);
         return engine;
-    }        
+    }
+    
+    function engine_process_key_event(engine, keyval, keycode, state) {
+
+        //print keypress infos, helpful for debugging
+        print(keyval + " " + keycode + " " + state);
+
+        //sanitize state, main reason is to weed out xorg masks
+        state = state & IBus.ModifierType.MODIFIER_MASK;
+
+        //ignore release event
+        if (!(state == 0 || state == 1 || state == 16 || state == 17)) {
+            return false;
+        }
+
+        // capture the shift key
+        if (keycode == 42) {
+            return true;
+        }
+
+        // process letter key events
+        if ((keyval >= 33 && keyval <= 126) ||
+            (keyval >= IBus.KP_0 && keyval <= IBus.KP_9) ||
+             keyval == IBus.KP_Add ||
+             keyval == IBus.KP_Decimal ||
+             keyval == IBus.KP_Divide ||
+             keyval == IBus.KP_Multiply ||
+             keyval == IBus.KP_Divide ||
+             keyval == IBus.KP_Subtract) {
+            
+            engine.buffertext += IBus.keyval_to_unicode(keyval);
+            updateCurrentSuggestions(engine);
+            return true;
+            
+        } else if (keyval == IBus.Return || keyval == IBus.space || keyval == IBus.Tab) {
+            if (engine.buffertext.length > 0){
+                if ((keyval == IBus.Return) && engine.setting_switch_newline && engine.setting_switch_preview && (engine.buffertext.length > 0)){
+                    commitCandidate(engine);
+                    return true;
+                } else {
+                    commitCandidate(engine);
+                }
+            }
+
+        } else if (keyval == IBus.BackSpace) {
+            if (engine.buffertext.length > 0) {
+                engine.buffertext = engine.buffertext.substr(0, engine.buffertext.length - 1);
+                updateCurrentSuggestions(engine);
+                
+                if (engine.buffertext.length <= 0) {
+                    resetAll(engine);                  
+                }
+                return true;
+            } 
+        } else if (keyval == IBus.Left || keyval == IBus.KP_Left || keyval == IBus.Right || keyval == IBus.KP_Right) {
+            if (engine.currentSuggestions.length <= 0 || engine.lookuptable.get_orientation() == 1){                    
+                commitCandidate(engine);
+            } else {
+                if (keyval == IBus.Left || keyval == IBus.KP_Left) {
+                    decSelection(engine);
+                }
+                else if (keyval == IBus.Right || keyval == IBus.KP_Right) {
+                    incSelection(engine);
+                }
+                
+                return true;
+            }
+            
+        } else if (keyval == IBus.Up || keyval == IBus.KP_Up || keyval == IBus.Down || keyval == IBus.KP_Down) {
+            print (engine.lookuptable.get_orientation());
+            if (engine.currentSuggestions.length <= 0 || engine.lookuptable.get_orientation() == 0){                    
+                commitCandidate(engine);
+            } else {
+                if (keyval == IBus.Up) {
+                    decSelection(engine);
+                }
+                else if (keyval == IBus.Down) {
+                    incSelection(engine);
+                }
+                
+                return true;
+            }
+       
+        } else if (keyval == IBus.Control_L || 
+                   keyval == IBus.Control_R || 
+                   keyval == IBus.Insert || 
+                   keyval == IBus.KP_Insert || 
+                   keyval == IBus.Delete || 
+                   keyval == IBus.KP_Delete || 
+                   keyval == IBus.Home || 
+                   keyval == IBus.KP_Home || 
+                   keyval == IBus.Page_Up || 
+                   keyval == IBus.KP_Page_Up || 
+                   keyval == IBus.Page_Down || 
+                   keyval == IBus.KP_Page_Down || 
+                   keyval == IBus.End || 
+                   keyval == IBus.KP_End || 
+                   keyval == IBus.Alt_L || 
+                   keyval == IBus.Alt_R || 
+                   keyval == IBus.Super_L || 
+                   keyval == IBus.Super_R || 
+                   keyval == IBus.Return || 
+                   keyval == IBus.space || 
+                   keyval == IBus.Tab || 
+                   keyval == IBus.KP_Enter) {
+                
+                commitCandidate(engine);
+        }
+        return false;
+    }
+
+    function engine_candidate_clicked(engine,index,button,state) {
+        if (engine.buffertext.length > 0) {
+            engine.currentSelection = index;
+            preeditCandidate(engine);
+            suggestionBuilder.updateCandidateSelection(engine.buffertext, engine.currentSuggestions[engine.currentSelection]);
+            print("candidate clicked: " + index + " " + button + " " + state);
+        }
+    }
+
+    function engine_focus_out(engine) {
+        if (engine.buffertext.length > 0) {
+            commitCandidate(engine);
+        }
+    }
+
+    var proplist = new IBus.PropList();
+    var propp = IBus.Property.new(
+        'setup',
+        IBus.PropType.NORMAL,
+        IBus.Text.new_from_string("Preferences - Avro"),
+        'gtk-preferences',
+        IBus.Text.new_from_string("Configure Avro"),
+        true,
+        true,
+        IBus.PropState.UNCHECKED,
+        null
+    );
+
+    proplist.append(propp);
+
+    function engine_focus_in(engine) {    
+        engine.register_properties(proplist);
+    }
+
+    function engine_property_activate(engine) {    
+        runPreferences();
+    }
 
     /* =========================================================================== */
     /* =========================================================================== */

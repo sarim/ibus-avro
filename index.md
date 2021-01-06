@@ -18,34 +18,33 @@ title: ibus-avro - Avro Phonetic Bangla typing for Linux
  ![ibus-avro on Ubuntu](/images/screenshot.png "ibus-avro on Ubuntu")
 
 ### Project status
-Stable. Current version is 1.0. See [version history](/history.html).
+Stable. Current version is 1.2. See [version history](https://github.com/sarim/ibus-avro/releases).
 
 ### Download and installation
-ibus-avro currently provides binary packages for the following Linux distributions: (*click on the links for detail instructions on installation and usage*)
+Official repositories of following Linux distributions contain ibus-avro
 
-* [Ubuntu 14.04](/ubuntu_14.04.html)
-* [Ubuntu 13.10](/ubuntu_13.10.html)
-* [Ubuntu 13.04](/ubuntu_13.04.html)
-* [Ubuntu 12.10](/ubuntu_12.10.html)
-* [Ubuntu 12.04](/ubuntu_12.04.html)
-* [Fedora 17](/fedora_17.html)
-* [openSUSE 12.1](/opensuse_12.1.html)
+* **Ubuntu 16.04 LTS (Xenial Xerus)** [backports]
+* **Ubuntu 18.04 LTS (Bionic Beaver)** [backports]
+* **Ubuntu 20.04 LTS (Focal Fossa)**
+* **Ubuntu 20.10 (Groovy Gorilla)**
+* **Ubuntu 21.04 (Hirsute Hippo)**
+* **Debian 11 (Bullseye)**
+* **Debian Unstable (Sid)**
 
-
-<!--Or, follow quick installation instruction here:
-
-<iframe width="100%" height="600" frameborder="0" src="http://software.opensuse.org/download/package.iframe?project=home:sarimkhan&package=ibus-avro&fcolor=EAEAEA&hcolor=B5E853&acolor=B5E853&bcolor=151515">hojoborolo</iframe>
--->
-**Note**: ibus-avro will not work below Ubuntu 12.04, Fedora 17 due to some dependencies. We'll move to openSUSE 12.2 as soon as it is released with the updated dependencies and 12.1 may not remain officially supported after that.
+For these distributions, you can simply install `ibus-avro` from software center (or equvalent tool). For example to install it from command line using apt:
+```
+sudo apt-get install ibus-avro
+```
+For an older version of ubuntu or debian (and other debian based distributions, ex: Raspbian) you can add debian sid repository with a lower pin-priority to apt, and install ibus-avro from there. Only attempt this if you're an advanced user with detailed knowledge of apt pinning.
 
 For using on other distributions, you'll need to download the source code from [github repository](https://github.com/sarim/ibus-avro). Please follow the [readme](https://github.com/sarim/ibus-avro/blob/master/README.md) file for detail instructions.
 
+### Usage
+
+After installing you have to restart ibus, if you're unsure how to do that, restart your session (logout/login) or restart your computer. Now you can add `Avro Phonetic` to Input Methods using your distribution's setting gui. For `Ubuntu`: `Setting` -> `Region & Language` -> `Input Sources`.
 
 ### Bangla typing guide
 Here is the Bangla tutorial (from the Windows edition) on how to type with Avro Phonetic: [Bangla typing with Avro Phonetic](http://www.omicronlab.com/download/pdf/Bangla%20Typing%20with%20Avro%20Phonetic.pdf).
 
 ### License
 ibus-avro is licensed under [Mozilla Public License 1.1](https://github.com/sarim/ibus-avro/blob/master/MPL-1.1.txt) ("MPL"), an open source/free software license.
-
-
-

@@ -21,6 +21,8 @@ title: ibus-avro - Avro Phonetic Bangla typing for Linux
 Stable. Current version is 1.2. See [version history](https://github.com/sarim/ibus-avro/releases).
 
 ### Download and installation
+
+#### Debian/Ubuntu
 Official repositories of following Linux distributions contain ibus-avro
 
 * **Ubuntu 16.04 LTS (Xenial Xerus)** [backports]
@@ -32,10 +34,18 @@ Official repositories of following Linux distributions contain ibus-avro
 * **Debian Unstable (Sid)**
 
 For these distributions, you can simply install `ibus-avro` from software center (or equvalent tool). For example to install it from command line using apt:
-```
+```sh
 sudo apt-get install ibus-avro
 ```
 For an older version of ubuntu or debian (and other debian based distributions, ex: Raspbian) you can add debian sid repository with a lower pin-priority to apt, and install ibus-avro from there. Only attempt this if you're an advanced user with detailed knowledge of apt pinning.
+
+#### Arch and derivatives
+AUR contains a community maintained package named `ibus-avro-git`. You can install it using your preferred tool. For example to install using `yay`:
+```
+yay -S ibus-avro-git
+```
+
+#### Others
 
 For using on other distributions, you'll need to download the source code from [github repository](https://github.com/sarim/ibus-avro). Please follow the [readme](https://github.com/sarim/ibus-avro/blob/master/README.md) file for detail instructions.
 

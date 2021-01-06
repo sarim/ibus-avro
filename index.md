@@ -43,7 +43,7 @@ For an older version of ubuntu or debian (and other debian based distributions, 
 
 #### Arch and derivatives
 AUR contains a community maintained package named `ibus-avro-git`. You can install it using your preferred tool. For example to install using `yay`:
-```
+```sh
 yay -S ibus-avro-git
 ```
 

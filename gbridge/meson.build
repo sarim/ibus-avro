@@ -6,7 +6,6 @@ gdeps = [
     dependency('mozjs-68')
 ]
 
-inc = include_directories('gjs', 'gjs/build')
-sources = files('main.cpp', 'fake-context.cpp')
+sources = files('main.cpp')
 
-executable('gbridge', sources, include_directories : inc, dependencies : gdeps)
+executable('gbridge', sources, dependencies : gdeps)

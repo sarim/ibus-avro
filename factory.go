@@ -23,10 +23,9 @@ func InitAvroPhonetic() {
 	regexParser := avroregex.Parser{Data: db.Regexdb}
 	dBSearch := avrodict.Searcher{Table: db.Dictdb, Regex: &regexParser}
 
-	//TODO: implement a persistent CandidateSelector
-	candSelector := avrophonetic.NewInMemoryCandidateSelector(nil)
+	candidateSelector := NewPersistentCandidateSelector()
 
-	sb = avrophonetic.NewBuilder(&dBSearch, db.Autocorrect, &avroParser, db.Suffixdb, pref, candSelector)
+	sb = avrophonetic.NewBuilder(&dBSearch, db.Autocorrect, &avroParser, db.Suffixdb, pref, candidateSelector)
 
 }
 

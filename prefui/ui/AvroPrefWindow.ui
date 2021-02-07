@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkAdjustment" id="lutable_size">
+  <requires lib="gtk+" version="3.20" />
+  <object class="GtkAdjustment" id="lutable_adjustment">
     <property name="lower">5</property>
     <property name="upper">15</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkWindow" id="window1">
+  <template class="AvroPrefWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Avro Phonetic Preferences</property>
-    <property name="resizable">False</property>
-    <property name="modal">True</property>
-    <property name="icon">avro-bangla.png</property>
-    <property name="urgency_hint">True</property>
+    <property name="show_menubar">False</property>
+    <child type="titlebar">
+      <placeholder />
+    </child>
     <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
@@ -38,30 +38,26 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">Preview Window:</property>
                     <property name="justify">right</property>
                     <property name="width_chars">25</property>
+                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">Dictionary Suggestion:</property>
+                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -69,13 +65,10 @@
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="use_action_appearance">False</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -83,29 +76,24 @@
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="use_action_appearance">False</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="label6">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">Enter/Return key only closes preview window:</property>
                     <property name="justify">right</property>
                     <property name="width_chars">25</property>
+                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -113,27 +101,22 @@
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="use_action_appearance">False</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">Maximum suggestions:</property>
+                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -141,7 +124,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="margin_right">18</property>
-                    <property name="adjustment">lutable_size</property>
+                    <property name="adjustment">lutable_adjustment</property>
                     <property name="show_fill_level">True</property>
                     <property name="fill_level">16</property>
                     <property name="round_digits">1</property>
@@ -151,30 +134,24 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">Suggestion List Orientation:</property>
+                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkComboBoxText" id="cboxorient">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="entry_text_column">0</property>
-                    <property name="id_column">1</property>
                     <items>
                       <item translatable="yes">Horizontal</item>
                       <item translatable="yes">Vertical</item>
@@ -183,8 +160,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
               </object>
@@ -193,5 +168,5 @@
         </child>
       </object>
     </child>
-  </object>
+  </template>
 </interface>

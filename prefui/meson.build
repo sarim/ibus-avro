@@ -1,5 +1,7 @@
 project('prefui', 'vala', 'c')
 
+gnome = import('gnome')
+
 dependencies = [
     dependency('glib-2.0'),
     dependency('gobject-2.0'),
@@ -15,4 +17,10 @@ install_data(
 )
 meson.add_install_script('meson_post_install.py')
 
-executable('ibus-avro-pref', sources, dependencies: dependencies)
+gresources = gnome.compile_resources(
+    'pref-resources',
+    'ui/gresources.xml',
+    source_dir: ['ui']
+)
+
+executable('ibus-avro-pref', sources, gresources, dependencies: dependencies)

@@ -15,4 +15,18 @@ gdeps = [
 
 sources = files('test-suggester.c', 'suggester.cpp')
 
-executable('gbridge', sources, dependencies : gdeps)
+avrolib = shared_library('avro',
+                        sources,
+                        dependencies : gdeps,
+                        install : true)
+
+avro_gir = gnome.generate_gir(
+  avrolib,
+  sources: ['suggester.cpp', 'suggester.h'],
+  namespace: 'Avro',
+  nsversion: '0.1',
+  dependencies: gdeps,
+  install: true
+)
+
+executable('gbridge', sources, dependencies : gdeps, link_with : avrolib)

@@ -56,13 +56,19 @@ func (cs *PersistentCandidateSelector) Save() error {
 		return err
 	}
 
-	err = ioutil.WriteFile(cs.filePath, jsonBytes, 0644)
+	f, err := os.OpenFile(cs.filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
-		fmt.Println("cannot write to candidateSelectionFile", err)
+		return err
+	}
+	defer f.Close()
+
+	_, err = f.Write(jsonBytes)
+	if err != nil {
+		fmt.Println("cannot write to candidateSelectionFile", cs.filePath, err)
 		return err
 	}
 
-	return nil
+	return f.Sync()
 }
 
 func (cs *PersistentCandidateSelector) Has(candidate string) bool {

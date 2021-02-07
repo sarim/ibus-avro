@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     if (argc > 1)
         g_chdir(argv[1]);
 
-    Suggester *suggester = (Suggester *)g_object_new(AVRO_TYPE_SUGGESTER, NULL);
+    AvroSuggester *suggester = (AvroSuggester *)g_object_new(AVRO_TYPE_SUGGESTER, NULL);
 
     g_object_unref(suggester);
 }

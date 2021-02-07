@@ -1,23 +1,23 @@
 #include "suggester.h"
 
-struct _Suggester
+struct _AvroSuggester
 {
     GObject parent_instance;
 
     GjsContext *gjs;
 };
 
-G_DEFINE_TYPE(Suggester, suggester, G_TYPE_OBJECT)
+G_DEFINE_TYPE(AvroSuggester, avro_suggester, G_TYPE_OBJECT)
 
 /* class initializer, called only once */
 static void
-suggester_class_init(SuggesterClass *klass)
+avro_suggester_class_init(AvroSuggesterClass *klass)
 {
 }
 
 /* instance initializer */
 static void
-suggester_init(Suggester *self)
+avro_suggester_init(AvroSuggester *self)
 {
     const char *program_name = "suggester.js";
 
@@ -46,46 +46,46 @@ suggester_init(Suggester *self)
 }
 
 /**
- * suggester_get_pref_dict:
+ * avro_suggester_get_pref_dict:
  * Returns: a #gboolean preference dictionary suggestion
  */
-gboolean suggester_get_pref_dict(Suggester *self)
+gboolean avro_suggester_get_pref_dict(AvroSuggester *self)
 {
     return true;
 }
 
 /**
- * suggester_set_pref_dict:
+ * avro_suggester_set_pref_dict:
  * @enabled: (in): preference set enable/disable dictionary suggestion
  */
-void suggester_set_pref_dict(Suggester *self, gboolean enabled)
+void avro_suggester_set_pref_dict(AvroSuggester *self, gboolean enabled)
 {
 }
 
 /**
- * suggester_suggest:
+ * avro_suggester_suggest:
  * @text: (in): user typed text
- * @words: (out): suggestion list
+ * @words: (out)(element-type utf8): suggestion list
  * @prev_selection: (out): prev selection index
  */
-void suggester_suggest(Suggester *self, gchar *text, GList *words, gint *prev_selection)
+void avro_suggester_suggest(AvroSuggester *self, gchar *text, GList *words, gint *prev_selection)
 {
 }
 
 /**
- * suggester_commit_string:
+ * avro_suggester_commit_string:
  * @text: (in): user typed text
  * @word: (in): user selected candidate to commit
  */
-void suggester_commit_string(Suggester *self, gchar *text, gchar *word)
+void avro_suggester_commit_string(AvroSuggester *self, gchar *text, gchar *word)
 {
 }
 
 /**
- * suggester_update_candidate:
+ * avro_suggester_update_candidate:
  * @text: (in): user typed text
  * @word: (in): user selected candidate to update
  */
-void suggester_update_candidate(Suggester *self, gchar *text, gchar *word)
+void avro_suggester_update_candidate(AvroSuggester *self, gchar *text, gchar *word)
 {
 }

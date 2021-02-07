@@ -1,4 +1,11 @@
-project('gbridge', 'c', 'cpp')
+project('gbridge', 'c', 'cpp',
+    default_options : [
+        'c_std=gnu99',
+        'cpp_std=gnu++11'
+    ]
+)
+
+gnome = import('gnome')
 
 gdeps = [
     dependency('glib-2.0'),
@@ -6,6 +13,6 @@ gdeps = [
     dependency('mozjs-68')
 ]
 
-sources = files('main.cpp')
+sources = files('test-suggester.c', 'suggester.cpp')
 
 executable('gbridge', sources, dependencies : gdeps)

@@ -17,13 +17,13 @@ var sb *avrophonetic.SuggestionBuilder
 
 func InitAvroPhonetic() {
 	db := avrodata.NewDB()
-	pref := avrophonetic.Preference{false}
+	pref := avrophonetic.Preference{}
 
-	avroParser := avroclassic.Parser{db.Classicdb}
-	regexParser := avroregex.Parser{db.Regexdb}
-	dBSearch := avrodict.Searcher{db.Dictdb, &regexParser}
+	avroParser := avroclassic.Parser{Data: db.Classicdb}
+	regexParser := avroregex.Parser{Data: db.Regexdb}
+	dBSearch := avrodict.Searcher{Table: db.Dictdb, Regex: &regexParser}
 
-	//TODO: implement a persistant CandidateSelector
+	//TODO: implement a persistent CandidateSelector
 	candSelector := avrophonetic.NewInMemoryCandidateSelector(nil)
 
 	sb = avrophonetic.NewBuilder(&dBSearch, db.Autocorrect, &avroParser, db.Suffixdb, pref, candSelector)
@@ -45,14 +45,14 @@ func AvroEngineCreator(conn *dbus.Conn, engineName string) dbus.ObjectPath {
 		true,
 		ibus.PROP_STATE_UNCHECKED)
 
-	avroutil := &AvroUtil{}
+	avroUtil := &AvroUtil{}
 
-	engine := &AvroEngine{ibus.BaseEngine(conn, objectPath), ibus.NewPropList(propp), avroutil}
+	engine := &AvroEngine{ibus.BaseEngine(conn, objectPath), ibus.NewPropList(propp), avroUtil}
 
-	avroutil.Engine = engine
-	avroutil.SuggestionBuilder = sb
-	avroutil.InitSetting()
-	avroutil.ResetAll()
+	avroUtil.Engine = engine
+	avroUtil.SuggestionBuilder = sb
+	avroUtil.InitSetting()
+	avroUtil.ResetAll()
 
 	ibus.PublishEngine(conn, objectPath, engine)
 	return objectPath

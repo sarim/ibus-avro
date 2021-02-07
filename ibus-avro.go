@@ -9,9 +9,9 @@ import (
 	"github.com/sarim/goibus/ibus"
 )
 
-var embeded = flag.Bool("ibus", false, "Run the embeded ibus component")
+var embedded = flag.Bool("ibus", false, "Run the embedded ibus component")
 var standalone = flag.Bool("standalone", false, "Run standalone by creating new component")
-var generatexml = flag.String("xml", "", "Write xml representation of component to file or stdout if file == \"-\"")
+var generateXML = flag.String("xml", "", "Write xml representation of component to file or stdout if file == \"-\"")
 
 func makeComponent() *ibus.Component {
 
@@ -54,13 +54,13 @@ func main() {
 
 	flag.Parse()
 
-	if *generatexml != "" {
+	if *generateXML != "" {
 		c := makeComponent()
 
-		if *generatexml == "-" {
+		if *generateXML == "-" {
 			c.OutputXML(os.Stdout)
 		} else {
-			f, err := os.Create(*generatexml)
+			f, err := os.Create(*generateXML)
 			if err != nil {
 				panic(err)
 			}
@@ -68,7 +68,7 @@ func main() {
 			c.OutputXML(f)
 			f.Close()
 		}
-	} else if *embeded {
+	} else if *embedded {
 		bus := ibus.NewBus()
 		fmt.Println("Got Bus, Running Embeded")
 

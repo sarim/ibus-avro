@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"os/exec"
+	"strconv"
+	"strings"
 
 	"github.com/sarim/avro-go/avrophonetic"
 	"github.com/sarim/goibus/ibus"
@@ -18,7 +21,7 @@ type AvroSettingStorage interface {
 
 type AvroSetting struct {
 	Preview         bool
-	DisableDict     bool
+	EnableDict      bool
 	EnterNewline    bool
 	Orientation     int
 	LookupTableSize int
@@ -46,18 +49,61 @@ type AvroUtil struct {
 }
 
 func (u *AvroUtil) InitSetting() {
-	//TODO: implement a setting persistence layer with update events
 	u.Setting.Preview = true
-	u.Setting.DisableDict = false
+	u.Setting.EnableDict = true
 	u.Setting.EnterNewline = true
 	u.Setting.Orientation = int(ibus.ORIENTATION_HORIZONTAL)
 	u.Setting.LookupTableSize = 15
 
 	u.ReadSetting()
+
+	//TODO: remove ghetto code and implement programatically
+	go func(u *AvroUtil) {
+		cmd := exec.Command("gsettings", "monitor", "com.omicronlab.avro")
+		stdout, err := cmd.StdoutPipe()
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		err = cmd.Start()
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		err = nil
+		for buf := make([]byte, 64); err == nil; _, err = stdout.Read(buf) {
+			fmt.Println("Settings updated, calling ReadSetting")
+			u.ReadSetting()
+		}
+		cmd.Wait()
+	}(u)
 }
 
 func (u *AvroUtil) ReadSetting() {
-	//TODO: implement things
+	//TODO: remove ghetto code and implement programatically
+
+	out, err := exec.Command("gsettings", "list-recursively", "com.omicronlab.avro").Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	lines := strings.Split(string(out), "\n")
+	for _, line := range lines {
+		var id, key, value string
+		fmt.Sscanf(line, "%s %s %s", &id, &key, &value)
+		switch key {
+		case "toggle-preview":
+			u.Setting.Preview, _ = strconv.ParseBool(value)
+		case "toggle-dict":
+			u.Setting.EnableDict, _ = strconv.ParseBool(value)
+		case "toggle-newline":
+			u.Setting.Preview, _ = strconv.ParseBool(value)
+		case "lutable-size":
+			u.Setting.LookupTableSize, _ = strconv.Atoi(value)
+		case "lutable-orientation":
+			u.Setting.Orientation, _ = strconv.Atoi(value)
+		}
+	}
 }
 
 func (u *AvroUtil) ResetAll() {
@@ -197,7 +243,7 @@ func (u *AvroUtil) FillLookupTable() {
 		auxiliaryText := ibus.NewText(u.State.BufferText)
 		u.Engine.UpdateAuxiliaryText(auxiliaryText, true)
 
-		if !u.Setting.DisableDict {
+		if u.Setting.EnableDict {
 			//TODO: implement
 			//u.State.LookupTable.Clear
 
@@ -215,7 +261,7 @@ func (u *AvroUtil) FillLookupTable() {
 
 func (u *AvroUtil) PreeditCandidate() {
 	if u.Setting.Preview {
-		if !u.Setting.DisableDict {
+		if u.Setting.EnableDict {
 			u.State.LookupTable.CursorPos = uint32(u.State.CurrentSelection)
 			u.Engine.UpdateLookupTable(u.State.LookupTable, true)
 		}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="com.omicronlab.avrobeta" path="/com/omicronlab/avrobeta/">
+    <key type="b" name="toggle-preview">
+      <default>true</default>
+      <summary>toggle-preview</summary>
+      <description>Whether Preview window (auxiliary text, suggestions) will be shown</description>
+    </key>
+    <key type="b" name="toggle-dict">
+      <default>true</default>
+      <summary>toggle-dict</summary>
+      <description>Whether dictionary suggestions will be shown</description>
+    </key>
+    <key type="b" name="toggle-newline">
+      <default>false</default>
+      <summary>toggle-newline</summary>
+      <description>Whether enter key should commit newline after applying candidate</description>
+    </key>
+    <key type="i" name="lutable-size">
+      <default>15</default>
+      <summary>lutable-size</summary>
+      <description>Dictionary suggestion lookup table size</description>
+    </key>
+    <key type="i" name="lutable-orientation">
+      <default>0</default>
+      <summary>lutable-orientation</summary>
+      <description>Orientation of Lookup Table</description>
+    </key>
+  </schema>
+</schemalist>

@@ -32,12 +32,12 @@ func InitAvroPhonetic() {
 func AvroEngineCreator(conn *dbus.Conn, engineName string) dbus.ObjectPath {
 	eid++
 	fmt.Println("Creating Avro Engine #", eid)
-	objectPath := dbus.ObjectPath(fmt.Sprintf("/org/freedesktop/IBus/Engine/AvroGo/%d", eid))
+	objectPath := dbus.ObjectPath(fmt.Sprintf("/org/freedesktop/IBus/Engine/AvroBeta/%d", eid))
 
 	propp := ibus.NewProperty(
 		"setup",
 		ibus.PROP_TYPE_NORMAL,
-		"Preferences - Avro",
+		"Preferences - Avro Phonetic Beta",
 		"gtk-preferences",
 		"Configure Avro",
 		true,

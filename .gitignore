@@ -1,3 +1,6 @@
 /ibus-avro
+/ibus-engine-avro-beta
+/ibus-engine-avro
 /.idea
 .DS_Store
+.vscode

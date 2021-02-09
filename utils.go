@@ -97,6 +97,7 @@ func (u *AvroUtil) ReadSetting() {
 			u.Setting.Preview, _ = strconv.ParseBool(value)
 		case "toggle-dict":
 			u.Setting.EnableDict, _ = strconv.ParseBool(value)
+			u.SuggestionBuilder.Pref.DictDisabled = !u.Setting.EnableDict
 		case "toggle-newline":
 			u.Setting.Preview, _ = strconv.ParseBool(value)
 		case "lutable-size":

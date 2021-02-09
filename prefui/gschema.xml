@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="com.omicronlab.avro" path="/com/omicronlab/avro/">
+  <schema id="com.omicronlab.avrobeta" path="/com/omicronlab/avrobeta/">
     <key type="b" name="toggle-preview">
       <default>true</default>
       <summary>toggle-preview</summary>

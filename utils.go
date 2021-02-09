@@ -59,7 +59,7 @@ func (u *AvroUtil) InitSetting() {
 
 	//TODO: remove ghetto code and implement programatically
 	go func(u *AvroUtil) {
-		cmd := exec.Command("gsettings", "monitor", "com.omicronlab.avro")
+		cmd := exec.Command("gsettings", "monitor", "com.omicronlab.avrobeta")
 		stdout, err := cmd.StdoutPipe()
 		if err != nil {
 			fmt.Println(err.Error())
@@ -82,7 +82,7 @@ func (u *AvroUtil) InitSetting() {
 func (u *AvroUtil) ReadSetting() {
 	//TODO: remove ghetto code and implement programatically
 
-	out, err := exec.Command("gsettings", "list-recursively", "com.omicronlab.avro").Output()
+	out, err := exec.Command("gsettings", "list-recursively", "com.omicronlab.avrobeta").Output()
 	if err != nil {
 		fmt.Println(err.Error())
 		return

@@ -19,9 +19,9 @@ public class AvroPrefWindow : Gtk.ApplicationWindow {
 	public Gtk.ComboBoxText selection_lutable_orientation { get; set; }
 
 	internal AvroPrefWindow (AvroPrefApplication app) {
-		Object (application: app, title: "Avro Phonetic Preferences");
+		Object (application: app, title: "Avro Phonetic Beta Preferences");
 
-		var settings = new Settings ("com.omicronlab.avro");
+		var settings = new Settings ("com.omicronlab.avrobeta");
 		settings.bind("toggle-preview", toggle_preview, "active", GLib.SettingsBindFlags.DEFAULT);
 		settings.bind("toggle-dict", toggle_dict, "active", GLib.SettingsBindFlags.DEFAULT);
 		settings.bind("toggle-newline", toggle_newline, "active", GLib.SettingsBindFlags.DEFAULT);

@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/godbus/dbus"
 	"github.com/sarim/goibus/ibus"
@@ -12,6 +13,11 @@ import (
 var embedded = flag.Bool("ibus", false, "Run the embedded ibus component")
 var standalone = flag.Bool("standalone", false, "Run standalone by creating new component")
 var generateXML = flag.String("xml", "", "Write xml representation of component to file or stdout if file == \"-\"")
+var prefix = flag.String("prefix", "/usr", "The directory where the software is installed")
+
+//TODO: get project name from build system via ldflags
+const engineBinary = "ibus-engine-avro-beta"
+const setupBinary = "ibus-setup-avro-beta"
 
 func makeComponent() *ibus.Component {
 
@@ -22,7 +28,7 @@ func makeComponent() *ibus.Component {
 		"MPL 1.1",
 		"Sarim Khan <sarim2005@gmail.com>",
 		"https://github.com/sarim/ibus-avro",
-		"/bin/avro",
+		filepath.Join(*prefix, "lib", "ibus", engineBinary)+" -ibus",
 		"avro-phonetic-beta")
 
 	avroenginedesc := ibus.SmallEngineDesc(
@@ -32,9 +38,9 @@ func makeComponent() *ibus.Component {
 		"bn",
 		"MPL 1.1",
 		"Sarim Khan <sarim2005@gmail.com>",
-		"/ibus-avro/avro-bangla.png",
-		"bn",
-		"/bin/avropref",
+		filepath.Join(*prefix, "share", "ibus-avro-beta", "avro-bangla.png"),
+		"us",
+		filepath.Join(*prefix, "lib", "ibus", setupBinary),
 		"2.0")
 
 	component.AddEngine(avroenginedesc)

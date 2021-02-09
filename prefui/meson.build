@@ -1,4 +1,4 @@
-project('prefui', 'vala', 'c')
+project('avro setup', 'vala', 'c')
 
 gnome = import('gnome')
 
@@ -12,8 +12,8 @@ sources = files('gmain.vala')
 
 install_data(
     'gschema.xml',
-    install_dir: get_option('datadir') / 'glib-2.0' / 'schemas',
-    rename: 'com.omicronlab.avro.gschema.xml'
+    install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas'),
+    rename: 'com.omicronlab.avrobeta.gschema.xml'
 )
 meson.add_install_script('meson_post_install.py')
 
@@ -23,4 +23,4 @@ gresources = gnome.compile_resources(
     source_dir: ['ui']
 )
 
-executable('ibus-avro-pref', sources, gresources, dependencies: dependencies)
+executable('ibus-setup-avro-beta', sources, gresources, dependencies: dependencies, install : true, install_dir : 'lib/ibus')

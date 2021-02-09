@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -310,5 +311,7 @@ func (u *AvroUtil) DecSelection() {
 }
 
 func (u *AvroUtil) RunPreferences() {
-	//TODO: Implement Preferences GUI
+	cmd := exec.Command(filepath.Join(*prefix, "lib", "ibus", setupBinary))
+	cmd.Start()
+
 }

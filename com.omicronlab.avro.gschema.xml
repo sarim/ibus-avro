@@ -20,12 +20,17 @@
       <default>15</default>
       <summary>lutable-size</summary>
       <description>Dictionary suggestion lookup table size</description>
-    </key>    
+    </key>
     <key type="i" name="cboxorient">
       <default>0</default>
       <summary>cboxorient</summary>
       <description>Orientation of Lookup Table</description>
-    </key>    
+    </key>
+    <key type="b" name="switch-ansi">
+      <default>false</default>
+      <summary>switch-ANSI</summary>
+      <description>Whether ANSI encoding will be used</description>
+    </key>
 
   </schema>
 </schemalist>

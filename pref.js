@@ -31,7 +31,7 @@ const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const eevars = imports.evars;
 
-var prefwindow, switch_preview, switch_newline, switch_dict, lutable_size, cboxorient, scale1;
+var prefwindow, switch_preview, switch_newline, switch_dict, switch_ANSI, lutable_size, cboxorient, scale1;
 
 function runpref() {
 
@@ -43,10 +43,11 @@ function runpref() {
     switch_preview = builder.get_object("switch_preview");
     switch_newline = builder.get_object("switch_newline");
     switch_dict = builder.get_object("switch_dict");
-    lutable_size = builder.get_object("lutable_size"); 
-    scale1 = builder.get_object("scale1"); 
+    lutable_size = builder.get_object("lutable_size");
+    scale1 = builder.get_object("scale1");
     cboxorient = builder.get_object("cboxorient");
-    
+    switch_ANSI = builder.get_object("switch_ANSI")
+
     switch_preview.connect("notify::active", validate);
     switch_newline.connect("notify::active", validate);
     switch_dict.connect("notify::active", validate);
@@ -58,7 +59,7 @@ function runpref() {
     setting.bind("switch-newline", switch_newline, "active", Gio.SettingsBindFlags.DEFAULT)
     setting.bind("lutable-size", lutable_size, "value", Gio.SettingsBindFlags.DEFAULT)
     setting.bind("cboxorient", cboxorient, "active", Gio.SettingsBindFlags.DEFAULT)
-
+    setting.bind("switch-ansi", switch_ANSI, "active", Gio.SettingsBindFlags.DEFAULT)
     validate();
 
     prefwindow.connect ("destroy", function(){Gtk.main_quit()});
@@ -71,11 +72,11 @@ function validate(){
     if (!switch_preview.get_active()){
         switch_newline.set_active(false);
         switch_dict.set_active(false);
-
         switch_dict.sensitive = false;
         switch_newline.sensitive = false;
         scale1.sensitive = false;
         cboxorient.sensitive = false;
+        switch_ANSI.sensitive = set_active(false);
     } else {
         switch_dict.sensitive = true;
         switch_newline.sensitive = true;

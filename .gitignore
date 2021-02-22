@@ -9,3 +9,4 @@ configure
 Makefile.in
 install-sh
 missing
+ibus-setup-ibus-avro.desktop

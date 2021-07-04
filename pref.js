@@ -25,6 +25,7 @@
     =============================================================================
 */
 
+imports.gi.versions.Gtk = '3.0';
 imports.searchPath.unshift('.');
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;

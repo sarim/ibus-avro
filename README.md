@@ -61,4 +61,4 @@ __IBus Engine__ by __Sarim Khan__ <sarim2005@gmail.com>
 
 __Avro Phonetic Dictionary Search Library__ by [__Mehdi Hasan Khan__](https://github.com/omicronlab)
 
-_Licensed under Mozilla Public License 1.1 ("MPL"), an open source/free software license._
+_Licensed under Mozilla Public License 2.0 ("MPL"), an open source/free software license._

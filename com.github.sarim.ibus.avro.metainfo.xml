@@ -14,7 +14,7 @@
   </description>
   <url type="homepage">https://github.com/sarim/ibus-avro</url>
   <developer_name>Sarim Khan</developer_name>
-  <project_license>MPL-1.1</project_license>
+  <project_license>MPL-2.0</project_license>
   <icon type="remote" width="48" height="48">http://linux.omicronlab.com/appstream/avro-icon.png</icon>
   <screenshots>
     <screenshot type="default">

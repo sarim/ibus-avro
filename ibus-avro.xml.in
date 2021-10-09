@@ -6,7 +6,7 @@
 	<exec>/usr/bin/env gjs --include-path=${pkgdatadir} ${pkgdatadir}/main-gjs.js --ibus > /dev/null</exec>
 	<version>1.1</version>
 	<author>Sarim Khan &lt;sarim2005@gmail.com&gt;</author>
-	<license>MPL 1.1</license>
+	<license>MPL 2.0</license>
 	<homepage>https://github.com/sarim/ibus-avro</homepage>
 	<textdomain>ibus-avro</textdomain>
 

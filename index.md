@@ -29,10 +29,8 @@ Official repositories of the following Linux distributions contain ibus-avro
 
 * **Ubuntu 16.04 LTS (Xenial Xerus)** [backports]
 * **Ubuntu 18.04 LTS (Bionic Beaver)** [backports]
-* **Ubuntu 20.04 LTS (Focal Fossa)**
-* **Ubuntu 20.10 (Groovy Gorilla)**
-* **Ubuntu 21.04 (Hirsute Hippo)**
-* **Debian 11 (Bullseye)**
+* **Ubuntu 20.04 LTS (Focal Fossa)** and later versions
+* **Debian 11 (Bullseye)** and later versions
 * **Debian Unstable (Sid)**
 
 For these distributions, you can simply install `ibus-avro` from software center (or an equvalent tool). For example to install it from the command line using apt:

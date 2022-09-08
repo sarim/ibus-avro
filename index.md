@@ -27,7 +27,6 @@ See [version history](https://github.com/sarim/ibus-avro/releases).
 #### Debian/Ubuntu
 Official repositories of the following Linux distributions contain ibus-avro
 
-* **Ubuntu 16.04 LTS (Xenial Xerus)** [backports]
 * **Ubuntu 18.04 LTS (Bionic Beaver)** [backports]
 * **Ubuntu 20.04 LTS (Focal Fossa)** and later versions
 * **Debian 11 (Bullseye)** and later versions

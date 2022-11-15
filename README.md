@@ -35,12 +35,29 @@ using the source code in this repository.
 
 2. Now give the following commands step-by-step:
 
-		git clone git://github.com/sarim/ibus-avro.git
+		git clone https://github.com/sarim/ibus-avro.git
 		cd ibus-avro
 		aclocal && autoconf && automake --add-missing
 		./configure --prefix=/usr
 		sudo make install
+		
+    __For Fedora (36, Cinnamon DE), Installing from source, and Enabling IBus Avro__
 
+		git clone https://github.com/sarim/ibus-avro.git
+		cd ibus-avro
+		sudo dnf install automake # this installs aclocal, autoconf, and automake
+		sudo dnf install ibus-devel ibus-libs  # to repair "missing ibus-1.0 error"
+		aclocal && autoconf && automake --add-missing
+		./configure --prefix=/usr
+
+		sudo make install
+	
+	Avro should be installed on your system. If you can't find anything (like me), try logging out / restarting the computer. 
+	Now we need to add avro in our input method. I'm using Fedora 36 with Cinnamon DE. It maybe slightly different in other DE (ie, Gnome, KDE, etc).
+	Press `windows key` -> `Input method selector`.
+
+	Initially, no `input method` was chosen. `Select Use IBus`. At the right of `Select Use IBus`, there is `Preference`. Clicking it opens
+	`IBus preference`. Now `Input method` -> `Add` -> `Bangla` -> `Avro`. I had to logout again to see the changes.
 
 ## Usage
  1. Run __IBus__ (`Applications -> System Tools -> IBus`) from _Dash_

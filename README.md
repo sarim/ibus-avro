@@ -52,12 +52,12 @@ using the source code in this repository.
 
 		sudo make install
 	
-	Avro should be installed on your system. If you can't find anything (like me), try logging out / restarting the computer. 
-	Now we need to add avro in our input method. I'm using Fedora 36 with Cinnamon DE. It maybe slightly different in other DE (ie, Gnome, KDE, etc).
+	Avro should be installed on your system. If you can't find anything, try logging out / restarting the computer. 
+	Now one needs to add avro in his input method. Since the installation was done on Fedora 36 with Cinnamon DE, it maybe slightly different in other DE (ie, Gnome, KDE, etc).
+	
 	Press `windows key` -> `Input method selector`.
-
-	Initially, no `input method` was chosen. `Select Use IBus`. At the right of `Select Use IBus`, there is `Preference`. Clicking it opens
-	`IBus preference`. Now `Input method` -> `Add` -> `Bangla` -> `Avro`. I had to logout again to see the changes.
+	Initially, `no input method` was chosen. Select `Use IBus`, and at the right of `Use IBus`, there is `Preference`. Clicking it opens
+	`IBus preference`. Now `Input method` -> `Add` -> `Bangla` -> `Avro`. One may need to logout again to see the changes.
 
 ## Usage
  1. Run __IBus__ (`Applications -> System Tools -> IBus`) from _Dash_

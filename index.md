@@ -43,6 +43,7 @@ AUR contains a community maintained package named `ibus-avro-git`. You can insta
 ```sh
 yay -S ibus-avro-git
 ```
+Note: As a [prerequisite](https://wiki.archlinux.org/title/Arch_User_Repository#Prerequisites) to use the AUR, you will need to install the `base-devel` metapacakge.
 
 #### Others
 
@@ -51,6 +52,8 @@ For use on other distributions, you'll need to download the source code from [gi
 ### Usage
 
 After installing you have to restart ibus, if you're unsure how to do that, restart your session (logout/login) or restart your computer. Now you can add `Avro Phonetic` to Input Methods using your distribution's setting gui. For `Ubuntu`: `Setting` -> `Region & Language` -> `Input Sources`.
+
+For latest version of GNOME in Manjaro (and possibly other operating systems), you will have to configure ibus-avro with some [additional steps](https://github.com/sarim/ibus-avro/issues/202#issuecomment-1719779633).
 
 ### Bangla typing guide
 Here is the Bangla tutorial (from the Windows edition) on how to type with Avro Phonetic: [Bangla typing with Avro Phonetic](http://www.omicronlab.com/download/pdf/Bangla%20Typing%20with%20Avro%20Phonetic.pdf).

@@ -3,6 +3,11 @@ Avro phonetic implementation for Linux in IBus.
 
 ## Installation
 
+
+<a href="https://repology.org/project/ibus-avro/versions">
+    <img src="https://repology.org/badge/vertical-allrepos/ibus-avro.svg" alt="Packaging status" align="right">
+</a>
+
 Ubuntu/Debian/Linux Mint
 ---
 

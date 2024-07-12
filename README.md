@@ -8,22 +8,19 @@ Avro phonetic implementation for Linux in IBus.
     <img src="https://repology.org/badge/vertical-allrepos/ibus-avro.svg" alt="Packaging status" align="right">
 </a>
 
-Ubuntu/Debian/Linux Mint
----
+### Ubuntu/Debian/Linux Mint
 
 On Ubuntu, and on Debian's *testing* and *unstable* releases, Avro phonetic
 is distributed through the `ibus-avro` package. To install it, simply do:
 
 	sudo apt install ibus-avro
 
-Arch/Manjaro/EndeavourOS
----
+### Arch/Manjaro/EndeavourOS
 
 Install [`ibus-avro-git`](https://aur.archlinux.org/packages/ibus-avro-git) from the AUR. Please see [AUR prerequisites](https://wiki.archlinux.org/title/Arch_User_Repository#Prerequisites) if you already have not.
 
 
-Other Linux distros (install from source)
----
+### Other Linux distros (install from source)
 
 On other Linux distros you can install the dependencies and build/install
 using the source code in this repository.

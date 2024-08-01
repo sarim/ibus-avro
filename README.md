@@ -28,21 +28,11 @@ Other Linux distros (install from source)
 On other Linux distros you can install the dependencies and build/install
 using the source code in this repository.
 
-1. Open terminal/package manager and install following packages:
+1. Before starting installation process make sure you have installed this following packages: `git`, `libibus-1.0-dev`, `automake`, `autoconf`, `make`, `gsj`, `ibus`.
+   If you're not sure, just run the following command as root:
 
-		git
-		libibus-1.0-dev
-		automake
-		autoconf
-		make
-		gjs
-		ibus
-
-    __For e.g. Debian 10 "buster"__
-
-    As root, do:
-
-		apt install git libibus-1.0-dev automake autoconf make gjs ibus
+		sudo apt-get update &&
+		sudo apt-get install git libibus-1.0-dev automake autoconf make gjs ibus -y
 
     __For other linux distributions__
 
@@ -50,7 +40,7 @@ using the source code in this repository.
     and to run it you need `ibus` and `gjs`. Use the list of packages above
     as guidance, but please note that some packages may have other names.
 
-2. Now give the following commands step-by-step:
+3. Now give the following commands step-by-step:
 
 		git clone https://github.com/sarim/ibus-avro.git
 		cd ibus-avro

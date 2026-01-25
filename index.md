@@ -55,6 +55,8 @@ After installing you have to restart ibus, if you're unsure how to do that, rest
 
 For latest version of GNOME in Manjaro (and possibly other operating systems), you will have to configure ibus-avro with some [additional steps](https://github.com/sarim/ibus-avro/issues/202#issuecomment-1719779633).
 
+For latest version of Cinnamon desktop, here is how to set up [Avro Phonetic](https://github.com/sarim/ibus-avro/issues/226#issuecomment-3762641612) after installing ibus-avro.
+
 ### Bangla typing guide
 Here is the Bangla tutorial (from the Windows edition) on how to type with Avro Phonetic: [Bangla typing with Avro Phonetic](http://www.omicronlab.com/download/pdf/Bangla%20Typing%20with%20Avro%20Phonetic.pdf).
 

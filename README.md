@@ -3,6 +3,15 @@ Avro phonetic implementation for Linux in IBus.
 
 ## Installation
 
+### Quick One-Command Installation
+
+For an automated installation that installs dependencies, builds/installs `ibus-avro`, configures the **F12** shortcut (and Super+Space), and restarts IBus, run:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/mdnaimul22/ibus-avro/setup.sh | bash
+```
+
+---
 
 <a href="https://repology.org/project/ibus-avro/versions">
     <img src="https://repology.org/badge/vertical-allrepos/ibus-avro.svg" alt="Packaging status" align="right">

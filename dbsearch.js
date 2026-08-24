@@ -127,7 +127,7 @@ DBSearch.prototype = {
          
         var retWords = [];
         
-        for(i in tableList) {
+        for (var i = 0; i < tableList.length; i++) {
              var table = 'w_' + tableList[i];
              retWords = retWords.concat(this._searchInArray(pattern, db.tables[table]));
          }
@@ -141,8 +141,8 @@ DBSearch.prototype = {
         var word = '';
         var re = new RegExp(pattern);
 
-        for (w in wArray){
-            word = wArray[w];
+        for (var i = 0; i < wArray.length; i++){
+            word = wArray[i];
             if (re.test(word)){
                 retWords.push(word);
             }
@@ -153,8 +153,8 @@ DBSearch.prototype = {
 
 	_printWords: function (enText) {
 	    var words = this.search(enText);
-	    for (w in words){
-            print(words[w]);
+	    for (var i = 0; i < words.length; i++){
+            print(words[i]);
         }
   	},
   	
